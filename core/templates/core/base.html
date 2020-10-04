@@ -12,7 +12,7 @@
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-  <link href="{% static 'vendor/css/custom.css' %}" rel="stylesheet">
+  <link href="{% static 'css/custom.css' %}" rel="stylesheet">
 
 </head>
 
@@ -26,14 +26,14 @@
       </div>
       <div class="row">
           <nav class="navbar col-2">
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item">
+            <ul class="navbar-nav flex-column ">
+                <li class="nav-item {% if request.resolver_match.url_name == 'test' %}active{% endif %}">
                     <a class="nav-link" href="{% url 'test' %}">Main</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if request.resolver_match.url_name == 'history' %}active{% endif %}">
                     <a class="nav-link" href="{% url 'history' %}">History</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if request.resolver_match.url_name == 'report' %}active{% endif %}">
                     <a class="nav-link" href="{% url 'report' %}">Report</a>
                 </li>
             </ul>
@@ -49,7 +49,7 @@
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'vendor/js/script.js' %}"></script>
+  <script type="text/javascript" src="{% static 'static/js' %}"></script>
 
 </body>
 
