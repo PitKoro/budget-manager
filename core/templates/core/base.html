@@ -29,11 +29,16 @@
           <i class="fab fa-monero">Budget<br />Manager</i>
         </h3>
         <ul class="navigation">
-          <li><a href="/"><i class="fas fa-home"> Главная страница</i></a></li>
-          <li><a href="/history"><i class="fas fa-file-invoice-dollar"> История операций</i></a></li>
-          <li><a href="/report"><i class="fas fa-chart-pie"> Отчет</i></a></li>
+          <li class="{% if url_name == 'main' %}active{% endif %}"><a href="{% url 'main' %}"><i class="fas fa-home"> Главная страница</i></a></li>
+          <li class="{% if url_name == 'history' %}active{% endif %}"><a href="{% url 'history' %}"><i class="fas fa-file-invoice-dollar"> История операций</i></a></li>
+          <li class="{% if url_name == 'report' %}active{% endif %}"><a href="{% url 'report' %}"><i class="fas fa-chart-pie"> Отчет</i></a></li>
         </ul> 
       </aside>
+    </div>
+
+    <div class="col">
+      {% block content %}
+      {% endblock %}
     </div>
 
     <!-- Bootstrap core JavaScript -->
