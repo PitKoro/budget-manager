@@ -37,3 +37,6 @@ aside .navigation li:hover a:hover{
   transform: scale(1.05);
 }
 
+.active {
+  font-weight: bold;
+}
