@@ -1,54 +1,48 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>{% block title %}{% endblock %}</title>
 
-<head>
+    <!-- Bootstrap core CSS -->
+    <link
+      href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link href="{% static 'css/core.css' %}" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    />
+  </head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{% block title %}{% endblock %}</title>
+  <body>
+    <div class="conteiner-body">
+      <aside>
+        <h3 class="logo">
+          <i class="fab fa-monero">Budget<br />Manager</i>
+        </h3>
+        <ul class="navigation">
+          <li><a href="/main"><i class="fas fa-home"> Главная страница</i></a></li>
+          <li><a href="/history"><i class="fas fa-file-invoice-dollar"> История операций</i></a></li>
+          <li><a href="/report"><i class="fas fa-chart-pie"> Отчет</i></a></li>
+        </ul> 
+      </aside>
+    </div>
 
-  <!-- Bootstrap core CSS -->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-  <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
-</head>
-
-<body>
-
-  <div class="container border">
-      <div class="row">
-        <div class="col">
-          <h1 class="text-center">HEADER</h1>
-        </div>
-      </div>
-      <div class="row">
-          <nav class="navbar col-2">
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item {% if url_name == 'test' %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'test' %}">Main</a>
-                </li>
-                <li class="nav-item {% if url_name == 'history' %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'history' %}">History</a>
-                </li>
-                <li class="nav-item {% if url_name == 'report' %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'report' %}">Report</a>
-                </li>
-            </ul>
-          </nav>
-          
-          <div class="col">
-            {% block content %}
-            {% endblock %}
-          </div>
-      </div>
-  </div>
-
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-</body>
-
+    <!-- Bootstrap core JavaScript -->
+    <script
+      type="text/javascript"
+      src="{% static 'vendor/jquery/jquery.min.js' %}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
+    ></script>
+  </body>
 </html>
