@@ -2,10 +2,10 @@ from django.shortcuts import render
 from .models import Account
 
 
-def test(request):
+def main(request):
     url_name = request.resolver_match.url_name
     account_list = Account.objects.all()
-    return render(request, 'core/test.html', {'account_list': account_list, 'url_name': url_name})
+    return render(request, 'core/main.html', {'account_list': account_list, 'url_name': url_name})
 
 def report(request):
     url_name = request.resolver_match.url_name
