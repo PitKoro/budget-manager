@@ -23,18 +23,21 @@
   </head>
 
   <body>
-    <div class="conteiner-body">
-      <aside>
-        <h3 class="logo">
-          <i class="fab fa-monero">Budget<br />Manager</i>
-        </h3>
-        <ul class="navigation">
-          <li class="{% if url_name == 'main' %}active{% endif %}"><a href="{% url 'main' %}"><i class="fas fa-home"> Главная страница</i></a></li>
-          <li class="{% if url_name == 'history' %}active{% endif %}"><a href="{% url 'history' %}"><i class="fas fa-file-invoice-dollar"> История операций</i></a></li>
-          <li class="{% if url_name == 'report' %}active{% endif %}"><a href="{% url 'report' %}"><i class="fas fa-chart-pie"> Отчет</i></a></li>
-        </ul> 
-      </aside>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="{% url 'main' %}">
+        <img src="{% static 'img/main_logo.png' %}" width="80px" height="30px" alt="" loading="lazy">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link {% if url_name == 'main' %}active{% endif %}" href="{% url 'main' %}"><i class="fas fa-home"> Главная страница</i></a>
+          <a class="nav-link {% if url_name == 'history' %}active{% endif %}" href="{% url 'history' %}"><i class="fas fa-file-invoice-dollar"> История операций</i></a>
+          <a class="nav-link {% if url_name == 'report' %}active{% endif %}" href="{% url 'report' %}"><i class="fas fa-chart-pie"> Отчет</i></a>
+        </div>
+      </div>
+    </nav>
 
     <div class="col">
       {% block content %}

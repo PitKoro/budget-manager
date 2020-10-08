@@ -1,42 +1,9 @@
 body {
-  background: rgb(235, 159, 159);
-}
-
-aside {
-  float: left;
-  background: rgb(104, 35, 35);
-  width: 20vw;
-  padding: 2, 5%;
-  height: 100vh;
-  color: rgb(151, 34, 34);
-  border-right: 5px solid black;
-}
-
-aside > img {
-  width: 100%;
-  color: rgb(151, 34, 34);
-}
-
-aside .logo{
-  font-size: 4vw;
-  margin-left: 10px;
-  margin-top: 2vh;
-  font-weight: bold;
-}
-
-aside .navigation{list-style: none;}
-aside .navigation li a{
+  background: #2c2c2c;
   color: #fff;
-  display: block;
-  margin-top: 20px;
-  transition: all .4s ease;
-}
-aside .navigation li:hover a:hover{
-  color: #eb5959;
-  text-decoration: none;
-  transform: scale(1.05);
+
 }
 
-.active i{
-  color: red; 
+.bg-dark {
+  background-color: #191A1D!important;
 }
