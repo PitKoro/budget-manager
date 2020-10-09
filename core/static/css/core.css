@@ -4,6 +4,31 @@ body {
 
 }
 
-.bg-dark {
-  background-color: #191A1D!important;
+aside {
+  float: left;
+  background: #181818;
+  width: 200px;
+  height: 100vh;
+
+}
+
+aside a img {
+  margin: 20px;
+}
+
+.nav-link{
+  margin-top: 10px;
+  color: #dbdbdb;
+}
+
+.nav-link:hover{
+  color: #fff;
+}
+
+.nav-link.active{
+  background-color: #2c2c2c;
+  color: #fff;
+  width: 100%;
+  margin-left: 10px;
+  border-right:3px solid #2c2c2c
 }
