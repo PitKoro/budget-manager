@@ -27,14 +27,12 @@
       <div class="row">
         <div class="col-2">
           <aside>
-            <nav class="nav flex-column">
               <a href="{% url 'main' %}">
                 <img src="{% static 'img/main_logo.png' %}" width="80px" height="30px" alt="" loading="lazy">
               </a>
               <a class="nav-link fas fa-home {% if url_name == 'main' %}active{% endif %}" href="{% url 'main' %}"> Главная страница</a>
               <a class="nav-link fas fa-file-invoice-dollar {% if url_name == 'history' %}active{% endif %}" href="{% url 'history' %}"> История операций</a>
               <a class="nav-link fas fa-chart-pie {% if url_name == 'report' %}active{% endif %}" href="{% url 'report' %}"> Отчет</a>
-            </nav>
           </aside>
         </div>
         
