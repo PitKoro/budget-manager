@@ -23,11 +23,11 @@
   </head>
 
   <body>
-    <div class="conteiner">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-2">
           <aside>
-            <nav class="nav">
+            <nav class="nav flex-column">
               <a href="{% url 'main' %}">
                 <img src="{% static 'img/main_logo.png' %}" width="80px" height="30px" alt="" loading="lazy">
               </a>
@@ -37,8 +37,8 @@
             </nav>
           </aside>
         </div>
-
-        <div class="col-10">
+        
+        <div class="col">
           {% block content %}
           {% endblock %}
         </div>
