@@ -28,7 +28,7 @@
         <div class="col-2">
           <aside>
               <a href="{% url 'main' %}">
-                <img src="{% static 'img/main_logo.png' %}" width="80px" height="30px" alt="" loading="lazy">
+                <img class ="logo" src="{% static 'img/main_logo.png' %}" loading="lazy">
               </a>
               <a class="nav-link fas fa-home {% if url_name == 'main' %}active{% endif %}" href="{% url 'main' %}"> Главная страница</a>
               <a class="nav-link fas fa-file-invoice-dollar {% if url_name == 'history' %}active{% endif %}" href="{% url 'history' %}"> История операций</a>

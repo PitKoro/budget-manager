@@ -11,8 +11,10 @@ aside {
 
 }
 
-aside a img {
+.logo {
   margin: 20px;
+  width: 80px;
+  height: 30px;
 }
 
 .nav-link{
