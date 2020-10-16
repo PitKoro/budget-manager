@@ -32,5 +32,5 @@ class ExpenseTransaction(Transaction):
 
 
 class InnerTransaction(Transaction):
-    account_from = models.ForeignKey(Account, on_delete=models.PROTECT)
-    accout_to = models.ForeignKey(Account, on_delete=models.PROTECT)
+    account_from = models.ForeignKey(Account, on_delete=models.PROTECT, related_name='inner_transaction_from_set')
+    accout_to = models.ForeignKey(Account, on_delete=models.PROTECT, related_name='inner_transaction_to_set')
