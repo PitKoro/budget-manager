@@ -4,4 +4,11 @@
 
 {% block content %}
     <p class="text-center">Это страница отчёта</p>
+    <div class="features testone">
+        <input type="datetime-local" class="form-control">
+        <input type="text" class="form-control" placeholder="login">
+        <input type="Password" class="form-control" placeholder="Password">
+        <button type="button" class="btn btn-light">Submit</button>
+    <a class="btn btn-info" href="{% url 'main' %}" role="button" style="float: right;">Main page</a>
+    </div>
 {% endblock %}
