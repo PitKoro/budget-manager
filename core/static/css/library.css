@@ -1,3 +1,31 @@
+/**
+date  <input type="datetime-local" class="form-control">
+text <input type="text" class="form-control" placeholder="Text">
+password <input type="password" class="form-control" placeholder="Password">
+
+submit <button type="button" class="btn btn-light">Submit</button>
+другая страница <a class="btn btn-info" href="{% url 'main' %}" role="button">Link</a>
+
+
+
+прямоугольник под форму <div class=".features"></div> создавайте подкласс чтобы настраивать ширину и место кокретной формы
+прямоугольник под операции 
+
+
+
+
+
+
+
+**/
+
+
+
+
+
+
+
+
 /** ЗДЕСЬ У НАС БИБЛИОТЕКА. не знаешь как оформить? пиши ответственным. НЕ ГОРОДИ**/ 
 /** ЗДЕСЬ У НАС БИБЛИОТЕКА. не знаешь как оформить? пиши ответственным. НЕ ГОРОДИ**/ 
 /** 
