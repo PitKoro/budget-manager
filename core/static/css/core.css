@@ -7,7 +7,7 @@ body {
 aside {
   float: left;
   background: #181818;
-  height: 100vh;
+  height: 100%;
 
 }
 
@@ -32,4 +32,13 @@ aside {
   width: 100%;
   margin-left: 10px;
   border-right:3px solid #2c2c2c
+}
+
+.alert{
+  width: 400px;
+  margin: 20px 34%;
+}
+
+.alert p{
+  margin-bottom: 0px;
 }

@@ -3,5 +3,44 @@
 {% block title %}История{% endblock %}
 
 {% block content %}
-    <p class="text-center">Это страница истории</p>
+    <h1 class="text-center">История</h1>
+    {% if transactions %}
+        {% for el in transactions %}
+            {% if el.income_category.name %}
+                <div class="alert alert-warning">
+                    <h3>Транзакция дохода</h3>
+                    <p>Дата: {{ el.date }}</p>
+                    <p>Сумма: {{el.amount}}</p>
+                    <p>Комментарий: {{ el.commentary }}</p>
+                    <p>Счет: {{ el.account.name }}</p>
+                    <p>Категория дохода: {{ el.income_category.name }}</p>
+                </div>
+            {% endif %}
+
+            {% if el.expense_category.name %}
+                <div class="alert alert-warning">
+                    <h3>Транзакция расхода</h3>
+                    <p>Дата: {{ el.date }}</p>
+                    <p>Сумма: {{el.amount}}</p>
+                    <p>Комментарий: {{ el.commentary }}</p>
+                    <p>Счет: {{ el.account.name }}</p>
+                    <p>Категория дохода: {{ el.expense_category.name }}</p>
+                </div>
+            {% endif %}
+
+            {% if el.account_to.name %}
+                <div class="alert alert-warning">
+                    <h3>Внутренняя транзакция</h3>
+                    <p>Дата: {{ el.date }}</p>
+                    <p>Сумма: {{el.amount}}</p>
+                    <p>Комментарий: {{ el.commentary }}</p>
+                    <p>Откуда: {{ el.account_from.name }}</p>
+                    <p>Куда: {{ el.account_to.name }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    {% else %}
+        <p class="text-center">У вас еще не было транзакций</p>
+    {% endif %}
 {% endblock %}
