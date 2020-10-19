@@ -1,0 +1,16 @@
+{% extends 'DBExplorer/base.html' %}
+
+{% block model_name %}{{model_name}}{% endblock %}
+
+    {% block content %}
+        <tr>
+            <th>id</td>
+            <th>name</td>
+        </tr>
+        {% for category in object_list %}
+            <tr>
+                <td>{{category.id}}</td>
+                <td>{{category.name}}</td>
+            </tr>
+        {% endfor %}
+{% endblock %}

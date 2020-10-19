@@ -16,5 +16,6 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('core.urls'))
+    path('', include('core.urls')),
+    path('explore/', include('DBExplorer.urls'))
 ]
