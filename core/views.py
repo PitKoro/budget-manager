@@ -15,8 +15,8 @@ def report(request):
 
 def history(request):
     url_name = request.resolver_match.url_name
-    incomeT = IncomeTransaction.objects.order_by("-date")
-    expenseT = ExpenseTransaction.objects.order_by("-date")
-    innerT = InnerTransaction.objects.order_by("-date")
+    incomeT = IncomeTransaction.objects.all()
+    expenseT = ExpenseTransaction.objects.all()
+    innerT = InnerTransaction.objects.all()
     transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
-    return render(request, 'core/history.html', {'url_name': url_name, 'incomeT': incomeT, 'expenseT': expenseT, 'innerT': innerT, 'transactions':transactions})
+    return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})
