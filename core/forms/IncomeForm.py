@@ -35,7 +35,10 @@ class IncomeForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    amount = forms.FloatField(min_value=0, label='Сумма')
+    amount = forms.FloatField(min_value=0, label='Сумма', widget=forms.NumberInput(attrs = {
+        'class': 'form-control',
+        'placeholder': 'Сумма'
+    }))
     from1 = forms.ChoiceField(
         label='Из',
         choices=list(chain(get_category_choices(), get_account_choices()))
@@ -45,7 +48,10 @@ class IncomeForm(forms.Form):
         choices=get_account_choices
     )
     date = forms.DateField(label='Дата', widget=CustomDateInput())
-    commentary = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea)
+    commentary = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea(attrs = {
+                'class': 'form-control',
+                'placeholder': 'Комментарий'
+            }))
 
     def clean_amount(self):
         data = self.cleaned_data['amount']
@@ -78,3 +84,4 @@ class IncomeForm(forms.Form):
 
             if amount_data * 100 > balance:
                 raise ValidationError(_('Недостаточно средств'), code='invalid')
+    
