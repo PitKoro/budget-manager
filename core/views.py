@@ -18,5 +18,7 @@ def history(request):
     incomeT = IncomeTransaction.objects.all()
     expenseT = ExpenseTransaction.objects.all()
     innerT = InnerTransaction.objects.all()
-    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)   
+    for el in transactions:
+        el.amount/=100
     return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})

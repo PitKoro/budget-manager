@@ -2,7 +2,6 @@
 body {
   background: #2c2c2c;
   color: #fff;
-
 }
 
 aside {
@@ -35,11 +34,40 @@ aside {
   margin-left: 10px;
 }
 
-.alert{
-  width: 400px;
-  margin: 20px 34%;
+.card{
+  color: black;
 }
 
-.alert p{
-  margin-bottom: 0px;
+.history-date{
+  text-align: right;
+}
+
+.history-header{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.reset-this {
+  all: initial;
+}
+
+.redo-fieldset {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 100%;
+  padding-inline-start: 0.75em;
+} 
+
+.redo-legend {
+  color: black;
+  padding-inline-start: 3px;
+  padding-inline-end: 3px;
+} 
+
+.history-commentary{
+  height: 100%;
+}
+
+.row-transaction-history{
+  margin-top: 20px;
 }
