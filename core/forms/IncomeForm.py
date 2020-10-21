@@ -28,7 +28,8 @@ def get_category_choices():
 
 
 class IncomeForm(forms.Form):
-
+    def render(self):
+        super().__init__()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -36,20 +37,21 @@ class IncomeForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
     amount = forms.FloatField(min_value=0, label='Сумма', widget=forms.NumberInput(attrs = {
-        'class': 'form-control',
         'placeholder': 'Сумма'
     }))
     from1 = forms.ChoiceField(
         label='Из',
-        choices=list(chain(get_category_choices(), get_account_choices()))
+        choices=[(-1, "Откуда...")]+list(chain(get_category_choices(), get_account_choices()))
     )
     to = forms.ChoiceField(
         label='В',
-        choices=get_account_choices
+        choices=[(-1, "Куда...")] + get_account_choices(),
+        widget=forms.Select(attrs = {
+                'placeholder': 'Куда'
+            })
     )
     date = forms.DateField(label='Дата', widget=CustomDateInput())
     commentary = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea(attrs = {
-                'class': 'form-control',
                 'placeholder': 'Комментарий'
             }))
 
@@ -73,6 +75,12 @@ class IncomeForm(forms.Form):
         to_data = cleaned_data.get('to')
         amount_data = cleaned_data.get('amount')
 
+        if from_data=="-1":
+            raise ValidationError(_('Выберите откуда пришло'), code='invalid')
+        if to_data=="-1":
+            raise ValidationError(_('Выберите куда начислить'), code='invalid')
+
+        
         if from_data == to_data:
             # Пытаемся перевести деньги на то же месо хранения
             raise ValidationError(_('Выберите разные места хранения'), code='invalid')
