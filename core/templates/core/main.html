@@ -15,16 +15,18 @@
     </div>
     <div class="left-forms">
       <div class="features IncomeForm">
-        <form method="POST" action="{% url 'core:main' %}">
+        <form method="POST" action="{% url 'core:main' %}" name="incf">
           {% csrf_token %}
-          <div class="text-center">Приход</div>
+          <div class="text-center" >Приход</div>
+          <input type="text" name="form" hidden value="incf">
           {% include "core/base_form.html" with form=income_form%}
         </form>
       </div>
       <div class="features ExpenceForm">
-        <form method="POST" action="{% url 'core:main' %}">
+        <form method="POST" action="{% url 'core:main' %}" id="expf">
           {% csrf_token %}
           <div class="text-center">Расход</div>
+          <input type="text" name="form" hidden value="incf">
           {% include "core/base_form.html" with form=expence_form %}
         </form>
       </div>

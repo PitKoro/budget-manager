@@ -8,8 +8,12 @@ from .utils import get_balance, post_income_transaction
 def main(request):
     # Обработка формы
     if request.method == 'POST':
-        formIF = IncomeForm(request.POST)
-        formEF = ExpenceForm()
+        print("AAAAAAAAAAAAAAA", request.POST)
+        print("BBBBBBBBBBBBBBB", request.GET)
+        if request.POST['form'] == "incf":
+            formIF = IncomeForm(request.POST)
+        elif request.POST['form'] == "expf":
+            formEF = ExpenceForm()
         if formIF.is_valid():
             post_income_transaction(formIF.cleaned_data)
     else:
