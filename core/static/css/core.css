@@ -1,14 +1,14 @@
+
 body {
   background: #2c2c2c;
   color: #fff;
-
 }
 
 aside {
   float: left;
   background: #181818;
-  height: 100vh;
-
+  height: 100%;
+  min-height: 100vh;
 }
 
 .logo {
@@ -34,6 +34,11 @@ aside {
   border-right:3px solid #2c2c2c
 }
 
+.row{
+  flex-wrap: nowrap;
+}
+
+
 .left-forms {
   display: flex;
   flex-direction: column;
@@ -54,10 +59,18 @@ aside {
   width: 300px;
 }
 
+.history-log{
+  width: 300px;
+  min-height: 400px;
+}
 
 .form-control{
   display: inline-block;
   min-height: 40px;
   max-height: 100px;
   margin: 10px auto 5px
+}
+
+ul, li{
+  list-style-type: none;
 }
