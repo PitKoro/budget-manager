@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms.IncomeForm import IncomeForm
+from .forms.ExpenceForm import ExpenceForm 
 from .models import Account
 from .utils import get_balance, post_income_transaction
 
@@ -7,12 +8,13 @@ from .utils import get_balance, post_income_transaction
 def main(request):
     # Обработка формы
     if request.method == 'POST':
-        form = IncomeForm(request.POST)
-
-        if form.is_valid():
-            post_income_transaction(form.cleaned_data)
+        formIF = IncomeForm(request.POST)
+        formEF = ExpenceForm()
+        if formIF.is_valid():
+            post_income_transaction(formIF.cleaned_data)
     else:
-        form = IncomeForm()
+        formIF = IncomeForm()
+        formEF = ExpenceForm()
 
     url_name = request.resolver_match.url_name
     account_list = []
@@ -27,7 +29,8 @@ def main(request):
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
-        'income_form': form
+        'income_form': formIF,
+        'expence_form': formEF
     })
 
 
