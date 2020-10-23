@@ -23,7 +23,7 @@
                                     <div class="col">
                                         <fieldset class="reset-this redo-fieldset">
                                             <legend class="reset-this redo-legend"> Сумма </legend>
-                                            <h5 class="card-title  text-center">+{{ el.amount }} руб.</h5>
+                                            <h5 class="card-title  text-center">+{{ el.amount|division:100 }} руб.</h5>
                                         </fieldset>    
                                     </div>
                                     <div class="col">
@@ -64,7 +64,7 @@
                                     <div class="col">
                                         <fieldset class="reset-this redo-fieldset">
                                             <legend class="reset-this redo-legend"> Сумма </legend>
-                                            <h5 class="card-title  text-center">-{{ el.amount }} руб.</h5>
+                                            <h5 class="card-title  text-center">-{{ el.amount|division:100 }} руб.</h5>
                                         </fieldset>    
                                     </div>
                                     <div class="col">
