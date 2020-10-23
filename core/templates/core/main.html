@@ -1,15 +1,49 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Главная страница{% endblock %}
-
+{% extends 'core/base.html' %} {% block title %}Главная страница{% endblock %}
 {% block content %}
-    {% if account_list %}
-        <ul>
+<div class="container-fluid">
+  <div class="row">
+    
+    <div class="left-forms">
+
+        <div class="features ExpenceForm">
+            <form method="POST" action="{% url 'core:main' %}">
+              {% csrf_token %}
+              <h5 class="text-center">Расход</h5>
+              {% include "core/base_form.html" with form=expence_form %}
+            </form>
+        </div>
+
+        <div class="features IncomeForm">
+          <form method="POST" action="{% url 'core:main' %}">
+            {% csrf_token %}
+            <h5 class="text-center">Приход</h5>
+            {% include "core/base_form.html" with form=income_form%}
+          </form>
+        </div>
+    </div>
+
+
+    
+    <div class="col">
+      {% if account_list %}
+      <ul>
         {% for account in account_list %}
-            <li>{{ account.name }}</li>
+        <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
         {% endfor %}
-        </ul>    
-    {% else %}
-        <p>No accounts are available.</p>
-    {% endif %}
+      </ul>
+      {% else %}
+      <p>No accounts are available.</p>
+      {% endif %}
+    </div>
+
+    
+
+    <div class="col">
+        <div class="features  history-log">
+            <h5 class="text-center">Последнии транзакции</h5>
+        </div>
+    </div>
+
+  </div>
+</div>
 {% endblock %}
