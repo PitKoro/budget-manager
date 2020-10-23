@@ -29,10 +29,10 @@
           <aside>
               <a href="{% url 'core:main' %}">
                 <img class ="logo" src="{% static 'img/main_logo.png' %}" loading="lazy">
-              </a>
-              <a class="nav-link fas fa-home {% if url_name == 'main' %}active{% endif %}" href="{% url 'core:main' %}"> Главная страница</a>
-              <a class="nav-link fas fa-file-invoice-dollar {% if url_name == 'history' %}active{% endif %}" href="{% url 'core:history' %}"> История операций</a>
-              <a class="nav-link fas fa-chart-pie {% if url_name == 'report' %}active{% endif %}" href="{% url 'core:report' %}"> Отчет</a>
+              </a></br>
+              <a class="nav-link fas fa-home {% if url_name == 'main' %}active{% endif %}" href="{% url 'core:main' %}"> Главная страница</a></br>
+              <a class="nav-link fas fa-file-invoice-dollar {% if url_name == 'history' %}active{% endif %}" href="{% url 'core:history' %}"> История операций</a></br>
+              <a class="nav-link fas fa-chart-pie {% if url_name == 'report' %}active{% endif %}" href="{% url 'core:report' %}"> Отчет</a></br>
           </aside>
         </div>
         
