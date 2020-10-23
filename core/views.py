@@ -6,7 +6,6 @@ from .forms.IncomeForm import IncomeForm
 from .forms.ExpenceForm import ExpenceForm 
 from .utils import get_balance, post_income_transaction
 
-
 def main(request):
     # Обработка формы
     if request.method == 'POST':
@@ -46,5 +45,17 @@ def history(request):
     incomeT = IncomeTransaction.objects.all()
     expenseT = ExpenseTransaction.objects.all()
     innerT = InnerTransaction.objects.all()
-    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)   
+    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+
+    if request.method == 'POST':
+        filter_value=request.POST.get('history_filter')
+        if filter_value == "all":
+            return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})
+        if int(filter_value) in [1,2,3,4,5,6,7,8,9,10,11,12]:
+            incomeT = IncomeTransaction.objects.filter(date__month=int(filter_value))
+            expenseT = ExpenseTransaction.objects.filter(date__month=int(filter_value))
+            innerT = InnerTransaction.objects.filter(date__month=int(filter_value))
+            transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+            return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})
+
     return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})
