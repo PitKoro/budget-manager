@@ -58,6 +58,10 @@ aside {
   padding-inline-start: 0.75em;
 } 
 
+.redo-fieldset.inner-amount {
+  height: 90%;
+}
+
 .redo-legend {
   color: black;
   padding-inline-start: 3px;

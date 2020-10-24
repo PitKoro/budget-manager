@@ -59,15 +59,17 @@
                                         
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <fieldset class="reset-this redo-fieldset history-commentary">
-                                            <legend class="reset-this redo-legend"> Комментарий </legend>
-                                            <p class="card-text text-center">{{ el.commentary }}</p>
-                                        </fieldset>  
-                                        
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -100,14 +102,17 @@
                                         
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <fieldset class="reset-this redo-fieldset history-commentary">
-                                            <legend class="reset-this redo-legend"> Комментарий </legend>
-                                            <p class="card-text text-center">{{ el.commentary }}</p>
-                                        </fieldset>  
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -127,7 +132,7 @@
                             <div class="card-body">
                                 <div class="row justify-content-around">
                                     <div class="col">
-                                        <fieldset class="reset-this redo-fieldset">
+                                        <fieldset class="reset-this redo-fieldset inner-amount">
                                             <legend class="reset-this redo-legend"> Сумма </legend>
                                             <h5 class="card-title  text-center">{{ el.amount|division:100 }} руб.</h5>
                                         </fieldset>    
@@ -139,14 +144,17 @@
                                         </fieldset>  
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <fieldset class="reset-this redo-fieldset history-commentary">
-                                            <legend class="reset-this redo-legend"> Комментарий </legend>
-                                            <p class="card-text text-center">{{ el.commentary }}</p>
-                                        </fieldset>  
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
