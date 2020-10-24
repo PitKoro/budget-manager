@@ -9,7 +9,7 @@
                 {% if account_list %}
                     <ul>
                     {% for account in account_list %}
-                        <li>{{ account.name }}: {{account.amount}}р.</li>
+                        <li>{{ account.name }}: {{account.amount | floatformat:2}}р.</li>
                     {% endfor %}
                     </ul>    
                 {% else %}

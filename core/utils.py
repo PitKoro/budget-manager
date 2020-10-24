@@ -16,7 +16,6 @@ def post_income_transaction(data):
     from_id = data['from1'].split('__')[1]
     to_id = data['to'].split('__')[1]
     amount = data['amount'] * 100
-    print(data['commentary'])
 
     transaction = None
 
