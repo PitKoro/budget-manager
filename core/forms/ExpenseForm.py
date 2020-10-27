@@ -2,33 +2,19 @@ from django import forms
 from core.models import Account, ExpenseCategory
 from .CustomDateInput import CustomDateInput
 from django.utils.translation import gettext as _
-from core.utils import get_balance_d
+from core.utils import get_balance
 from .CustomDateInput import CustomDateInput
 from django.core.exceptions import ValidationError
+from .utils import get_account_choices, get_category_choices
 
 from itertools import chain
 from datetime import date
 
-def get_account_choices():
-    account_choices = []
-
-    for account in Account.objects.all():
-        account_choices.append(('acc__' + str(account.id), account.name))
-
-    return account_choices
-
-
-def get_category_choices():
-    category_choices = []
-
-    for category in ExpenseCategory.objects.all():
-        category_choices.append(('cat__' + str(category.id), category.name))
-
-    return category_choices
 
 
 
-class ExpenceForm(forms.Form):
+
+class ExpenseForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -46,7 +32,7 @@ class ExpenceForm(forms.Form):
     )
     to_cat = forms.ChoiceField(
         label='Из',
-        choices=[(-1, "Куда...")]+list(chain(get_category_choices(), get_account_choices())),
+        choices=[(-1, "Куда...")]+list(chain(get_category_choices("exp_c"), get_account_choices())),
         widget=forms.Select()
     )
     when = forms.DateField(label='Дата', widget=CustomDateInput())
@@ -86,7 +72,7 @@ class ExpenceForm(forms.Form):
         
         # Было ли у нас нужное кол-во денег на тот период
         id = from_data.split('__')[1]
-        balance = get_balance_d(id)
+        balance = get_balance(Account.objects.get(id=id))
 
         if amount_data * 100 > balance:
             raise ValidationError(_('Недостаточно средств'), code='invalid')

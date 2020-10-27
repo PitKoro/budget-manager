@@ -12,13 +12,7 @@ def get_balance(account):
 
     return (outer_income + inner_income - outer_expense - inner_expense)
 
-def get_balance_d(id_, date_to = date.today()):
-    outer_income = IncomeTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    inner_income = InnerTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_to_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    outer_expense = ExpenseTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    inner_expense = InnerTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_from_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
 
-    return (outer_income + inner_income - outer_expense - inner_expense)
 
 
 def post_income_transaction(data):
