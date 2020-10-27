@@ -1,29 +1,37 @@
-{% extends 'core/base.html' %}
-
+{% extends 'core/base.html' %} 
 {% block title %}Главная страница{% endblock %}
-
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                {% if account_list %}
-                    <ul>
-                    {% for account in account_list %}
-                        <li>{{ account.name }}: {{account.amount | floatformat:2}}р.</li>
-                    {% endfor %}
-                    </ul>    
-                {% else %}
-                    <p>No accounts are available.</p>
-                {% endif %}
-            </div>
-
-            <div class="features IncomeForm">
-                <form method="POST" action="{% url 'core:main' %}">
-                    {% csrf_token %}
-                    <div class="text-center">Приход</div>
-                    {% include "core/base_form.html" with form=income_form%}
-                </form>
-            </div>
-        </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      {% if account_list %}
+      <ul>
+        {% for account in account_list %}
+        <li>{{ account.name }}: {{account.amount}}р.</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No accounts are available.</p>
+      {% endif %}
     </div>
+    <div class="left-forms">
+      <div class="features IncomeForm">
+        <form method="POST" action="{% url 'core:main' %}" name="incf">
+          {% csrf_token %}
+          <div class="text-center" >Приход</div>
+          <input type="text" name="form" hidden value="incf">
+          {% include "core/base_form.html" with form=income_form%}
+        </form>
+      </div>
+      <div class="features ExpenceForm">
+        <form method="POST" action="{% url 'core:main' %}" id="expf">
+          {% csrf_token %}
+          <div class="text-center">Расход</div>
+          <input type="text" name="form" hidden value="expf">
+          {% include "core/base_form.html" with form=expence_form %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
