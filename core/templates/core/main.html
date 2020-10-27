@@ -26,7 +26,7 @@
         <form method="POST" action="{% url 'core:main' %}" id="expf">
           {% csrf_token %}
           <div class="text-center">Расход</div>
-          <input type="text" name="form" hidden value="incf">
+          <input type="text" name="form" hidden value="expf">
           {% include "core/base_form.html" with form=expence_form %}
         </form>
       </div>
