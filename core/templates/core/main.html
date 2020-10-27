@@ -5,7 +5,7 @@
     
     <div class="left-forms">
 
-        <div class="features ExpenceForm">
+        <div class="features expence-form">
             <form method="POST" action="{% url 'core:main' %}">
               {% csrf_token %}
               <h5 class="text-center">Расход</h5>
@@ -13,7 +13,7 @@
             </form>
         </div>
 
-        <div class="features IncomeForm">
+        <div class="features income-form">
           <form method="POST" action="{% url 'core:main' %}">
             {% csrf_token %}
             <h5 class="text-center">Приход</h5>

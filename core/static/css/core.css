@@ -52,15 +52,15 @@ aside {
   margin: 10px 5px;
 }
 
-.IncomeForm{
-  width: 300px;
+.income-form{
+  width: 335px;
 }
-.ExpenceForm{
-  width: 300px;
+.expence-form{
+  width: 335px;
 }
 
 .history-log{
-  width: 300px;
+  width: 335px;
   min-height: 400px;
 }
 
