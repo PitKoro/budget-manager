@@ -54,6 +54,14 @@ class ExpenceForm(forms.Form):
                 'placeholder': 'Комментарий'
             }))
 
+    def clean_amount(self):
+        data = self.cleaned_data['amount']
+        decimal_part = str(data*100).split('.')[1]
+
+        if len(decimal_part) > 1 or int(decimal_part) != 0:
+            raise ValidationError(_('Неверный формат суммы'))
+        else:
+            return data
     
     def clean_when(self):
         date_when = self.cleaned_data['when']
