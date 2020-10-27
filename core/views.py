@@ -17,8 +17,10 @@ def main(request):
             formEF = ExpenseForm(request.POST)
         if formIF.is_valid():
             post_income_transaction(formIF.cleaned_data)
+            formIF = IncomeForm()
         if formEF.is_valid():
             post_expense_transaction(formEF.cleaned_data)
+            formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
     account_list = []

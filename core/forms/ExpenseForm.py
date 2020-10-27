@@ -35,7 +35,9 @@ class ExpenseForm(forms.Form):
         choices=[(-1, "Куда...")]+list(chain(get_category_choices("exp_c"), get_account_choices())),
         widget=forms.Select()
     )
-    when = forms.DateField(label='Дата', widget=CustomDateInput())
+    when = forms.DateField(label='Дата', widget=CustomDateInput(attrs = {
+                'value': date.today()
+            }))
     commentary_exp = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea(attrs = {
                 'placeholder': 'Комментарий'
             }))

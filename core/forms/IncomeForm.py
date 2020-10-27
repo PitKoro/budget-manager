@@ -34,7 +34,9 @@ class IncomeForm(forms.Form):
                 'placeholder': 'Куда'
             })
     )
-    date = forms.DateField(label='Дата', widget=CustomDateInput())
+    date = forms.DateField(label='Дата', widget=CustomDateInput(attrs = {
+                'value': date.today()
+            }))
     commentary = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea(attrs = {
                 'placeholder': 'Комментарий'
             }))
