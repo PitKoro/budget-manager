@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from .forms.IncomeForm import IncomeForm
-from .forms.ExpenseForm import ExpenseForm 
+from .forms.ExpenseForm import ExpenseForm
 from .models import Account
 from .utils import get_balance, post_income_transaction, post_expense_transaction
 
 
 def main(request):
     # Обработка формы
-    
     formEF = ExpenseForm()
     formIF = IncomeForm()
     if request.method == 'POST':
@@ -15,6 +14,7 @@ def main(request):
             formIF = IncomeForm(request.POST)
         elif request.POST['form'] == "expf":
             formEF = ExpenseForm(request.POST)
+
         if formIF.is_valid():
             post_income_transaction(formIF.cleaned_data)
             formIF = IncomeForm()
@@ -26,7 +26,6 @@ def main(request):
     account_list = []
 
     for account in Account.objects.all():
-        # TODO: Всегда оставлять два знака после запятой в сумме
         account_list.append({
             'name': account.name,
             'amount': get_balance(account)/100

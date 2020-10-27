@@ -1,18 +1,26 @@
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
-from datetime import date
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
 
 def get_balance(account):
-    outer_income = account.incometransaction_set.aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    inner_income = account.inner_transaction_to_set.aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    outer_expense = account.expensetransaction_set.aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
-    inner_expense = account.inner_transaction_from_set.aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
+    outer_income = account.incometransaction_set.aggregate(
+        amount=Coalesce(Sum('amount'), 0)
+    )['amount']
+
+    inner_income = account.inner_transaction_to_set.aggregate(
+        amount=Coalesce(Sum('amount'), 0)
+    )['amount']
+
+    outer_expense = account.expensetransaction_set.aggregate(
+        amount=Coalesce(Sum('amount'), 0)
+    )['amount']
+
+    inner_expense = account.inner_transaction_from_set.aggregate(
+        amount=Coalesce(Sum('amount'), 0)
+    )['amount']
 
     return (outer_income + inner_income - outer_expense - inner_expense)
-
-
 
 
 def post_income_transaction(data):
@@ -42,6 +50,7 @@ def post_income_transaction(data):
         )
 
     transaction.save()
+
 
 def post_expense_transaction(data):
     from_id = data['from_cat'].split('__')[1]

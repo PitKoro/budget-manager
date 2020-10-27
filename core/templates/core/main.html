@@ -1,7 +1,8 @@
-{% extends 'core/base.html' %} 
+{% extends 'core/base.html' %}
+
 {% block title %}Главная страница{% endblock %}
+
 {% block content %}
-<div class="container-fluid">
   <div class="row">
     
     <div class="left-forms">
@@ -29,24 +30,25 @@
     
     <div class="col">
       {% if account_list %}
-      <ul>
+        <ul>
+
         {% for account in account_list %}
-        <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
+          <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
         {% endfor %}
-      </ul>
+
+        </ul>
       {% else %}
-      <p>No accounts are available.</p>
+        <p>No accounts are available.</p>
       {% endif %}
     </div>
 
     
 
     <div class="col">
-        <div class="features  history-log">
-            <h5 class="text-center">Последнии транзакции</h5>
+        <div class="features history-log">
+            <h5 class="text-center">Последние транзакции</h5>
         </div>
     </div>
 
   </div>
-</div>
 {% endblock %}

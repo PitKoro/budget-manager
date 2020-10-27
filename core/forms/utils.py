@@ -1,7 +1,6 @@
 from core.models import Account, ExpenseCategory, IncomeCategory
 
 
-
 def get_account_choices():
     account_choices = []
 
@@ -11,14 +10,19 @@ def get_account_choices():
     return account_choices
 
 
-def get_category_choices(cat="inc_c"):
+def get_income_category_choices():
     category_choices = []
 
-    if cat == "inc_c":
-        for category in IncomeCategory.objects.all():
-            category_choices.append(('cat__' + str(category.id), category.name))
-    elif cat == "exp_c":
-        for category in ExpenseCategory.objects.all():
-            category_choices.append(('cat__' + str(category.id), category.name))
+    for category in IncomeCategory.objects.all():
+        category_choices.append(('cat__' + str(category.id), category.name))
+
+    return category_choices
+
+
+def get_expense_category_choices():
+    category_choices = []
+
+    for category in ExpenseCategory.objects.all():
+        category_choices.append(('cat__' + str(category.id), category.name))
 
     return category_choices
