@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
-from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction
+from datetime import date
+from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
 
 def get_balance(account):
@@ -11,12 +12,19 @@ def get_balance(account):
 
     return (outer_income + inner_income - outer_expense - inner_expense)
 
+def get_balance_d(id_, date_to = date.today()):
+    outer_income = IncomeTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
+    inner_income = InnerTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_to_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
+    outer_expense = ExpenseTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
+    inner_expense = InnerTransaction.objects.exclude(date__range=[date_to, date.today()]).filter(account_from_id=id_).aggregate(amount=Coalesce(Sum('amount'), 0))['amount']
+
+    return (outer_income + inner_income - outer_expense - inner_expense)
+
 
 def post_income_transaction(data):
     from_id = data['from1'].split('__')[1]
     to_id = data['to'].split('__')[1]
     amount = data['amount'] * 100
-    print(data['commentary'])
 
     transaction = None
 
@@ -39,4 +47,29 @@ def post_income_transaction(data):
             account_to=to
         )
 
+    transaction.save()
+
+def post_expense_transaction(data):
+    from_id = data['from_cat'].split('__')[1]
+    to_id = data['to_cat'].split('__')[1]
+    amount = data['amount_exp'] * 100
+
+    transaction = None
+
+    if data['to_cat'].startswith('cat__'):
+        transaction = ExpenseTransaction(
+            amount=amount,
+            date=data['when'],
+            commentary=data['commentary_exp'],
+            account=Account.objects.get(id=from_id),
+            expense_category=ExpenseCategory.objects.get(id=to_id)
+        )
+    else:
+        transaction = InnerTransaction(
+            amount=amount,
+            date=data['when'],
+            commentary=data['commentary_exp'],
+            account_from=Account.objects.get(id=from_id),
+            account_to=Account.objects.get(id=to_id)
+        )
     transaction.save()

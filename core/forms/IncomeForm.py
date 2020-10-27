@@ -59,12 +59,16 @@ class IncomeForm(forms.Form):
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
             raise ValidationError(_('Неверный формат суммы'))
+        else:
+            return data
 
     def clean_date(self):
         data = self.cleaned_data['date']
 
         if data > date.today():
             raise ValidationError(_('Неверный формат даты'))
+        else:
+            return data
 
     def clean(self):
         cleaned_data = super().clean()
