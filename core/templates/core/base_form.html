@@ -1,15 +1,15 @@
 {{ form.non_field_errors }}
 {% for field in form %}
-    {% if field.name != 'commentary' %}
+    {% if field.name != 'commentary' and field.name != 'commentary_exp'%}
         <div style="display:inline-block; width: 49%;">
             {{ field.errors }}
-            <!-- {{ field.label_tag }} --> {{ field }}
+            {{ field }}
         </div>
     {% endif%}
-    {% if field.name == 'commentary' %}
+    {% if field.name == 'commentary' or field.name == 'commentary_exp' %}
         <div style="display:inline-block; width: 100%; height: 20px;">
             {{ field.errors }}
-            <!-- {{ field.label_tag }} --> {{ field }}
+            {{ field }}
         </div>
     {% endif %}
 {% endfor %}
