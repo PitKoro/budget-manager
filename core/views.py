@@ -51,7 +51,7 @@ def history(request):
         filter_value=request.POST.get('history_filter')
         if filter_value == "all":
             return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions})
-        if int(filter_value) in [1,2,3,4,5,6,7,8,9,10,11,12]:
+        if int(filter_value) in range(1,13):
             incomeT = IncomeTransaction.objects.filter(date__month=int(filter_value))
             expenseT = ExpenseTransaction.objects.filter(date__month=int(filter_value))
             innerT = InnerTransaction.objects.filter(date__month=int(filter_value))
