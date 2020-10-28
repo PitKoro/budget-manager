@@ -4,6 +4,8 @@ from .forms.ExpenseForm import ExpenseForm
 from .models import Account
 from .utils import get_balance, post_income_transaction, post_expense_transaction
 
+from functools import reduce
+
 
 def main(request):
     # Обработка формы
@@ -30,6 +32,14 @@ def main(request):
             'name': account.name,
             'amount': get_balance(account)/100
         })
+    account_list.insert(0, {
+        'name': 'Всего',
+        'amount': reduce(
+            lambda acc, value: acc + value['amount'],
+            account_list,
+            0
+        )
+    })
 
     return render(request, 'core/main.html', {
         'account_list': account_list,
