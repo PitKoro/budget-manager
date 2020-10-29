@@ -10,7 +10,7 @@ def main(request):
 def report(request):
     url_name = request.resolver_match.url_name
     return render(request, 'core/report.html', {'url_name': url_name})
-#Привет это  я дании
+#Привет это  я даниил фывываываыва
 def history(request):
     url_name = request.resolver_match.url_name
     return render(request, 'core/history.html', {'url_name': url_name})
