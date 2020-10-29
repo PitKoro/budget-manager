@@ -3,13 +3,52 @@
 {% block title %}Главная страница{% endblock %}
 
 {% block content %}
-    {% if account_list %}
+  <div class="row">
+    
+    <div class="left-forms">
+
+        <div class="features expense-form">
+            <form method="POST" action="{% url 'core:main' %}">
+              {% csrf_token %}
+              <h5 class="text-center">Расход</h5>
+              <input type="text" name="form" hidden value="expf">
+              {% include "core/base_form.html" with form=expence_form %}
+            </form>
+        </div>
+
+        <div class="features income-form">
+          <form method="POST" action="{% url 'core:main' %}">
+            {% csrf_token %}
+            <h5 class="text-center">Приход</h5>
+            <input type="text" name="form" hidden value="incf">
+            {% include "core/base_form.html" with form=income_form%}
+          </form>
+        </div>
+    </div>
+
+
+    
+    <div class="col">
+      {% if account_list %}
         <ul>
+
         {% for account in account_list %}
-            <li>{{ account.name }}</li>
+          <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
         {% endfor %}
-        </ul>    
-    {% else %}
+
+        </ul>
+      {% else %}
         <p>No accounts are available.</p>
-    {% endif %}
+      {% endif %}
+    </div>
+
+    
+
+    <div class="col">
+        <div class="features history-log">
+            <h5 class="text-center">Последние транзакции</h5>
+        </div>
+    </div>
+
+  </div>
 {% endblock %}

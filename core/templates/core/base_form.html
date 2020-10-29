@@ -1,0 +1,19 @@
+{{ form.non_field_errors }}
+
+{% for field in form %}
+  {% if field.name != 'commentary' and field.name != 'commentary_exp'%}
+    <div class="field-narrow">
+      {{ field.errors }}
+      {{ field }}
+    </div>
+  {% endif%}
+
+  {% if field.name == 'commentary' or field.name == 'commentary_exp' %}
+    <div class="field-wide">
+      {{ field.errors }}
+      {{ field }}
+    </div>
+  {% endif %}
+{% endfor %}
+
+<input type="submit" class="btn btn-primary" value="Отправить">
