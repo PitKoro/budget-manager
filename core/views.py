@@ -1,9 +1,10 @@
 from django.shortcuts import render
+from itertools import chain
+from operator import attrgetter
+from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
-from .forms.ExpenseForm import ExpenseForm
-from .models import Account
+from .forms.ExpenseForm import ExpenseForm 
 from .utils import get_balance, post_income_transaction, post_expense_transaction
-
 from functools import reduce
 
 
@@ -56,4 +57,22 @@ def report(request):
 
 def history(request):
     url_name = request.resolver_match.url_name
-    return render(request, 'core/history.html', {'url_name': url_name})
+    incomeT = IncomeTransaction.objects.all()
+    expenseT = ExpenseTransaction.objects.all()
+    innerT = InnerTransaction.objects.all()
+    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+
+    filter_value = "all"
+
+    if request.method == 'POST':
+        filter_value=request.POST.get('history_filter')
+        if filter_value == "all":
+            return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions, 'filter_value': filter_value})
+        if int(filter_value) in range(1,13):
+            incomeT = IncomeTransaction.objects.filter(date__month=int(filter_value))
+            expenseT = ExpenseTransaction.objects.filter(date__month=int(filter_value))
+            innerT = InnerTransaction.objects.filter(date__month=int(filter_value))
+            transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+            return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions, 'filter_value': filter_value})
+
+    return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'filter_value': filter_value})

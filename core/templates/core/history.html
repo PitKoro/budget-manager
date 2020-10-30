@@ -1,7 +1,169 @@
 {% extends 'core/base.html' %}
+{% load core_custom_tags %}
 
 {% block title %}История{% endblock %}
 
 {% block content %}
-  <p class="text-center">Это страница истории</p>
+
+    <h1 class="text-center history-header">История</h1>
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="{% url 'core:history' %}">
+                {% csrf_token %}
+                <select name="history_filter">
+                    <option disabled>Период...</option>
+                    <option value="all" {% if filter_value == "all" %}selected{% endif %}>Всё время</option>
+                    <option value="1" {% if filter_value == "1" %}selected{% endif %}>Январь</option>
+                    <option value="2" {% if filter_value == "2" %}selected{% endif %}>Февраль</option>
+                    <option value="3" {% if filter_value == "3" %}selected{% endif %}>Март</option>
+                    <option value="4" {% if filter_value == "4" %}selected{% endif %}>Апрель</option>
+                    <option value="5" {% if filter_value == "5" %}selected{% endif %}>Май</option>
+                    <option value="6" {% if filter_value == "6" %}selected{% endif %}>Июнь</option>
+                    <option value="7" {% if filter_value == "7" %}selected{% endif %}>Июль</option>
+                    <option value="8" {% if filter_value == "8" %}selected{% endif %}>Август</option>
+                    <option value="9" {% if filter_value == "9" %}selected{% endif %}>Сентябрь</option>
+                    <option value="10" {% if filter_value == "10" %}selected{% endif %}>Октябрь</option>
+                    <option value="11" {% if filter_value == "11" %}selected{% endif %}>Ноябрь</option>
+                    <option value="12" {% if filter_value == "12" %}selected{% endif %}>Декабрь</option>
+                </select>
+                <input type="submit" class="btn btn-primary" value="Отправить">
+            </form>
+        </div>
+    </div>
+
+    {% if transactions %}
+        {% for el in transactions %}
+    
+            {% if el.income_category.name %}
+                <div class="row justify-content-center row-transaction-history">
+                    <div class="col-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm">{{ el.account.name }}</div>
+                                    <div class="col-sm history-date">{{ el.date }}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-around">
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset">
+                                            <legend class="reset-this redo-legend"> Сумма </legend>
+                                            <h5 class="card-title  text-center">+{{ el.amount|division:100 }} руб.</h5>
+                                        </fieldset>    
+                                    </div>
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset">
+                                            <legend class="reset-this redo-legend"> Категория </legend>
+                                            <h5 class="card-title  text-center">{{ el.income_category.name }}</h5>
+                                        </fieldset>  
+                                        
+                                    </div>
+                                </div>
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if el.expense_category.name %}
+                <div class="row justify-content-center row-transaction-history">
+                    <div class="col-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm">{{ el.account.name }}</div>
+                                    <div class="col-sm history-date">{{ el.date }}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-around">
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset">
+                                            <legend class="reset-this redo-legend"> Сумма </legend>
+                                            <h5 class="card-title  text-center">-{{ el.amount|division:100 }} руб.</h5>
+                                        </fieldset>    
+                                    </div>
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset">
+                                            <legend class="reset-this redo-legend"> Категория </legend>
+                                            <h5 class="card-title  text-center">{{ el.expense_category.name }}</h5>
+                                        </fieldset>  
+                                        
+                                    </div>
+                                </div>
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if el.account_to.name %}
+                <div class="row justify-content-center row-transaction-history">
+                    <div class="col-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm">{{ el.account_from.name }} -> {{ el.account_to.name }}</div>
+                                    <div class="col-sm history-date">{{ el.date }}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-around">
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset inner-amount">
+                                            <legend class="reset-this redo-legend"> Сумма </legend>
+                                            <h5 class="card-title  text-center">{{ el.amount|division:100 }} руб.</h5>
+                                        </fieldset>    
+                                    </div>
+                                    <div class="col">
+                                        <fieldset class="reset-this redo-fieldset">
+                                            <legend class="reset-this redo-legend"> Категория </legend>
+                                            <h5 class="card-title  text-center">Перевод между своими счетами</h5>
+                                        </fieldset>  
+                                    </div>
+                                </div>
+                                {% if el.commentary %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <fieldset class="reset-this redo-fieldset history-commentary">
+                                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                                <p class="card-text text-center">{{ el.commentary }}</p>
+                                            </fieldset>  
+                                            
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    {% else %}
+        <p class="text-center">Транзакций нет</p>
+    {% endif %}
 {% endblock %}
