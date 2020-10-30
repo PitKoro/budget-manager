@@ -4,32 +4,33 @@
 {% block title %}История{% endblock %}
 
 {% block content %}
+
     <h1 class="text-center history-header">История</h1>
     <div class="row">
         <div class="col">
             <form method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
-                <h5 class="text-center">Фильтр</h5>
                 <select name="history_filter">
                     <option>Период...</option>
-                    <option value="all">Всё время</option>
-                    <option value="1">Январь</option>
-                    <option value="2">Февраль</option>
-                    <option value="3">Март</option>
-                    <option value="4">Апрель</option>
-                    <option value="5">Май</option>
-                    <option value="6">Июнь</option>
-                    <option value="7">Июль</option>
-                    <option value="8">Август</option>
-                    <option value="9">Сентябрь</option>
-                    <option value="10">Октябрь</option>
-                    <option value="11">Ноябрь</option>
-                    <option value="12">Декабрь</option>
+                    <option value="all" {% if filter_value == "all" %}selected{% endif %}>Всё время</option>
+                    <option value="1" {% if filter_value == "1" %}selected{% endif %}>Январь</option>
+                    <option value="2" {% if filter_value == "2" %}selected{% endif %}>Февраль</option>
+                    <option value="3" {% if filter_value == "3" %}selected{% endif %}>Март</option>
+                    <option value="4" {% if filter_value == "4" %}selected{% endif %}>Апрель</option>
+                    <option value="5" {% if filter_value == "5" %}selected{% endif %}>Май</option>
+                    <option value="6" {% if filter_value == "6" %}selected{% endif %}>Июнь</option>
+                    <option value="7" {% if filter_value == "7" %}selected{% endif %}>Июль</option>
+                    <option value="8" {% if filter_value == "8" %}selected{% endif %}>Август</option>
+                    <option value="9" {% if filter_value == "9" %}selected{% endif %}>Сентябрь</option>
+                    <option value="10" {% if filter_value == "10" %}selected{% endif %}>Октябрь</option>
+                    <option value="11" {% if filter_value == "11" %}selected{% endif %}>Ноябрь</option>
+                    <option value="12" {% if filter_value == "12" %}selected{% endif %}>Декабрь</option>
                 </select>
                 <input type="submit" class="btn btn-primary" value="Отправить">
             </form>
         </div>
     </div>
+
     {% if transactions %}
         {% for el in transactions %}
     
