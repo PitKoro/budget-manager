@@ -16,16 +16,47 @@ def main(request):
     else:
         formIF = IncomeForm()
         formEF = ExpenceForm()
+from .forms.IncomeForm import IncomeForm
+from .forms.ExpenseForm import ExpenseForm
+from .models import Account
+from .utils import get_balance, post_income_transaction, post_expense_transaction
+
+from functools import reduce
+
+
+def main(request):
+    # Обработка формы
+    formEF = ExpenseForm()
+    formIF = IncomeForm()
+    if request.method == 'POST':
+        if request.POST['form'] == "incf":
+            formIF = IncomeForm(request.POST)
+        elif request.POST['form'] == "expf":
+            formEF = ExpenseForm(request.POST)
+
+        if formIF.is_valid():
+            post_income_transaction(formIF.cleaned_data)
+            formIF = IncomeForm()
+        if formEF.is_valid():
+            post_expense_transaction(formEF.cleaned_data)
+            formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
     account_list = []
 
     for account in Account.objects.all():
-        # TODO: Всегда оставлять два знака после запятой в сумме
         account_list.append({
             'name': account.name,
             'amount': get_balance(account)/100
         })
+    account_list.insert(0, {
+        'name': 'Всего',
+        'amount': reduce(
+            lambda acc, value: acc + value['amount'],
+            account_list,
+            0
+        )
+    })
 
     return render(request, 'core/main.html', {
         'account_list': account_list,

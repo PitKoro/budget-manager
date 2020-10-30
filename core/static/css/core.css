@@ -1,4 +1,3 @@
-  
 body {
   background: #2c2c2c;
   color: #fff;
@@ -94,15 +93,15 @@ aside {
   margin: 10px 5px;
 }
 
-.IncomeForm{
-  width: 300px;
+.income-form{
+  width: 335px;
 }
-.ExpenceForm{
-  width: 300px;
+.expense-form{
+  width: 335px;
 }
 
 .history-log{
-  width: 300px;
+  width: 335px;
   min-height: 400px;
 }
 
@@ -115,4 +114,15 @@ aside {
 
 ul, li{
   list-style-type: none;
+}
+
+.field-narrow {
+  display:inline-block; 
+  width: 49%;
+}
+
+.field-wide {
+  display:inline-block; 
+  width: 100%;
+  height: 20px;
 }

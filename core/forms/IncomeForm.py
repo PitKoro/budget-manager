@@ -1,30 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
-from core.models import Account, IncomeCategory
+from core.models import Account
 from core.utils import get_balance
 from .CustomDateInput import CustomDateInput
+from .utils import get_account_choices, get_income_category_choices
 
 from itertools import chain
 from datetime import date
-
-
-def get_account_choices():
-    account_choices = []
-
-    for account in Account.objects.all():
-        account_choices.append(('acc__' + str(account.id), account.name))
-
-    return account_choices
-
-
-def get_category_choices():
-    category_choices = []
-
-    for category in IncomeCategory.objects.all():
-        category_choices.append(('cat__' + str(category.id), category.name))
-
-    return category_choices
 
 
 class IncomeForm(forms.Form):
@@ -34,24 +17,41 @@ class IncomeForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    amount = forms.FloatField(min_value=0, label='Сумма', widget=forms.NumberInput(attrs = {
-        'placeholder': 'Сумма'
-    }))
+    amount = forms.FloatField(
+        min_value=0,
+        label='Сумма',
+        widget=forms.NumberInput(attrs={
+            'placeholder': 'Сумма'
+        })
+    )
+
     from1 = forms.ChoiceField(
         label='Из',
-        choices=[(-1, "Откуда...")]+list(chain(get_category_choices(), get_account_choices()))
+        choices=[(-1, "Откуда...")] + list(chain(
+            get_income_category_choices(),
+            get_account_choices()
+        ))
     )
+
     to = forms.ChoiceField(
         label='В',
         choices=[(-1, "Куда...")] + get_account_choices(),
-        widget=forms.Select(attrs = {
+        widget=forms.Select(attrs={
                 'placeholder': 'Куда'
-            })
+        })
     )
-    date = forms.DateField(label='Дата', widget=CustomDateInput())
-    commentary = forms.CharField(label='Комментарий', required=False, widget=forms.Textarea(attrs = {
+
+    date = forms.DateField(label='Дата', widget=CustomDateInput(attrs={
+                'value': date.today()
+    }))
+
+    commentary = forms.CharField(
+        label='Комментарий',
+        required=False,
+        widget=forms.Textarea(attrs={
                 'placeholder': 'Комментарий'
-            }))
+        })
+    )
 
     def clean_amount(self):
         data = self.cleaned_data['amount']
@@ -77,15 +77,18 @@ class IncomeForm(forms.Form):
         to_data = cleaned_data.get('to')
         amount_data = cleaned_data.get('amount')
 
-        if from_data=="-1":
+        if from_data == '-1':
             raise ValidationError(_('Выберите откуда пришло'), code='invalid')
-        if to_data=="-1":
+
+        if to_data == '-1':
             raise ValidationError(_('Выберите куда начислить'), code='invalid')
 
-        
         if from_data == to_data:
-            # Пытаемся перевести деньги на то же месо хранения
-            raise ValidationError(_('Выберите разные места хранения'), code='invalid')
+            # Пытаемся перевести деньги на то же место хранения
+            raise ValidationError(
+                _('Выберите разные места хранения'),
+                code='invalid'
+            )
 
         if from_data.startswith('acc__'):
             # Перевод денег с одного места хранения на другое
@@ -93,5 +96,7 @@ class IncomeForm(forms.Form):
             balance = get_balance(Account.objects.get(id=id))
 
             if amount_data * 100 > balance:
-                raise ValidationError(_('Недостаточно средств'), code='invalid')
-    
+                raise ValidationError(
+                    _('Недостаточно средств'),
+                    code='invalid'
+                )
