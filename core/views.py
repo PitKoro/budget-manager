@@ -52,7 +52,26 @@ def main(request):
 
 def report(request):
     url_name = request.resolver_match.url_name
-    return render(request, 'core/report.html', {'url_name': url_name})
+    income_transaction_list = []
+    for income in IncomeTransaction.objects.all():
+        income_transaction_list.append(income.amount)
+    print(income_transaction_list)
+    income_summ = sum(income_transaction_list)
+    expense_transaction_list = []
+    for expense in ExpenseTransaction.objects.all():
+        expense_transaction_list.append(expense.amount)
+    expense_summ = sum(expense_transaction_list)
+
+    expense_category_amount_list = []
+    for el in ExpenseTransaction.objects.filter(expense_category_id=1):
+        expense_category_amount_list.append(el.amount)
+    expense_category_amount_summ=sum(expense_category_amount_list)
+    
+
+    return render(request, 'core/report.html', {'url_name': url_name, 
+                                                'income_summ': income_summ, 
+                                                'expense_summ': expense_summ,
+                                                'expense_category_amount_summ': expense_category_amount_summ})
 
 
 def history(request):

@@ -1,7 +1,33 @@
 {% extends 'core/base.html' %}
-
+{% load core_custom_tags %}
 {% block title %}Отчёт{% endblock %}
 
 {% block content %}
-  <p class="text-center">Это страница отчёта</p>
+  <h1 class="text-center report-header">Отчёт</h1>
+  <div class="row">
+      <div class="col-9 features">
+            <div class="row justify-content-center">
+                <div class="col-3 total-money enrollment ">
+                    <p class="text-center">Зачисления</p>
+                    <p class="text-center">{{ income_summ|division:100 }} руб</p>
+                </div> 
+    
+                <div class="col-3 total-money costs">
+                    <p class="text-center">Расходы</p>
+                    <p class="text-center">{{ expense_summ|division:100 }} руб</p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center"> 
+                <div class="col-3 total-money enrollment">
+                    <p class="text-center">Продукты: {{ income_summ|division:100 }} руб</p>
+                </div>
+                <div class="col-3 total-money costs">
+                    
+                </div>
+                
+            </div>
+      </div>
+      <div class="col-3 features"></div>
+  </div>
 {% endblock %}
