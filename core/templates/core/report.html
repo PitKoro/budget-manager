@@ -20,10 +20,15 @@
 
             <div class="row justify-content-center"> 
                 <div class="col-3 total-money enrollment">
-                    <p class="text-center">Продукты: {{ income_summ|division:100 }} руб</p>
+                    <p class="text-center"> Зарплата: {{ income_category_amount_summ1|division:100 }} руб</p>
+                    <p class="text-center"> Стипендия: {{ income_category_amount_summ2|division:100 }} руб</p>
+                    <p class="text-center"> Другое: {{ income_category_amount_summ3|division:100 }} руб</p>
                 </div>
                 <div class="col-3 total-money costs">
-                    
+                    <p class="text-center">Продукты: {{ expense_category_amount_summ1|division:100 }} руб</p>
+                    <p class="text-center">Коммунальные платежи: {{ expense_category_amount_summ2|division:100 }} руб</p>
+                    <p class="text-center">Развлечения: {{ expense_category_amount_summ3|division:100 }} руб</p>
+                    <p class="text-center">Другое: {{ expense_category_amount_summ4|division:100 }} руб</p>
                 </div>
                 
             </div>
