@@ -45,6 +45,11 @@
     <div class="col">
         <div class="features history-log">
             <h5 class="text-center">Последние транзакции</h5>
+            <ul>
+              {% for tran in latest_transactions %}
+                <li>{{tran}}</li>
+              {% endfor %}
+            </ul>
         </div>
     </div>
 
