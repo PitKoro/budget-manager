@@ -59,17 +59,6 @@ class ExpenseForm(forms.Form):
 
         return data
 
-    def clean_when(self):
-        date_when = self.cleaned_data['when']
-
-        if date_when > date.today():
-            raise ValidationError(
-                _('Выберите корректную дату'),
-                code='invalid'
-            )
-
-        return date_when
-
     def clean_from_cat(self):
         data = self.cleaned_data['from_cat']
 
