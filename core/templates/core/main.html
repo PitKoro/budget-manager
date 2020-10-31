@@ -31,7 +31,7 @@
         <ul>
 
         {% for account in account_list %}
-          <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
+          <li><h5>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h5></li>
         {% endfor %}
 
         </ul>
