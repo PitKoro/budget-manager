@@ -1,8 +1,6 @@
 from django import forms
-from core.models import Account
 from .CustomDateInput import CustomDateInput
 from django.utils.translation import gettext as _
-from core.utils import get_balance
 from django.core.exceptions import ValidationError
 from .utils import get_account_choices, get_expense_category_choices
 
@@ -72,25 +70,30 @@ class ExpenseForm(forms.Form):
 
         return date_when
 
+    def clean_from_cat(self):
+        data = self.cleaned_data['from_cat']
+
+        if data == '-1':
+            raise ValidationError(
+                _('Выберите откуда потратить'),
+                code='invalid'
+            )
+
+        return data
+
+    def clean_to_cat(self):
+        data = self.cleaned_data['to_cat']
+
+        if data == '-1':
+            raise ValidationError(_('Выберите куда потрачено'), code='invalid')
+
+        return data
+
     def clean(self):
         cleaned_data = super().clean()
 
         from_data = cleaned_data.get('from_cat')
         to_data = cleaned_data.get('to_cat')
-        amount_data = cleaned_data.get('amount_exp')
-
-        if from_data == '-1':
-            raise ValidationError(_('Выберите откуда пришло'), code='invalid')
-
-        if to_data == '-1':
-            raise ValidationError(_('Выберите куда потратили'), code='invalid')
-
-        id = from_data.split('__')[1]
-        balance = get_balance(Account.objects.get(id=id))
-
-        if amount_data * 100 > balance:
-            # Было ли у нас нужное кол-во денег на тот период
-            raise ValidationError(_('Недостаточно средств'), code='invalid')
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
