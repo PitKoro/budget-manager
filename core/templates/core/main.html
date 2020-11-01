@@ -1,27 +1,38 @@
 {% extends 'core/base.html' %} {% block title %}Главная страница{% endblock %}
 
+{% load static %}
+
 {% block content %}
   <div class="row">
-    
-    <div class="left-forms">
+    <div class="form-chooser">
+      <div class="form-choose-option">
+        <label>Расход</label>
+        <input type="radio" name="form-choose" {% if visible_form == 'expense' %} checked {% endif %} onclick="chooseForm('expense')" />
+      </div>
+      <div class="form-choose-option">
+        <label>Приход</label>
+        <input type="radio" name="form-choose" {% if visible_form == 'income' %} checked {% endif %} onclick="chooseForm('income')" />
+      </div>
+    </div>
 
-        <div class="features expense-form">
-            <form method="POST" action="{% url 'core:main' %}">
-              {% csrf_token %}
-              <h5 class="text-center">Расход</h5>
-              <input type="text" name="form" hidden value="expf">
-              {% include "core/base_form.html" with form=expence_form %}
-            </form>
-        </div>
+    <div class="left-forms col">
+      <div class="features expense-form {% if visible_form != 'expense' %}invisible{% endif %}" id="main-page__expence-form">
+        <form method="POST" action="{% url 'core:main' %}">
+          {% csrf_token %}
+          <h5 class="text-center">Расход</h5>
+          <input type="text" name="form" hidden value="expf">
+          {% include "core/base_form.html" with form=expence_form %}
+        </form>
+      </div>
 
-        <div class="features income-form">
-          <form method="POST" action="{% url 'core:main' %}">
-            {% csrf_token %}
-            <h5 class="text-center">Приход</h5>
-            <input type="text" name="form" hidden value="incf">
-            {% include "core/base_form.html" with form=income_form%}
-          </form>
-        </div>
+      <div class="features income-form {% if visible_form != 'income' %}invisible{% endif %}" id="main-page__income-form">
+        <form method="POST" action="{% url 'core:main' %}">
+          {% csrf_token %}
+          <h5 class="text-center">Приход</h5>
+          <input type="text" name="form" hidden value="incf">
+          {% include "core/base_form.html" with form=income_form%}
+        </form>
+      </div>
     </div>
 
 
@@ -49,4 +60,8 @@
     </div>
 
   </div>
+{% endblock %}
+
+{% block javascript %}
+  <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

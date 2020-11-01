@@ -3,27 +3,32 @@ from itertools import chain
 from operator import attrgetter
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
-from .forms.ExpenseForm import ExpenseForm 
+from .forms.ExpenseForm import ExpenseForm
 from .utils import get_balance, post_income_transaction, post_expense_transaction
 from functools import reduce
 
 
 def main(request):
+    visible_form = 'expense'
+
     # Обработка формы
     formEF = ExpenseForm()
     formIF = IncomeForm()
     if request.method == 'POST':
         if request.POST['form'] == "incf":
             formIF = IncomeForm(request.POST)
+            visible_form = 'income'
+
+            if formIF.is_valid():
+                post_income_transaction(formIF.cleaned_data)
+                formIF = IncomeForm()
         elif request.POST['form'] == "expf":
             formEF = ExpenseForm(request.POST)
+            visible_form = 'expense'
 
-        if formIF.is_valid():
-            post_income_transaction(formIF.cleaned_data)
-            formIF = IncomeForm()
-        if formEF.is_valid():
-            post_expense_transaction(formEF.cleaned_data)
-            formEF = ExpenseForm()
+            if formEF.is_valid():
+                post_expense_transaction(formEF.cleaned_data)
+                formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
     account_list = []
@@ -46,7 +51,8 @@ def main(request):
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
-        'expence_form': formEF
+        'expence_form': formEF,
+        'visible_form': visible_form
     })
 
 
