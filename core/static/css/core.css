@@ -79,13 +79,20 @@ aside {
   flex-wrap: nowrap;
 }
 
+.main-content{
+  margin: auto;
+  justify-content: space-between;
+}
 
-.left-forms {
+
+.col{
   display: flex;
+  padding: 10px;
   flex-direction: column;
 }
 
-.features {
+
+.content-rec {
   border-radius: 5px;
   padding: 15px 7px;
   background-color: #474747;
@@ -129,4 +136,8 @@ ul, li{
 
 .form-control.is-invalid{
   background-position: right calc(.375em + .9rem) center;
+}
+
+.balance .expenses{
+  width: 200px;
 }

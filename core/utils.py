@@ -86,3 +86,25 @@ def post_expense_transaction(data):
             account_to=Account.objects.get(id=to_id)
         )
     transaction.save()
+
+
+def get_expenses(date_to=date.today()):
+    expenses_dic = {}
+    month_date = date(date_to.year, date_to.month, 1)
+    for cat in ExpenseCategory.objects.all():
+        expenses_dic[cat.name] = ExpenseTransaction.objects.filter(
+                expense_category_id=cat.id
+        ).filter(
+                date__lte=date_to
+        ).filter(
+                date__gte=month_date
+        ).aggregate(
+                amount=Coalesce(Sum('amount'), 0)
+        )['amount']/100
+    expenses_arr = []
+    for name, value in expenses_dic.items():
+        expenses_arr.append({
+            'name': name, 
+            'value': value
+        })
+    return expenses_arr

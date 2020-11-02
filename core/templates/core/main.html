@@ -1,11 +1,11 @@
 {% extends 'core/base.html' %} {% block title %}Главная страница{% endblock %}
 
 {% block content %}
-  <div class="row">
+  <div class="row main-content">
     
-    <div class="left-forms">
+    <div class="col">
 
-        <div class="features expense-form">
+        <div class="content-rec expense-form">
             <form method="POST" action="{% url 'core:main' %}">
               {% csrf_token %}
               <h5 class="text-center">Расход</h5>
@@ -14,7 +14,7 @@
             </form>
         </div>
 
-        <div class="features income-form">
+        <div class="content-rec income-form">
           <form method="POST" action="{% url 'core:main' %}">
             {% csrf_token %}
             <h5 class="text-center">Приход</h5>
@@ -28,22 +28,28 @@
     
     <div class="col">
       {% if account_list %}
-        <ul>
-
-        {% for account in account_list %}
-          <li><h5>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h5></li>
-        {% endfor %}
-
-        </ul>
+        <div class="content-rec balance">
+          <h5 class="text-center">Баланс</h5><br>
+          {% for account in account_list %}
+              <h6>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h6>
+          {% endfor %}
+        </div>
       {% else %}
         <p>No accounts are available.</p>
       {% endif %}
+      
+    <div class="content-rec expenses">
+      <h5 class="text-center">За этот месяц</h5><br>
+      {% for exp in expenses %}
+        <h6>{{exp.name}}: <small>{{exp.value | floatformat:2}}</small></h6>
+      {% endfor %}
+    </div>
     </div>
 
     
 
     <div class="col">
-        <div class="features history-log">
+        <div class="content-rec history-log">
             <h5 class="text-center">Последние транзакции</h5>
         </div>
     </div>
