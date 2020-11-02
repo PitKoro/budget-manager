@@ -56,6 +56,7 @@ class IncomeForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
+            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Неверный формат суммы'))
 
         return data
@@ -64,6 +65,7 @@ class IncomeForm(forms.Form):
         data = self.cleaned_data['from1']
 
         if data == '-1':
+            self.fields['from1'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Выберите откуда пришло'), code='invalid')
 
         return data
@@ -72,6 +74,7 @@ class IncomeForm(forms.Form):
         data = self.cleaned_data['to']
 
         if data == '-1':
+            self.fields['to'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Выберите куда начислить'), code='invalid')
 
         return data
@@ -84,6 +87,8 @@ class IncomeForm(forms.Form):
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
+            self.fields['from1'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['to'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
                 _('Выберите разные места хранения'),
                 code='invalid'
