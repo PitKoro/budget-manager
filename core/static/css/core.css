@@ -37,11 +37,6 @@ aside {
   text-align: right;
 }
 
-.history-header{
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
 .reset-this {
   all: initial;
 }
@@ -53,7 +48,6 @@ aside {
   padding-inline-start: 0.75em;
   color: #ecebec;
 } 
-
 
 .inner-amount {
   height: 90%;
@@ -69,7 +63,6 @@ aside {
   height: 100%;
   width: 96%;
   word-wrap: break-word;
-  padding-left: ;
 }
 
 .card{
@@ -85,10 +78,10 @@ aside {
 .card-text{
   color: #ecebec;
 }
+
 .row{
   flex-wrap: nowrap;
 }
-
 
 .left-forms {
   display: flex;
@@ -135,8 +128,4 @@ ul, li{
   display:inline-block; 
   width: 100%;
   height: 20px;
-}
-
-.col-btn-delete-view{
-  float: right;
 }
