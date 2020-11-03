@@ -6,6 +6,7 @@ from .utils import get_account_choices, get_expense_category_choices
 
 from itertools import chain
 from datetime import date
+from math import fabs
 
 
 class ExpenseForm(forms.Form):
@@ -75,6 +76,14 @@ class ExpenseForm(forms.Form):
 
         if data == '-1':
             raise ValidationError(_('Выберите куда потрачено'), code='invalid')
+
+        return data
+
+    def clean_when(self):
+        data = self.cleaned_data['when']
+
+        if fabs(data.year - date.today().year) > 5:
+            raise ValidationError(_('Неверный формат даты'), code='invalid')
 
         return data
 

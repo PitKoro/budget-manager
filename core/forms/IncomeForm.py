@@ -6,6 +6,7 @@ from .utils import get_account_choices, get_income_category_choices
 
 from itertools import chain
 from datetime import date
+from math import fabs
 
 
 class IncomeForm(forms.Form):
@@ -56,7 +57,15 @@ class IncomeForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
-            raise ValidationError(_('Неверный формат суммы'))
+            raise ValidationError(_('Неверный формат суммы'), code='invalid')
+
+        return data
+
+    def clean_date(self):
+        data = self.cleaned_data['date']
+
+        if fabs(data.year - date.today().year) > 5:
+            raise ValidationError(_('Неверный формат даты'), code='invalid')
 
         return data
 
