@@ -89,7 +89,7 @@ class ExpenseForm(forms.Form):
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
-            self.fields['feom_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
             self.fields['to_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
                 _('Выберите разные места хранения'),
