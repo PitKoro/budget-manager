@@ -1,10 +1,10 @@
-{{ form.non_field_errors }}
+<!-- {{ form.non_field_errors }} -->
 
 {% for field in form %}
   {% if field.name != 'commentary' and field.name != 'commentary_exp'%}
     <div class="field-narrow">
       {{ field }}
-      <div class="invalid-tooltip">
+      <div class="invalid-feedback">
         {{ field.errors }}
       </div>
     </div>
@@ -13,7 +13,7 @@
   {% if field.name == 'commentary' or field.name == 'commentary_exp' %}
     <div class="field-wide">
       {{ field }}
-      <div class="invalid-tooltip">
+      <div class="invalid-feedback">
         {{ field.errors }}
       </div>
     </div>

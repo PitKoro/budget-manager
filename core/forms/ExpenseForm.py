@@ -66,7 +66,7 @@ class ExpenseForm(forms.Form):
         if data == '-1':
             self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
-                _('Выберите откуда потратить'),
+                _('Выберите откуда'),
                 code='invalid'
             )
 

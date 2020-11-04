@@ -144,6 +144,7 @@ ul, li{
 .field-narrow {
   display:inline-block; 
   width: 49%;
+  height: 70px;
 }
 
 .field-wide {
@@ -151,6 +152,7 @@ ul, li{
   width: 100%;
   height: 20px;
 }
+
 
 .form-control.is-invalid{
   background-position: right calc(.375em + .9rem) center;
