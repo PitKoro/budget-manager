@@ -103,6 +103,16 @@ aside {
 .history-log{
   width: 335px;
   min-height: 400px;
+  overflow-x: hidden;
+}
+
+
+.latest-transactions{
+  display: flex;
+  flex-direction: column;
+  overflow: auto; 
+  max-height: 600px;
+  width: 350px;  
 }
 
 .form-control{
@@ -114,6 +124,11 @@ aside {
 
 ul, li{
   list-style-type: none;
+}
+
+.one-tran {
+  margin: 7px 5px;
+  width: 311px;
 }
 
 .field-narrow {
