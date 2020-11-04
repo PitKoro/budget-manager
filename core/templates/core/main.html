@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+<<<<<<< HEAD
   <div class="row">
     <div class="form-chooser">
       <div class="form-choose-option">
@@ -33,12 +34,36 @@
           {% include "core/base_form.html" with form=income_form%}
         </form>
       </div>
+=======
+  <div class="row main-content">
+    
+    <div class="col">
+
+        <div class="content-rec expense-form">
+            <form method="POST" action="{% url 'core:main' %}">
+              {% csrf_token %}
+              <h5 class="text-center">Расход</h5>
+              <input type="text" name="form" hidden value="expf">
+              {% include "core/base_form.html" with form=expence_form %}
+            </form>
+        </div>
+
+        <div class="content-rec income-form">
+          <form method="POST" action="{% url 'core:main' %}">
+            {% csrf_token %}
+            <h5 class="text-center">Приход</h5>
+            <input type="text" name="form" hidden value="incf">
+            {% include "core/base_form.html" with form=income_form%}
+          </form>
+        </div>
+>>>>>>> main_page_new_design
     </div>
 
 
     
     <div class="col">
       {% if account_list %}
+<<<<<<< HEAD
         <ul>
 
         {% for account in account_list %}
@@ -46,15 +71,30 @@
         {% endfor %}
 
         </ul>
+=======
+        <div class="content-rec balance">
+          <h5 class="text-center">Баланс</h5><br>
+          {% for account in account_list %}
+              <h6>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h6>
+          {% endfor %}
+        </div>
+>>>>>>> main_page_new_design
       {% else %}
         <p>No accounts are available.</p>
       {% endif %}
+      
+    <div class="content-rec expenses">
+      <h5 class="text-center">За этот месяц</h5><br>
+      {% for exp in expenses %}
+        <h6>{{exp.name}}: <small>{{exp.value | floatformat:2}}</small></h6>
+      {% endfor %}
+    </div>
     </div>
 
     
 
     <div class="col">
-        <div class="features history-log">
+        <div class="content-rec history-log">
             <h5 class="text-center">Последние транзакции</h5>
         </div>
     </div>
