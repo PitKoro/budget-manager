@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from itertools import chain
-from operator import attrgetter
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
-from .forms.ExpenseForm import ExpenseForm 
-from .utils import get_balance, post_income_transaction, post_expense_transaction
+from .forms.ExpenseForm import ExpenseForm
+import core.utils as utils
+
 from functools import reduce
+from itertools import chain
+from operator import attrgetter
+import datetime
 
 
 def main(request):
@@ -19,10 +21,10 @@ def main(request):
             formEF = ExpenseForm(request.POST)
 
         if formIF.is_valid():
-            post_income_transaction(formIF.cleaned_data)
+            utils.post_income_transaction(formIF.cleaned_data)
             formIF = IncomeForm()
         if formEF.is_valid():
-            post_expense_transaction(formEF.cleaned_data)
+            utils.post_expense_transaction(formEF.cleaned_data)
             formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
@@ -31,7 +33,7 @@ def main(request):
     for account in Account.objects.all():
         account_list.append({
             'name': account.name,
-            'amount': get_balance(account)/100
+            'amount': utils.get_balance(account)/100
         })
     account_list.insert(0, {
         'name': 'Всего',
@@ -42,11 +44,21 @@ def main(request):
         )
     })
 
+    today = datetime.date.today()
+    transactions_for_month = utils.get_transactions_for_period(
+        datetime.date(today.year, today.month, 1),
+        today
+    )
+
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
-        'expence_form': formEF
+        'expence_form': formEF,
+        'expense_chart_data': list(filter(
+            lambda tran: tran['type'] == 'expense',
+            transactions_for_month
+        ))
     })
 
 

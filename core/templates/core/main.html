@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %} {% block title %}Главная страница{% endblock %}
+{% load static %}
 
 {% block content %}
   <div class="row">
@@ -49,4 +50,19 @@
     </div>
 
   </div>
+  <div class="row" id='main-page__expense-chart'></div>
+{% endblock %}
+
+{% block javascript%}
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  <script type="text/javascript">
+    let data = [
+      ['Категория', 'Сумма расходов'],
+      {% for tran in expense_chart_data %}
+          ['{{tran.to}}', '{{tran.amount}}'],
+      {% endfor %}
+    ]
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(() => drawChart(data));
+  </script>
 {% endblock %}
