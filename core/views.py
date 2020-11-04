@@ -2,12 +2,9 @@ from django.shortcuts import render
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
-<<<<<<< HEAD
-from .utils import get_balance, post_income_transaction, post_expense_transaction
-=======
+
 from .utils import get_balance, post_income_transaction, post_expense_transaction, get_expenses
 
->>>>>>> main_page_new_design
 from functools import reduce
 from itertools import chain
 from operator import attrgetter
@@ -59,11 +56,8 @@ def main(request):
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-<<<<<<< HEAD
-        'visible_form': visible_form
-=======
+        'visible_form': visible_form,
         'expenses': expenses
->>>>>>> main_page_new_design
     })
 
 

@@ -80,7 +80,7 @@ aside {
 }
 
 .main-content{
-  margin: auto;
+  /* margin: auto; */
   justify-content: space-between;
 }
 
@@ -91,6 +91,9 @@ aside {
   flex-direction: column;
 }
 
+.col-main {
+  align-items: center;
+}
 
 .content-rec {
   border-radius: 5px;
@@ -134,6 +137,10 @@ ul, li{
   margin: 0px;
 }
 
+.field-narrow, .field-wide{
+  position: relative;
+}
+
 .field-narrow {
   display:inline-block; 
   width: 49%;
@@ -142,13 +149,6 @@ ul, li{
 .field-wide {
   display:inline-table; 
   width: 100%;
-<<<<<<< HEAD
-}
-
-
-.invisible {
-  display: none;
-=======
   height: 20px;
 }
 
@@ -156,7 +156,11 @@ ul, li{
   background-position: right calc(.375em + .9rem) center;
 }
 
-.balance .expenses{
+.balance, .expenses{
   width: 200px;
->>>>>>> main_page_new_design
+}
+
+
+.invisible {
+  display: none;
 }
