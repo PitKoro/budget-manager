@@ -17,18 +17,18 @@
 
     <div class="left-forms col">
       <div class="features expense-form {% if visible_form != 'expense' %}invisible{% endif %}" id="main-page__expence-form">
+        <h5 class="text-center">Расход</h5>
         <form method="POST" action="{% url 'core:main' %}">
           {% csrf_token %}
-          <h5 class="text-center">Расход</h5>
           <input type="text" name="form" hidden value="expf">
           {% include "core/base_form.html" with form=expence_form %}
         </form>
       </div>
 
       <div class="features income-form {% if visible_form != 'income' %}invisible{% endif %}" id="main-page__income-form">
-        <form method="POST" action="{% url 'core:main' %}">
+        <h5 class="text-center">Приход</h5>
+        <form method="POST" class="my-form" action="{% url 'core:main' %}">
           {% csrf_token %}
-          <h5 class="text-center">Приход</h5>
           <input type="text" name="form" hidden value="incf">
           {% include "core/base_form.html" with form=income_form%}
         </form>

@@ -93,16 +93,25 @@ aside {
   margin: 10px 5px;
 }
 
-.income-form{
+.income-form, .expense-form{
   width: 335px;
-}
-.expense-form{
-  width: 335px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .history-log{
   width: 335px;
   min-height: 400px;
+}
+
+.my-form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  height: 86%;
 }
 
 .form-control{
@@ -114,6 +123,8 @@ aside {
 
 ul, li{
   list-style-type: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 .field-narrow {
@@ -124,8 +135,8 @@ ul, li{
 .field-wide {
   display:inline-block; 
   width: 100%;
-  height: 20px;
 }
+
 
 .invisible {
   display: none;
