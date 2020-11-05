@@ -113,9 +113,9 @@ def get_transactions_for_period(date_from, date_to):
             from_name = transaction.account.name
             to_name = transaction.expense_category.name
         elif isinstance(transaction, InnerTransaction):
-            type_name: 'inner'
+            type_name = 'inner'
             from_name = transaction.account_from.name
-            to_name = transaction.account_to.to_name
+            to_name = transaction.account_to.name
 
         result.append({
             'type': type_name,
