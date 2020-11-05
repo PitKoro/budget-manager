@@ -57,7 +57,7 @@ class IncomeForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
-<<<<<<< HEAD
+            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Неверный формат суммы'), code='invalid')
 
         return data
@@ -67,10 +67,6 @@ class IncomeForm(forms.Form):
 
         if fabs(data.year - date.today().year) > 5:
             raise ValidationError(_('Неверный формат даты'), code='invalid')
-=======
-            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
-            raise ValidationError(_('Неверный формат суммы'))
->>>>>>> main_page_new_design
 
         return data
 
