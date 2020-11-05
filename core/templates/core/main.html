@@ -38,7 +38,9 @@
 
 
     
-    <div class="col col-main">
+    <div class="col col-main-center">
+      <div class="content-rec expenses-diag" id="expenses">
+      </div>
       {% if account_list %}
         <div class="content-rec balance">
           <h5 class="text-center">Баланс</h5><br>
@@ -50,12 +52,12 @@
         <p>No accounts are available.</p>
       {% endif %}
       
-    <div class="content-rec expenses">
-      <h5 class="text-center">За этот месяц</h5><br>
-      {% for exp in expenses %}
-        <h6>{{exp.name}}: <small>{{exp.value | floatformat:2}}</small></h6>
-      {% endfor %}
-    </div>
+      <div class="content-rec expenses">
+        <h5 class="text-center">За этот месяц</h5><br>
+        {% for exp in expenses %}
+          <h6>{{exp.name}}: <small>{{exp.value | floatformat:2}}</small></h6>
+        {% endfor %}
+      </div>
     </div>
 
     
@@ -84,6 +86,6 @@
   </script>
 {% endblock %}
 
-{% block javascript %}
+{% block javascript1 %}
   <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

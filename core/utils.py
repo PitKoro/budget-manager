@@ -2,13 +2,10 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
-<<<<<<< HEAD
 from itertools import chain
 from operator import attrgetter
 
-=======
 from datetime import date
->>>>>>> error_output
 
 
 def get_balance(account, date_to=date.today()):
@@ -94,7 +91,6 @@ def post_expense_transaction(data):
     transaction.save()
 
 
-<<<<<<< HEAD
 def get_transactions_for_period(date_from, date_to):
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
@@ -141,7 +137,8 @@ def get_transactions_for_period(date_from, date_to):
         })
 
     return result
-=======
+
+
 def get_expenses(date_to=date.today()):
     expenses_dic = {}
     month_date = date(date_to.year, date_to.month, 1)
@@ -162,4 +159,3 @@ def get_expenses(date_to=date.today()):
             'value': value
         })
     return expenses_arr
->>>>>>> error_output

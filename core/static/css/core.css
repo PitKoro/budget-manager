@@ -83,9 +83,7 @@ aside {
   flex-wrap: nowrap;
 }
 
-<<<<<<< HEAD
-.left-forms {
-=======
+
 .main-content{
   /* margin: auto; */
   justify-content: space-between;
@@ -93,7 +91,6 @@ aside {
 
 
 .col{
->>>>>>> error_output
   display: flex;
   padding: 10px;
   flex-direction: column;
@@ -101,6 +98,11 @@ aside {
 
 .col-main {
   align-items: center;
+}
+
+.col-main-center {
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
 }
 
 .content-rec {
@@ -160,20 +162,22 @@ ul, li{
   width: 100%;
   height: 20px;
 }
-<<<<<<< HEAD
-=======
-
-
 .form-control.is-invalid{
   background-position: right calc(.375em + .9rem) center;
 }
 
 .balance, .expenses{
-  width: 200px;
+  width: 195px;
 }
 
 
 .invisible {
   display: none;
 }
->>>>>>> error_output
+
+.expenses-diag {
+  width: 400px;
+  order: -3;
+  height: 220px;
+}
+
