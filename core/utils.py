@@ -6,6 +6,7 @@ from itertools import chain
 from operator import attrgetter
 
 from datetime import date
+import datetime
 
 
 def get_balance(account, date_to=date.today()):
@@ -138,7 +139,6 @@ def get_transactions_for_period(date_from, date_to):
 
     return result
 
-
 def get_expenses(date_to=date.today()):
     expenses_dic = {}
     month_date = date(date_to.year, date_to.month, 1)
@@ -159,3 +159,21 @@ def get_expenses(date_to=date.today()):
             'value': value
         })
     return expenses_arr
+
+def get_data_for_expense_diagram():
+    today = datetime.date.today()
+    transactions = ExpenseTransaction.objects.values(
+        'expense_category__name'
+    ).filter(
+        date__range=[datetime.date(today.year, today.month, 1), today]
+    ).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['expense_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))

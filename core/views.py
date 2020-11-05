@@ -52,11 +52,7 @@ def main(request):
         )
     })
 
-    today = datetime.date.today()
-    transactions_for_month = utils.get_transactions_for_period(
-        datetime.date(today.year, today.month, 1),
-        today
-    )
+    
 
     expenses = get_expenses()
 
@@ -65,10 +61,7 @@ def main(request):
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        'expense_chart_data': list(filter(
-            lambda tran: tran['type'] == 'expense',
-            transactions_for_month
-        )),
+        'expense_chart_data': utils.get_data_for_expense_diagram(),
         'visible_form': visible_form,
         'expenses': expenses
     })

@@ -76,7 +76,7 @@
     let data = [
       ['Категория', 'Сумма расходов'],
       {% for tran in expense_chart_data %}
-          ['{{tran.to}}', '{{tran.amount}}'],
+          ['{{tran.name}}', '{{tran.amount}}'],
       {% endfor %}
     ]
     google.charts.load("current", {packages:["corechart"]});
