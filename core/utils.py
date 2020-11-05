@@ -4,6 +4,7 @@ from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction
 
 from itertools import chain
 from operator import attrgetter
+import datetime
 
 
 def get_balance(account):
@@ -127,3 +128,22 @@ def get_transactions_for_period(date_from, date_to):
         })
 
     return result
+
+
+def get_data_for_expense_diagram():
+    today = datetime.date.today()
+    transactions = ExpenseTransaction.objects.values(
+        'expense_category__name'
+    ).filter(
+        date__range=[datetime.date(today.year, today.month, 1), today]
+    ).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['expense_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))
