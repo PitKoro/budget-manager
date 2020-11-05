@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from itertools import chain
-from operator import attrgetter
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
-from .utils import get_balance, post_income_transaction, post_expense_transaction
+
+from .utils import get_balance, post_income_transaction, post_expense_transaction, get_expenses
+
 from functools import reduce
+from itertools import chain
+from operator import attrgetter
 
 
 def main(request):
@@ -47,12 +49,15 @@ def main(request):
         )
     })
 
+    expenses = get_expenses()
+
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        'visible_form': visible_form
+        'visible_form': visible_form,
+        'expenses': expenses
     })
 
 
