@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
-from .utils import get_balance, post_income_transaction, post_expense_transaction
+from .utils import get_balance, post_income_transaction, post_expense_transaction, get_expenses
 
 from functools import reduce
 from itertools import chain
@@ -43,11 +43,14 @@ def main(request):
         )
     })
 
+    expenses = get_expenses()
+
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
-        'expence_form': formEF
+        'expence_form': formEF,
+        'expenses': expenses
     })
 
 
