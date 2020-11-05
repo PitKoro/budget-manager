@@ -2,30 +2,52 @@ from django.shortcuts import render
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
+<<<<<<< HEAD
 import core.utils as utils
+=======
+
+from .utils import get_balance, post_income_transaction, post_expense_transaction, get_expenses
+>>>>>>> error_output
 
 from functools import reduce
 from itertools import chain
 from operator import attrgetter
+<<<<<<< HEAD
 import datetime
+=======
+>>>>>>> error_output
 
 
 def main(request):
+    visible_form = 'expense'
+
     # Обработка формы
     formEF = ExpenseForm()
     formIF = IncomeForm()
     if request.method == 'POST':
         if request.POST['form'] == "incf":
             formIF = IncomeForm(request.POST)
+            visible_form = 'income'
+
+            if formIF.is_valid():
+                post_income_transaction(formIF.cleaned_data)
+                formIF = IncomeForm()
         elif request.POST['form'] == "expf":
             formEF = ExpenseForm(request.POST)
+            visible_form = 'expense'
 
+<<<<<<< HEAD
         if formIF.is_valid():
             utils.post_income_transaction(formIF.cleaned_data)
             formIF = IncomeForm()
         if formEF.is_valid():
             utils.post_expense_transaction(formEF.cleaned_data)
             formEF = ExpenseForm()
+=======
+            if formEF.is_valid():
+                post_expense_transaction(formEF.cleaned_data)
+                formEF = ExpenseForm()
+>>>>>>> error_output
 
     url_name = request.resolver_match.url_name
     account_list = []
@@ -44,21 +66,30 @@ def main(request):
         )
     })
 
+<<<<<<< HEAD
     today = datetime.date.today()
     transactions_for_month = utils.get_transactions_for_period(
         datetime.date(today.year, today.month, 1),
         today
     )
+=======
+    expenses = get_expenses()
+>>>>>>> error_output
 
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
+<<<<<<< HEAD
         'expense_chart_data': list(filter(
             lambda tran: tran['type'] == 'expense',
             transactions_for_month
         ))
+=======
+        'visible_form': visible_form,
+        'expenses': expenses
+>>>>>>> error_output
     })
 
 

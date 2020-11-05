@@ -1,8 +1,6 @@
 from django import forms
-from core.models import Account
 from .CustomDateInput import CustomDateInput
 from django.utils.translation import gettext as _
-from core.utils import get_balance
 from django.core.exceptions import ValidationError
 from .utils import get_account_choices, get_expense_category_choices
 
@@ -57,43 +55,42 @@ class ExpenseForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
+            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Неверный формат суммы'))
 
         return data
 
-    def clean_when(self):
-        date_when = self.cleaned_data['when']
+    def clean_from_cat(self):
+        data = self.cleaned_data['from_cat']
 
-        if date_when > date.today():
+        if data == '-1':
+            self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
-                _('Выберите корректную дату'),
+                _('Выберите откуда'),
                 code='invalid'
             )
 
-        return date_when
+        return data
+
+    def clean_to_cat(self):
+        data = self.cleaned_data['to_cat']
+
+        if data == '-1':
+            self.fields['to_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            raise ValidationError(_('Выберите куда потрачено'), code='invalid')
+
+        return data
 
     def clean(self):
         cleaned_data = super().clean()
 
         from_data = cleaned_data.get('from_cat')
         to_data = cleaned_data.get('to_cat')
-        amount_data = cleaned_data.get('amount_exp')
-
-        if from_data == '-1':
-            raise ValidationError(_('Выберите откуда пришло'), code='invalid')
-
-        if to_data == '-1':
-            raise ValidationError(_('Выберите куда потратили'), code='invalid')
-
-        id = from_data.split('__')[1]
-        balance = get_balance(Account.objects.get(id=id))
-
-        if amount_data * 100 > balance:
-            # Было ли у нас нужное кол-во денег на тот период
-            raise ValidationError(_('Недостаточно средств'), code='invalid')
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
+            self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['to_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
                 _('Выберите разные места хранения'),
                 code='invalid'

@@ -2,28 +2,41 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
+<<<<<<< HEAD
 from itertools import chain
 from operator import attrgetter
 
+=======
+from datetime import date
+>>>>>>> error_output
 
-def get_balance(account):
-    outer_income = account.incometransaction_set.aggregate(
+
+def get_balance(account, date_to=date.today()):
+    outer_income = account.incometransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_income = account.inner_transaction_to_set.aggregate(
+    inner_income = account.inner_transaction_to_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    outer_expense = account.expensetransaction_set.aggregate(
+    outer_expense = account.expensetransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_expense = account.inner_transaction_from_set.aggregate(
+    inner_expense = account.inner_transaction_from_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    return (outer_income + inner_income - outer_expense - inner_expense)
+    return outer_income + inner_income - outer_expense - inner_expense
 
 
 def post_income_transaction(data):
@@ -81,6 +94,7 @@ def post_expense_transaction(data):
     transaction.save()
 
 
+<<<<<<< HEAD
 def get_transactions_for_period(date_from, date_to):
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
@@ -127,3 +141,25 @@ def get_transactions_for_period(date_from, date_to):
         })
 
     return result
+=======
+def get_expenses(date_to=date.today()):
+    expenses_dic = {}
+    month_date = date(date_to.year, date_to.month, 1)
+    for cat in ExpenseCategory.objects.all():
+        expenses_dic[cat.name] = ExpenseTransaction.objects.filter(
+                expense_category_id=cat.id
+        ).filter(
+                date__lte=date_to
+        ).filter(
+                date__gte=month_date
+        ).aggregate(
+                amount=Coalesce(Sum('amount'), 0)
+        )['amount']/100
+    expenses_arr = []
+    for name, value in expenses_dic.items():
+        expenses_arr.append({
+            'name': name, 
+            'value': value
+        })
+    return expenses_arr
+>>>>>>> error_output
