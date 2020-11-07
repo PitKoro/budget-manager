@@ -4,9 +4,9 @@ from operator import attrgetter
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm 
-from .utils import get_balance, post_income_transaction, post_expense_transaction
+from .utils import get_balance, post_income_transaction, post_expense_transaction, get_month
 from functools import reduce
-
+import datetime
 
 def main(request):
     # Обработка формы
@@ -57,24 +57,19 @@ def report(request):
 
 def history(request):
     url_name = request.resolver_match.url_name
-
-    filter_value = "all"
+    now = datetime.datetime.now()
+    month_filter = now.month
 
     if request.method == 'POST':
-        if request.POST.get('history_filter'):
-            filter_value=request.POST.get('history_filter')
-            if filter_value == "all":
-                incomeT = IncomeTransaction.objects.all()
-                expenseT = ExpenseTransaction.objects.all()
-                innerT = InnerTransaction.objects.all()
+        if request.POST.get('month_filter_history'):
+            month_filter=request.POST.get('month_filter_history')
+            if int(month_filter) in range(1,13):
+                incomeT = IncomeTransaction.objects.filter(date__month=int(month_filter))
+                expenseT = ExpenseTransaction.objects.filter(date__month=int(month_filter))
+                innerT = InnerTransaction.objects.filter(date__month=int(month_filter))
                 transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
-                return render(request, 'core/history.html', {'url_name': url_name, 'transactions':transactions, 'filter_value': filter_value})
-            if int(filter_value) in range(1,13):
-                incomeT = IncomeTransaction.objects.filter(date__month=int(filter_value))
-                expenseT = ExpenseTransaction.objects.filter(date__month=int(filter_value))
-                innerT = InnerTransaction.objects.filter(date__month=int(filter_value))
-                transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
-                return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'filter_value': filter_value})
+                monthDict = get_month()
+                return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'month_filter': month_filter, 'monthDict': monthDict})
 
         if request.POST.get('IncomeTransactionId'):
             IncomeTransactionId=int(request.POST.get('IncomeTransactionId'))
@@ -88,9 +83,12 @@ def history(request):
             ExpenseTransactionId=int(request.POST.get('ExpenseTransactionId'))
             ExpenseTransaction.objects.filter(id=ExpenseTransactionId).delete()
 
-    incomeT = IncomeTransaction.objects.all()
-    expenseT = ExpenseTransaction.objects.all()
-    innerT = InnerTransaction.objects.all()
+    
+
+    incomeT = IncomeTransaction.objects.filter(date__month=int(month_filter))
+    expenseT = ExpenseTransaction.objects.filter(date__month=int(month_filter))
+    innerT = InnerTransaction.objects.filter(date__month=int(month_filter))
     transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
 
-    return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'filter_value': filter_value})
+    monthDict = get_month()
+    return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'month_filter': month_filter, 'monthDict': monthDict})
