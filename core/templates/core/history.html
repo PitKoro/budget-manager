@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 <select name="month_filter_history" onchange="this.form.submit()">
                     {% for key in monthDict %}
-                        <option value="{{key}}" {% if month_filter == "{{key}}" %}selected{% endif %}>{{ monthDict|get_value:key }}</option>
+                        <option value="{{key}}" {% if month_filter == key %}selected{% endif %}>{{ monthDict|get_value:key }}</option>
                     {% endfor %}
                     {% if not transactions %}
                         <option value="0" selected>Тут пока пусто</option>
@@ -22,7 +22,6 @@
             </form>
         </div>
     </div>
-
     {% if transactions %}
         {% for el in transactions %}
     
