@@ -84,11 +84,15 @@ def get_month():
     expenseT = ExpenseTransaction.objects.all()
     innerT = InnerTransaction.objects.all()
     transactions = chain(incomeT, expenseT, innerT)
+
     monthList = []
+
     for el in transactions:
         monthList.append(el.date.month)
+
     monthList.sort()
     monthDict = {}
+    
     for i in range(0, len(monthList)):
         if monthList[i] == 1:
             monthDict.update({1: 'Январь'})

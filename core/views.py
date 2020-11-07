@@ -62,11 +62,11 @@ def history(request):
 
     if request.method == 'POST':
         if request.POST.get('month_filter_history'):
-            month_filter=request.POST.get('month_filter_history')
-            if int(month_filter) in range(1,13):
-                incomeT = IncomeTransaction.objects.filter(date__month=int(month_filter))
-                expenseT = ExpenseTransaction.objects.filter(date__month=int(month_filter))
-                innerT = InnerTransaction.objects.filter(date__month=int(month_filter))
+            month_filter=int(request.POST.get('month_filter_history'))
+            if month_filter in range(1,13):
+                incomeT = IncomeTransaction.objects.filter(date__month=month_filter)
+                expenseT = ExpenseTransaction.objects.filter(date__month=month_filter)
+                innerT = InnerTransaction.objects.filter(date__month=month_filter)
                 transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
                 monthDict = get_month()
                 return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'month_filter': month_filter, 'monthDict': monthDict})
@@ -84,11 +84,11 @@ def history(request):
             ExpenseTransaction.objects.filter(id=ExpenseTransactionId).delete()
 
     
-
-    incomeT = IncomeTransaction.objects.filter(date__month=int(month_filter))
-    expenseT = ExpenseTransaction.objects.filter(date__month=int(month_filter))
-    innerT = InnerTransaction.objects.filter(date__month=int(month_filter))
+    incomeT = IncomeTransaction.objects.filter(date__month=month_filter)
+    expenseT = ExpenseTransaction.objects.filter(date__month=month_filter)
+    innerT = InnerTransaction.objects.filter(date__month=month_filter)
     transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
 
     monthDict = get_month()
+    
     return render(request, 'core/history.html', {'url_name': url_name, 'transactions': transactions, 'month_filter': month_filter, 'monthDict': monthDict})
