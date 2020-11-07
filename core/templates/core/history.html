@@ -10,7 +10,7 @@
         <div class="col-md-auto">
             <form method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
-                <select name="history_filter">
+                <select name="history_filter" onchange="this.form.submit()">
                     <option value="all" {% if filter_value == "all" %}selected{% endif %}>Всё время</option>
                     <option value="1" {% if filter_value == "1" %}selected{% endif %}>Январь</option>
                     <option value="2" {% if filter_value == "2" %}selected{% endif %}>Февраль</option>
@@ -25,7 +25,6 @@
                     <option value="11" {% if filter_value == "11" %}selected{% endif %}>Ноябрь</option>
                     <option value="12" {% if filter_value == "12" %}selected{% endif %}>Декабрь</option>
                 </select>
-                <input type="submit" class="btn btn-primary" value="Отправить">
             </form>
         </div>
     </div>

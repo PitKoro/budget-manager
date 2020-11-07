@@ -66,7 +66,7 @@ aside {
 }
 
 .card{
-  background-color: #363636;
+  background-color: hsla(0, 0%, 34%, 0.767);
   border-color: #363636;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
@@ -74,6 +74,16 @@ aside {
 .card-header{
   color: #ecebec;
 }
+
+/*.expense-color{
+  color: #242424;
+  background-color: hsla(1, 97%, 64%, 0.911);
+}
+
+.income-color{
+  color: #242424;
+  background-color: hsla(103, 82%, 63%, 0.911);
+}*/ 
 
 .card-text{
   color: #ecebec;
