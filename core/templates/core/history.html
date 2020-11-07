@@ -10,16 +10,15 @@
         <div class="col-md-auto">
             <form method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
-                <select name="month_filter_history">
-
+                <select name="month_filter_history" onchange="this.form.submit()">
                     {% for key in monthDict %}
                         <option value="{{key}}" {% if month_filter == "{{key}}" %}selected{% endif %}>{{ monthDict|get_value:key }}</option>
                     {% endfor %}
                     {% if not transactions %}
-                        <option selected>Тут пока пусто</option>
+                        <option value="0" selected>Тут пока пусто</option>
                     {% endif %}
                 </select>
-                <input type="submit" class="btn btn-primary" value="Отправить">
+
             </form>
         </div>
     </div>
