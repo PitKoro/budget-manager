@@ -6,6 +6,6 @@ register = template.Library()
 def division(value, args):
     return value/args
 
-@register.filter(name='get_value')
-def get_value(dict, key):
-    return dict[key]
+@register.filter(name='index_search')
+def index_search(arr, index):
+    return arr[index]

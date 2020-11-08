@@ -2,6 +2,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 from itertools import chain
+import re
 
 
 def get_balance(account):
@@ -88,35 +89,45 @@ def get_month():
     monthList = []
 
     for el in transactions:
-        monthList.append(el.date.month)
+        monthList.append((el.date.month, el.date.year))
 
-    monthList.sort()
+    sorted(monthList, reverse=True)
+    print(f"monthList: {monthList}")
+
     monthDict = {}
     
     for i in range(0, len(monthList)):
-        if monthList[i] == 1:
-            monthDict.update({1: 'Январь'})
-        if monthList[i] == 2:
-            monthDict.update({2: 'Февраль'})
-        if monthList[i] == 3:
-            monthDict.update({3: 'Март'})
-        if monthList[i] == 4:
-            monthDict.update({4: 'Апрель'})
-        if monthList[i] == 5:
-            monthDict.update({5: 'Май'})
-        if monthList[i] == 6:
-            monthDict.update({6: 'Июнь'})
-        if monthList[i] == 7:
-            monthDict.update({7: 'Июль'})
-        if monthList[i] == 8:
-            monthDict.update({8: 'Август'})
-        if monthList[i] == 9:
-            monthDict.update({9: 'Сентябрь'})
-        if monthList[i] == 10:
-            monthDict.update({10: 'Октябрь'})
-        if monthList[i] == 11:
-            monthDict.update({11: 'Ноябрь'})
-        if monthList[i] == 12:
-            monthDict.update({12: 'Декабрь'})
+        if monthList[i][0] == 1:
+            monthDict.update({(1, monthList[i][1]): 'Январь '+str(monthList[i][1])})
+        if monthList[i][0] == 2:
+            monthDict.update({(2, monthList[i][1]): 'Февраль '+str(monthList[i][1])})
+        if monthList[i][0] == 3:
+            monthDict.update({(3, monthList[i][1]): 'Март '+str(monthList[i][1])})
+        if monthList[i][0] == 4:
+            monthDict.update({(4, monthList[i][1]): 'Апрель '+str(monthList[i][1])})
+        if monthList[i][0] == 5:
+            monthDict.update({(5, monthList[i][1]): 'Май '+str(monthList[i][1])})
+        if monthList[i][0] == 6:
+            monthDict.update({(6, monthList[i][1]): 'Июнь '+str(monthList[i][1])})
+        if monthList[i][0] == 7:
+            monthDict.update({(7, monthList[i][1]): 'Июль '+str(monthList[i][1])})
+        if monthList[i][0] == 8:
+            monthDict.update({(8, monthList[i][1]): 'Август '+str(monthList[i][1])})
+        if monthList[i][0] == 9:
+            monthDict.update({(9, monthList[i][1]): 'Сентябрь '+str(monthList[i][1])})
+        if monthList[i][0] == 10:
+            monthDict.update({(10, monthList[i][1]): 'Октябрь '+str(monthList[i][1])})
+        if monthList[i][0] == 11:
+            monthDict.update({(11, monthList[i][1]): 'Ноябрь '+str(monthList[i][1])})
+        if monthList[i][0] == 12:
+            monthDict.update({(12, monthList[i][1]): 'Декабрь '+str(monthList[i][1])})
+
+    print(f"monthDict: {monthDict}")
         
     return monthDict
+
+
+def find_nums_in_str(s):
+    nums = re.findall(r'\d+', s)
+    nums = [int(i) for i in nums]
+    return nums
