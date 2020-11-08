@@ -92,7 +92,6 @@ def get_month():
         monthList.append((el.date.month, el.date.year))
 
     sorted(monthList, reverse=True)
-    print(f"monthList: {monthList}")
 
     monthDict = {}
     
@@ -120,10 +119,7 @@ def get_month():
         if monthList[i][0] == 11:
             monthDict.update({(11, monthList[i][1]): 'Ноябрь '+str(monthList[i][1])})
         if monthList[i][0] == 12:
-            monthDict.update({(12, monthList[i][1]): 'Декабрь '+str(monthList[i][1])})
-
-    print(f"monthDict: {monthDict}")
-        
+            monthDict.update({(12, monthList[i][1]): 'Декабрь '+str(monthList[i][1])})        
     return monthDict
 
 
