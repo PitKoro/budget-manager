@@ -58,15 +58,26 @@ class IncomeForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
+            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(_('Неверный формат суммы'))
 
         return data
 
-    def clean_date(self):
-        data = self.cleaned_data['date']
+    def clean_from1(self):
+        data = self.cleaned_data['from1']
 
-        if data > date.today():
-            raise ValidationError(_('Неверный формат даты'))
+        if data == '-1':
+            self.fields['from1'].widget.attrs.update({'class': 'form-control is-invalid'})
+            raise ValidationError(_('Выберите откуда пришло'), code='invalid')
+
+        return data
+
+    def clean_to(self):
+        data = self.cleaned_data['to']
+
+        if data == '-1':
+            self.fields['to'].widget.attrs.update({'class': 'form-control is-invalid'})
+            raise ValidationError(_('Выберите куда начислить'), code='invalid')
 
         return data
 
@@ -75,28 +86,12 @@ class IncomeForm(forms.Form):
 
         from_data = cleaned_data.get('from1')
         to_data = cleaned_data.get('to')
-        amount_data = cleaned_data.get('amount')
-
-        if from_data == '-1':
-            raise ValidationError(_('Выберите откуда пришло'), code='invalid')
-
-        if to_data == '-1':
-            raise ValidationError(_('Выберите куда начислить'), code='invalid')
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
+            self.fields['from1'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['to'].widget.attrs.update({'class': 'form-control is-invalid'})
             raise ValidationError(
                 _('Выберите разные места хранения'),
                 code='invalid'
             )
-
-        if from_data.startswith('acc__'):
-            # Перевод денег с одного места хранения на другое
-            id = from_data.split('__')[1]
-            balance = get_balance(Account.objects.get(id=id))
-
-            if amount_data * 100 > balance:
-                raise ValidationError(
-                    _('Недостаточно средств'),
-                    code='invalid'
-                )

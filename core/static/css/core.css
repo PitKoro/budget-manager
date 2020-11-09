@@ -83,12 +83,29 @@ aside {
   flex-wrap: nowrap;
 }
 
-.left-forms {
+
+.main-content{
+  /* margin: auto; */
+  justify-content: space-between;
+}
+
+
+.col{
   display: flex;
+  padding: 10px;
   flex-direction: column;
 }
 
-.features {
+.col-main {
+  align-items: center;
+}
+
+.col-main-center {
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+}
+
+.content-rec {
   border-radius: 5px;
   padding: 15px 7px;
   background-color: #474747;
@@ -96,16 +113,25 @@ aside {
   margin: 10px 5px;
 }
 
-.income-form{
+.income-form, .expense-form{
   width: 335px;
-}
-.expense-form{
-  width: 335px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .history-log{
   width: 335px;
   min-height: 400px;
+}
+
+.my-form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  height: 86%;
 }
 
 .form-control{
@@ -117,15 +143,54 @@ aside {
 
 ul, li{
   list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.field-narrow, .field-wide{
+  position: relative;
 }
 
 .field-narrow {
   display:inline-block; 
   width: 49%;
+  height: 70px;
 }
 
 .field-wide {
-  display:inline-block; 
+  display:inline-table; 
   width: 100%;
   height: 20px;
+}
+.form-control.is-invalid{
+  background-position: right calc(.375em + .9rem) center;
+}
+
+.balance, .expenses{
+  width: 195px;
+}
+
+
+.invisible {
+  display: none;
+}
+
+.expenses-diag {
+  width: 400px;
+  order: -3;
+  height: 220px;
+}
+
+.btn-secondary{
+  background-color: #2c2c2c;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+
+  background-color: crimson;
+}
+
+.btn-chose-form{
+  width: 50%;
+  margin: auto;
 }
