@@ -147,9 +147,7 @@ def get_expenses(date_to=date.today()):
         expenses_dic[cat.name] = ExpenseTransaction.objects.filter(
                 expense_category_id=cat.id
         ).filter(
-                date__lte=date_to
-        ).filter(
-                date__gte=month_date
+                date__range=[month_date, date_to]
         ).aggregate(
                 amount=Coalesce(Sum('amount'), 0)
         )['amount']/100

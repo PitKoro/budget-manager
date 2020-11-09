@@ -26,13 +26,13 @@ def main(request):
             visible_form = 'income'
 
             if formIF.is_valid():
-                post_income_transaction(formIF.cleaned_data)
+                utils.post_income_transaction(formIF.cleaned_data)
                 formIF = IncomeForm()
         elif request.POST['form'] == "expf":
             formEF = ExpenseForm(request.POST)
             visible_form = 'expense'
             if formEF.is_valid():
-                post_expense_transaction(formEF.cleaned_data)
+                utils.post_expense_transaction(formEF.cleaned_data)
                 formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
@@ -54,14 +54,14 @@ def main(request):
 
     
 
-    expenses = get_expenses()
+    expenses = utils.get_expenses()
 
     return render(request, 'core/main.html', {
         'account_list': account_list,
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        'expense_chart_data': utils.get_data_for_expense_diagram()
+        # 'expense_chart_data': utils.get_data_for_expense_diagram()
         'expense_chart_data': utils.get_data_for_expense_diagram(),
         'visible_form': visible_form,
         'expenses': expenses

@@ -29,6 +29,6 @@ function drawChart(rawData) {
 
     };
 
-    let chart = new google.visualization.PieChart(document.getElementById('expenses'));
+    let chart = new google.visualization.PieChart(document.getElementById('main-page__expense-chart'));
     chart.draw(data, options);
 }
