@@ -83,6 +83,19 @@ aside {
 
 .cd-h-main{
   color: #ecebec;
+  padding: .5rem 1.1rem;
+}
+
+.cd-b-main {
+  padding: 1.1rem;
+}
+
+.cd-sm-main{
+  font-size: small;
+}
+
+.cd-med-main {
+  font-size: medium;
 }
 
 /*.expense-color{
@@ -152,8 +165,8 @@ ul, li{
 }
 
 .one-tran {
-  margin: 7px 5px;
-  width: 311px;
+  margin: 0.25rem 0.12rem;
+  width: 317px;
 }
 
 .field-narrow {
