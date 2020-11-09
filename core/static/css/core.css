@@ -75,6 +75,16 @@ aside {
   color: #ecebec;
 }
 
+.cd-main{
+  background-color: hsla(0, 0%, 34%, 0.767);
+  border-color: #363636;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.cd-h-main{
+  color: #ecebec;
+}
+
 /*.expense-color{
   color: #242424;
   background-color: hsla(1, 97%, 64%, 0.911);

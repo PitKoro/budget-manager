@@ -49,14 +49,14 @@
             <div class="latest-transactions">
                 {% for el in latest_transactions %}
                   <div class="one-tran {{el.type}}">
-                      <div class="card">
-                        <div class="card-header">
+                      <div class="card cd-main">
+                        <div class="card-header cd-h-main">
                             <div class="row">
                                 <div class="col-sm">{{ el.from }}</div>
                                 <div class="col-sm history-date">{{ el.date }}</div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body cd-b-main">
                             <div class="row justify-content-around">
                                 <div class="col">
                                     <fieldset class="reset-this redo-fieldset">
@@ -74,17 +74,6 @@
                                     
                                 </div>
                             </div>
-                            {% if el.commentary %}
-                                <div class="row">
-                                    <div class="col">
-                                        <fieldset class="reset-this redo-fieldset history-commentary">
-                                            <legend class="reset-this redo-legend"> Комментарий </legend>
-                                            <p class="card-text text-center">{{ el.commentary }}</p>
-                                        </fieldset>  
-                                        
-                                    </div>
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                   </div>
