@@ -33,17 +33,8 @@ aside {
   margin-left: 10px;
 }
 
-.card{
-  color: black;
-}
-
 .history-date{
   text-align: right;
-}
-
-.history-header{
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .reset-this {
@@ -51,34 +42,58 @@ aside {
 }
 
 .redo-fieldset {
-  border: 1px solid black;
+  border: 1px solid #ecebec;
   border-radius: 8px;
-  width: 100%;
+  width: 91%;
   padding-inline-start: 0.75em;
+  color: #ecebec;
 } 
 
-.redo-fieldset.inner-amount {
+.inner-amount {
   height: 90%;
 }
 
 .redo-legend {
-  color: black;
+  color: #ecebec;
   padding-inline-start: 3px;
   padding-inline-end: 3px;
 } 
 
 .history-commentary{
   height: 100%;
+  width: 96%;
+  word-wrap: break-word;
+}
+
+.card{
+  background-color: hsla(0, 0%, 34%, 0.767);
+  border-color: #363636;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.card-header{
+  color: #ecebec;
+}
+
+/*.expense-color{
+  color: #242424;
+  background-color: hsla(1, 97%, 64%, 0.911);
 }
 
 .row-transaction-history{
   margin-top: 20px;
+.income-color{
+  color: #242424;
+  background-color: hsla(103, 82%, 63%, 0.911);
+}*/ 
+
+.card-text{
+  color: #ecebec;
 }
 
 .row{
   flex-wrap: nowrap;
 }
-
 
 .left-forms {
   display: flex;
