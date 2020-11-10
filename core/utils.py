@@ -137,9 +137,9 @@ def get_current_week_transactions():
             from_name = transaction.account.name
             to_name = transaction.expense_category.name
         elif isinstance(transaction, InnerTransaction):
-            type_name: 'inner'
+            type_name = 'inner'
             from_name = transaction.account_from.name
-            to_name = transaction.account_to.to_name
+            to_name = transaction.account_to.name
 
         result.append({
             'type': type_name,
