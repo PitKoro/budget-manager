@@ -62,6 +62,8 @@ def history(request):
     year_filter = now.year
     income_category = 0
     expense_category = 0
+    income_filter_flag = True
+    expense_filter_flag = True
 
     if request.method == 'POST':
         if request.POST.get('month_filter_history'):
@@ -79,16 +81,18 @@ def history(request):
                 incomeCategoriesDict = get_income_categories()
                 expenseCategoriesDict = get_expense_categories()
                 return render(
-                                request, 'core/history.html',
-                                {'url_name': url_name,
-                                'transactions': transactions,
-                                'month_filter': month_filter,
-                                'year_filter': year_filter,
-                                'monthDict': monthDict,
-                                'income_category': income_category,
-                                'incomeCategoriesDict': incomeCategoriesDict,
-                                'expense_category': expense_category,
-                                'expenseCategoriesDict' : expenseCategoriesDict})
+                            request, 'core/history.html',
+                            {'url_name': url_name,
+                            'transactions': transactions,
+                            'month_filter': month_filter,
+                            'year_filter': year_filter,
+                            'monthDict': monthDict,
+                            'income_category': income_category,
+                            'incomeCategoriesDict': incomeCategoriesDict,
+                            'expense_category': expense_category,
+                            'expenseCategoriesDict' : expenseCategoriesDict,
+                            'income_filter_flag': income_filter_flag,
+                            'expense_filter_flag': expense_filter_flag})
         
         if request.POST.get('income_filter_history'):
             income_category = int(request.POST.get('income_filter_history'))
@@ -101,6 +105,8 @@ def history(request):
             monthDict = get_month()
             incomeCategoriesDict = get_income_categories()
             expenseCategoriesDict = get_expense_categories()
+            income_filter_flag = False
+            expense_filter_flag = True
             return render(
                             request, 'core/history.html',
                             {'url_name': url_name,
@@ -111,9 +117,13 @@ def history(request):
                             'income_category': income_category,
                             'incomeCategoriesDict': incomeCategoriesDict,
                             'expense_category': expense_category,
-                            'expenseCategoriesDict' : expenseCategoriesDict})
+                            'expenseCategoriesDict' : expenseCategoriesDict,
+                            'income_filter_flag': income_filter_flag,
+                            'expense_filter_flag': expense_filter_flag})
         
         if request.POST.get('expense_filter_history'):
+            income_filter_flag = True
+            expense_filter_flag = False
             expense_category = int(request.POST.get('expense_filter_history'))
             if expense_category == 0:
                 expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
@@ -134,7 +144,9 @@ def history(request):
                             'income_category': income_category,
                             'incomeCategoriesDict': incomeCategoriesDict,
                             'expense_category': expense_category,
-                            'expenseCategoriesDict' : expenseCategoriesDict})
+                            'expenseCategoriesDict' : expenseCategoriesDict,
+                            'income_filter_flag': income_filter_flag,
+                            'expense_filter_flag': expense_filter_flag})
         
 
         if request.POST.get('IncomeTransactionId'):
@@ -159,13 +171,15 @@ def history(request):
     incomeCategoriesDict = get_income_categories()
     expenseCategoriesDict = get_expense_categories()
     return render(
-                    request, 'core/history.html',
-                    {'url_name': url_name,
-                    'transactions': transactions,
-                    'month_filter': month_filter,
-                    'year_filter': year_filter,
-                    'monthDict': monthDict,
-                    'income_category': income_category,
-                    'incomeCategoriesDict': incomeCategoriesDict,
-                    'expense_category': expense_category,
-                    'expenseCategoriesDict' : expenseCategoriesDict})
+                            request, 'core/history.html',
+                            {'url_name': url_name,
+                            'transactions': transactions,
+                            'month_filter': month_filter,
+                            'year_filter': year_filter,
+                            'monthDict': monthDict,
+                            'income_category': income_category,
+                            'incomeCategoriesDict': incomeCategoriesDict,
+                            'expense_category': expense_category,
+                            'expenseCategoriesDict' : expenseCategoriesDict,
+                            'income_filter_flag': income_filter_flag,
+                            'expense_filter_flag': expense_filter_flag})

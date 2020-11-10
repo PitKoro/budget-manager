@@ -24,9 +24,9 @@
             <form action="{% url 'core:history' %}" method="post">
                 {% csrf_token %}
                 <select name="income_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if not transaction %}selected{% endif %}>Категории зачислений</option>
+                    <option disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
                     {% for key in incomeCategoriesDict %}
-                        <option value="{{key}}" {% if income_category == key %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
+                        <option value="{{key}}" {% if income_category == key and not income_filter_flag %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
             </form>
@@ -35,9 +35,9 @@
             <form action="{% url 'core:history' %}" method="post">
                 {% csrf_token %}
                 <select name="expense_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if not transaction %}selected{% endif %}>Категории расходов</option>
+                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
                     {% for key in expenseCategoriesDict %}
-                        <option value="{{key}}" {% if income_category == key %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
+                        <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
             </form>
