@@ -158,8 +158,8 @@ aside {
 
 .history-log{
   width: 335px;
-  min-height: 400px;
-  overflow-x: hidden;
+  height: 400px;
+  overflow: hidden;
 }
 
 
@@ -167,7 +167,7 @@ aside {
   display: flex;
   flex-direction: column;
   overflow: auto; 
-  max-height: 600px;
+  height: 350px;
   width: 350px;  
 }
 

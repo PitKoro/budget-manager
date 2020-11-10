@@ -79,7 +79,7 @@
                                     <fieldset class="reset-this redo-fieldset">
                                         <legend class="reset-this redo-legend cd-sm-main"> Сумма </legend>
                                         <h5 class="card-title  text-center cd-med-main">
-                                          {% if el.type == 'income' %}+{% else %}-{% endif %}
+                                          {% if el.type == 'income' %}+{% elif el.type == 'expense' %}-{% endif %}
                                           {{ el.amount | floatformat:2 }} руб.</h5>
                                     </fieldset>    
                                 </div>

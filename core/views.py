@@ -1,27 +1,16 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
 
 import core.utils as utils
 
-from .utils import get_balance, post_income_transaction, post_expense_transaction, get_expenses
-
 from functools import reduce
 from itertools import chain
 from operator import attrgetter
 
 import datetime
-=======
-from .models import IncomeTransaction, ExpenseTransaction, InnerTransaction
-from .forms.IncomeForm import IncomeForm
-from .forms.ExpenseForm import ExpenseForm
-import core.utils as utils
 
-from itertools import chain
-from operator import attrgetter
->>>>>>> master
 
 
 def main(request):
@@ -40,7 +29,6 @@ def main(request):
                 formIF = IncomeForm()
         elif request.POST['form'] == "expf":
             formEF = ExpenseForm(request.POST)
-<<<<<<< HEAD
             visible_form = 'expense'
             if formEF.is_valid():
                 utils.post_expense_transaction(formEF.cleaned_data)
@@ -62,17 +50,7 @@ def main(request):
             0
         )
     })
-=======
 
-        if formIF.is_valid():
-            utils.post_income_transaction(formIF.cleaned_data)
-            formIF = IncomeForm()
-        if formEF.is_valid():
-            utils.post_expense_transaction(formEF.cleaned_data)
-            formEF = ExpenseForm()
-
-    url_name = request.resolver_match.url_name
->>>>>>> master
 
     
 

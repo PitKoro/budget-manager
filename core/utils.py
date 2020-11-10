@@ -2,18 +2,14 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
-from itertools import chain
-from operator import attrgetter
-import datetime
 from functools import reduce
 from itertools import chain
 from operator import attrgetter
 
-from datetime import date
 import datetime
 
 
-def get_balance(account, date_to=date.today()):
+def get_balance(account, date_to=datetime.date.today()):
     outer_income = account.incometransaction_set.filter(
         date__lte=date_to
     ).aggregate(
@@ -96,9 +92,9 @@ def post_expense_transaction(data):
     transaction.save()
 
 
-<<<<<<< HEAD
-def get_transactions_for_period(date_from, date_to):
-=======
+# <<<<<<< HEAD
+# def get_transactions_for_period(date_from, date_to):
+# =======
 def get_account_list():
     account_list = []
 
@@ -120,10 +116,9 @@ def get_account_list():
 
 
 def get_current_week_transactions():
-    date_to = date.today()
-    date_from = date_to - timedelta(days=date_to.weekday())
+    date_to = datetime.date.today()
+    date_from = date_to - datetime.timedelta(days=date_to.weekday())
 
->>>>>>> master
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
     )
@@ -156,8 +151,9 @@ def get_current_week_transactions():
             to_name = transaction.expense_category.name
         elif isinstance(transaction, InnerTransaction):
             type_name = 'inner'
-            from_name = transaction.account_from.name
-            to_name = transaction.account_to.name
+            from_name = (transaction.account_from.name if len(transaction.account_from.name) <= 6 else transaction.account_from.name[:3]) + \
+                " -> " + (transaction.account_to.name if len(transaction.account_to.name) <= 6 else transaction.account_to.name[:3])
+            to_name = "Внутренние переводы"
 
         result.append({
             'type': type_name,
@@ -169,11 +165,10 @@ def get_current_week_transactions():
         })
 
     return result
-<<<<<<< HEAD
 
-def get_expenses(date_to=date.today()):
+def get_expenses(date_to=datetime.date.today()):
     expenses_dic = {}
-    month_date = date(date_to.year, date_to.month, 1)
+    month_date = datetime.date(date_to.year, date_to.month, 1)
     for cat in ExpenseCategory.objects.all():
         expenses_dic[cat.name] = ExpenseTransaction.objects.filter(
                 expense_category_id=cat.id
@@ -207,5 +202,3 @@ def get_data_for_expense_diagram():
         },
         transactions
     ))
-=======
->>>>>>> master
