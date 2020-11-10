@@ -32,3 +32,18 @@ function drawChart(rawData) {
     let chart = new google.visualization.PieChart(document.getElementById('main-page__expense-chart'));
     chart.draw(data, options);
 }
+
+let chooseForm = (value) => {
+    let incomeForm = document.getElementById('main-page__income-form')
+    let expenseForm = document.getElementById('main-page__expence-form')
+
+    if (value === 'income' && incomeForm.classList.contains('invisible')) {
+        incomeForm.classList.toggle('invisible')
+        expenseForm.classList.toggle('invisible')
+    }
+
+    if (value === 'expense' && expenseForm.classList.contains('invisible')) {
+        expenseForm.classList.toggle('invisible')
+        incomeForm.classList.toggle('invisible')
+    }
+}

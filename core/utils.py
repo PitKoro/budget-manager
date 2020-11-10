@@ -92,9 +92,6 @@ def post_expense_transaction(data):
     transaction.save()
 
 
-# <<<<<<< HEAD
-# def get_transactions_for_period(date_from, date_to):
-# =======
 def get_account_list():
     account_list = []
 
@@ -166,6 +163,7 @@ def get_current_week_transactions():
 
     return result
 
+
 def get_expenses(date_to=datetime.date.today()):
     expenses_dic = {}
     month_date = datetime.date(date_to.year, date_to.month, 1)
@@ -184,6 +182,7 @@ def get_expenses(date_to=datetime.date.today()):
             'value': value
         })
     return expenses_arr
+
 
 def get_data_for_expense_diagram():
     today = datetime.date.today()

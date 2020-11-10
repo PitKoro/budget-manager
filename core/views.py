@@ -9,9 +9,6 @@ from functools import reduce
 from itertools import chain
 from operator import attrgetter
 
-import datetime
-
-
 
 def main(request):
     visible_form = 'expense'
@@ -35,24 +32,6 @@ def main(request):
                 formEF = ExpenseForm()
 
     url_name = request.resolver_match.url_name
-    account_list = []
-
-    for account in Account.objects.all():
-        account_list.append({
-            'name': account.name,
-            'amount': utils.get_balance(account)/100
-        })
-    account_list.insert(0, {
-        'name': 'Всего',
-        'amount': reduce(
-            lambda acc, value: acc + value['amount'],
-            account_list,
-            0
-        )
-    })
-
-
-    
 
     expenses = utils.get_expenses()
 
@@ -62,7 +41,6 @@ def main(request):
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        # 'expense_chart_data': utils.get_data_for_expense_diagram()
         'expense_chart_data': utils.get_data_for_expense_diagram(),
         'visible_form': visible_form,
         'expenses': expenses
