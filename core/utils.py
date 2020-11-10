@@ -5,6 +5,9 @@ from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction
 from itertools import chain
 from operator import attrgetter
 import datetime
+from functools import reduce
+from itertools import chain
+from operator import attrgetter
 
 from datetime import date
 import datetime
@@ -93,7 +96,34 @@ def post_expense_transaction(data):
     transaction.save()
 
 
+<<<<<<< HEAD
 def get_transactions_for_period(date_from, date_to):
+=======
+def get_account_list():
+    account_list = []
+
+    for account in Account.objects.all():
+        account_list.append({
+            'name': account.name,
+            'amount': get_balance(account)/100
+        })
+    account_list.insert(0, {
+        'name': 'Всего',
+        'amount': reduce(
+            lambda acc, value: acc + value['amount'],
+            account_list,
+            0
+        )
+    })
+
+    return account_list
+
+
+def get_current_week_transactions():
+    date_to = date.today()
+    date_from = date_to - timedelta(days=date_to.weekday())
+
+>>>>>>> master
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
     )
@@ -139,6 +169,7 @@ def get_transactions_for_period(date_from, date_to):
         })
 
     return result
+<<<<<<< HEAD
 
 def get_expenses(date_to=date.today()):
     expenses_dic = {}
@@ -176,3 +207,5 @@ def get_data_for_expense_diagram():
         },
         transactions
     ))
+=======
+>>>>>>> master

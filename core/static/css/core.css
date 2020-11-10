@@ -66,7 +66,7 @@ aside {
 }
 
 .card{
-  background-color: #363636;
+  background-color: hsla(0, 0%, 34%, 0.767);
   border-color: #363636;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
@@ -74,6 +74,41 @@ aside {
 .card-header{
   color: #ecebec;
 }
+
+.cd-main{
+  background-color: hsla(0, 0%, 34%, 0.767);
+  border-color: #363636;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.cd-h-main{
+  color: #ecebec;
+  padding: .5rem 1.1rem;
+}
+
+.cd-b-main {
+  padding: 1.1rem;
+}
+
+.cd-sm-main{
+  font-size: small;
+}
+
+.cd-med-main {
+  font-size: medium;
+}
+
+/*.expense-color{
+  color: #242424;
+  background-color: hsla(1, 97%, 64%, 0.911);
+}
+
+.row-transaction-history{
+  margin-top: 20px;
+.income-color{
+  color: #242424;
+  background-color: hsla(103, 82%, 63%, 0.911);
+}*/ 
 
 .card-text{
   color: #ecebec;
@@ -124,6 +159,16 @@ aside {
 .history-log{
   width: 335px;
   min-height: 400px;
+  overflow-x: hidden;
+}
+
+
+.latest-transactions{
+  display: flex;
+  flex-direction: column;
+  overflow: auto; 
+  max-height: 600px;
+  width: 350px;  
 }
 
 .my-form{
@@ -149,6 +194,11 @@ ul, li{
 
 .field-narrow, .field-wide{
   position: relative;
+}
+
+.one-tran {
+  margin: 0.25rem 0.12rem;
+  width: 317px;
 }
 
 .field-narrow {
