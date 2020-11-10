@@ -122,6 +122,24 @@ def get_month():
             monthDict.update({(12, monthList[i][1]): 'Декабрь '+str(monthList[i][1])})        
     return monthDict
 
+def get_income_categories():
+    incomeT = IncomeTransaction.objects.all()
+    incomeCategoriesDict = {0: "Все зачисления"}
+
+    for el in incomeT:
+        incomeCategoriesDict.update({el.income_category.id: el.income_category.name})
+    
+    return incomeCategoriesDict
+
+def get_expense_categories():
+    expenseT = ExpenseTransaction.objects.all()
+    expenseCategoriesDict = {0: "Все расходы"}
+
+    for el in expenseT:
+        expenseCategoriesDict.update({el.expense_category.id: el.expense_category.name})
+    
+    return expenseCategoriesDict
+
 
 def find_nums_in_str(s):
     nums = re.findall(r'\d+', s)
