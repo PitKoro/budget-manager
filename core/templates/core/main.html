@@ -31,7 +31,7 @@
         <ul>
 
         {% for account in account_list %}
-          <li><h5>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h5></li>
+          <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
         {% endfor %}
 
         </ul>
@@ -45,6 +45,41 @@
     <div class="col">
         <div class="features history-log">
             <h5 class="text-center">Последние транзакции</h5>
+            <div class="go-away-scroll-bar">
+            <div class="latest-transactions">
+                {% for el in latest_transactions %}
+                  <div class="one-tran {{el.type}}">
+                      <div class="card cd-main">
+                        <div class="card-header cd-h-main">
+                            <div class="row">
+                                <div class="col-sm-5">{{ el.from }}</div>
+                                <div class="col-sm history-date">{{ el.date }}</div>
+                            </div>
+                        </div>
+                        <div class="card-body cd-b-main">
+                            <div class="row justify-content-around">
+                                <div class="col">
+                                    <fieldset class="reset-this redo-fieldset">
+                                        <legend class="reset-this redo-legend cd-sm-main"> Сумма </legend>
+                                        <h5 class="card-title  text-center cd-med-main">
+                                          {% if el.type == 'income' %}+{% else %}-{% endif %}
+                                          {{ el.amount | floatformat:2 }} руб.</h5>
+                                    </fieldset>    
+                                </div>
+                                <div class="col">
+                                    <fieldset class="reset-this redo-fieldset">
+                                        <legend class="reset-this redo-legend cd-sm-main"> Категория </legend>
+                                        <h5 class="card-title  text-center cd-med-main">{{ el.to }}</h5>
+                                    </fieldset>  
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+            </div>
         </div>
     </div>
 

@@ -2,6 +2,10 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
+from datetime import date, timedelta
+from functools import reduce
+from itertools import chain
+from operator import attrgetter
 
 def get_balance(account):
     outer_income = account.incometransaction_set.aggregate(
@@ -76,3 +80,74 @@ def post_expense_transaction(data):
             account_to=Account.objects.get(id=to_id)
         )
     transaction.save()
+
+
+def get_account_list():
+    account_list = []
+
+    for account in Account.objects.all():
+        account_list.append({
+            'name': account.name,
+            'amount': get_balance(account)/100
+        })
+    account_list.insert(0, {
+        'name': 'Всего',
+        'amount': reduce(
+            lambda acc, value: acc + value['amount'],
+            account_list,
+            0
+        )
+    })
+
+    return account_list
+
+
+def get_current_week_transactions():
+    date_to = date.today()
+    date_from = date_to - timedelta(days=date_to.weekday())
+
+    income_transactions = IncomeTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+    expense_transactions = ExpenseTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+    inner_transactions = InnerTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+
+    tran_list = sorted(
+        (chain(income_transactions, expense_transactions, inner_transactions)),
+        key=attrgetter('date'),
+        reverse=True
+    )
+
+    result = []
+    for transaction in tran_list:
+        type_name = ''
+        from_name = ''
+        to_name = ''
+
+        if isinstance(transaction, IncomeTransaction):
+            type_name = 'income'
+            from_name = transaction.income_category.name
+            to_name = transaction.account.name
+        elif isinstance(transaction, ExpenseTransaction):
+            type_name = 'expense'
+            from_name = transaction.account.name
+            to_name = transaction.expense_category.name
+        elif isinstance(transaction, InnerTransaction):
+            type_name = 'inner'
+            from_name = transaction.account_from.name
+            to_name = transaction.account_to.name
+
+        result.append({
+            'type': type_name,
+            'date': transaction.date,
+            'amount': transaction.amount / 100,
+            'from': from_name,
+            'to': to_name,
+            'commentary': transaction.commentary
+        })
+
+    return result

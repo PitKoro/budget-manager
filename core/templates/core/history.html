@@ -10,26 +10,17 @@
         <div class="col-md-auto">
             <form method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
-                <select name="history_filter">
-                    <option value="all" {% if filter_value == "all" %}selected{% endif %}>Всё время</option>
-                    <option value="1" {% if filter_value == "1" %}selected{% endif %}>Январь</option>
-                    <option value="2" {% if filter_value == "2" %}selected{% endif %}>Февраль</option>
-                    <option value="3" {% if filter_value == "3" %}selected{% endif %}>Март</option>
-                    <option value="4" {% if filter_value == "4" %}selected{% endif %}>Апрель</option>
-                    <option value="5" {% if filter_value == "5" %}selected{% endif %}>Май</option>
-                    <option value="6" {% if filter_value == "6" %}selected{% endif %}>Июнь</option>
-                    <option value="7" {% if filter_value == "7" %}selected{% endif %}>Июль</option>
-                    <option value="8" {% if filter_value == "8" %}selected{% endif %}>Август</option>
-                    <option value="9" {% if filter_value == "9" %}selected{% endif %}>Сентябрь</option>
-                    <option value="10" {% if filter_value == "10" %}selected{% endif %}>Октябрь</option>
-                    <option value="11" {% if filter_value == "11" %}selected{% endif %}>Ноябрь</option>
-                    <option value="12" {% if filter_value == "12" %}selected{% endif %}>Декабрь</option>
+                <select name="month_filter_history" onchange="this.form.submit()">
+                    <option disabled {% if not transactions %}selected{% endif %}>Период...</option>
+                    {% for key in monthDict %}
+                        <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
+                    {% endfor %}
+                    
                 </select>
-                <input type="submit" class="btn btn-primary" value="Отправить">
+
             </form>
         </div>
     </div>
-
     {% if transactions %}
         {% for el in transactions %}
     
@@ -186,6 +177,6 @@
         {% endfor %}
         
     {% else %}
-        <p class="text-center text-muted h1 mt-5">Транзакций нет</p>
+        <p class="text-center text-muted h1 mt-5">Транзакций в текущем месяце нет</p>
     {% endif %}
 {% endblock %}
