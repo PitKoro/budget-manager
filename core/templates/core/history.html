@@ -15,33 +15,25 @@
                     {% for key in monthDict %}
                         <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
                     {% endfor %}
-                    
                 </select>
 
-            </form>
-        </div>
-        <div class="col-md-auto">
-            <form action="{% url 'core:history' %}" method="post">
-                {% csrf_token %}
                 <select name="income_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
+                    <option value="all" {% if income_filter_flag %}selected{% endif %}>Все транзакции</option>
                     {% for key in incomeCategoriesDict %}
                         <option value="{{key}}" {% if income_category == key and not income_filter_flag %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
-            </form>
-        </div>
-        <div class="col-md-auto">
-            <form action="{% url 'core:history' %}" method="post">
-                {% csrf_token %}
+
                 <select name="expense_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
+                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Все расходы</option>
                     {% for key in expenseCategoriesDict %}
                         <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
+
             </form>
         </div>
+        
     </div>
     {% if transactions %}
         {% for el in transactions %}
