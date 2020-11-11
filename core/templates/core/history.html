@@ -18,14 +18,14 @@
                 </select>
 
                 <select name="income_filter_history" onchange="this.form.submit()">
-                    <option value="all" {% if income_filter_flag %}selected{% endif %}>Все транзакции</option>
+                    <option disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
                     {% for key in incomeCategoriesDict %}
                         <option value="{{key}}" {% if income_category == key and not income_filter_flag %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
 
                 <select name="expense_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Все расходы</option>
+                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
                     {% for key in expenseCategoriesDict %}
                         <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
                     {% endfor %}
@@ -33,8 +33,9 @@
 
             </form>
         </div>
-        
     </div>
+    <h6>income_category = {{ income_category }}</h6>
+    <h6>expense_category = {{ expense_category }}</h6>
     {% if transactions %}
         {% for el in transactions %}
     
