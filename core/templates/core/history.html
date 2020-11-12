@@ -31,6 +31,7 @@
                         <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
+                <button onclick="reset_filters();">Сбросить фильтры</button>
 
             </form>
         </div>

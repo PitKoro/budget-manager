@@ -11,3 +11,11 @@ function change_selected_expense_option()
     let form = document.getElementById('form_filter_history');
     form.submit();
 }
+
+function reset_filters()
+{
+    document.getElementById('income_select').value="";
+    document.getElementById('expense_select').value="";
+    let form = document.getElementById('form_filter_history');
+    form.submit();
+}
