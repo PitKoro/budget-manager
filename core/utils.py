@@ -148,9 +148,8 @@ def get_current_week_transactions():
             to_name = transaction.expense_category.name
         elif isinstance(transaction, InnerTransaction):
             type_name = 'inner'
-            from_name = (transaction.account_from.name if len(transaction.account_from.name) <= 6 else transaction.account_from.name[:3]) + \
-                " -> " + (transaction.account_to.name if len(transaction.account_to.name) <= 6 else transaction.account_to.name[:3])
-            to_name = "Внутренние переводы"
+            from_name = transaction.account_from.name
+            to_name = transaction.account_to.name
 
         result.append({
             'type': type_name,
