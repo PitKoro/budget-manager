@@ -18,14 +18,14 @@
                     {% endfor %}
                 </select>
 
-                <select name="income_filter_history" id="income_select" onchange="change_selected_expense_option()">
+                <select name="income_filter_history" id="income_select" onchange="resetExpenceFilter()">
                     <option value="" disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
                     {% for key in incomeCategoriesDict %}
                         <option value="{{key}}" {% if income_category == key and not income_filter_flag %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
 
-                <select name="expense_filter_history" id="expense_select" onchange="change_selected_income_option();">
+                <select name="expense_filter_history" id="expense_select" onchange="resetIncomeFilter();">
                     <option value="" disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
                     {% for key in expenseCategoriesDict %}
                         <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
