@@ -171,9 +171,7 @@ def history(request):
                                 'income_category': income_category,
                                 'incomeCategoriesDict': incomeCategoriesDict,
                                 'expense_category': expense_category,
-                                'expenseCategoriesDict' : expenseCategoriesDict,
-                                'income_filter_flag': income_filter_flag,
-                                'expense_filter_flag': expense_filter_flag})
+                                'expenseCategoriesDict' : expenseCategoriesDict})
 
             if request.POST.get('expense_filter_history') is not None:
                 if request.POST.get('expense_filter_history').isdigit():
