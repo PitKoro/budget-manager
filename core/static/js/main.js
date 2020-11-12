@@ -28,9 +28,10 @@ function drawChart(rawData) {
         },
 
     };
-
-    let chart = new google.visualization.PieChart(document.getElementById('main-page__expense-chart'));
-    chart.draw(data, options);
+    if (data.getNumberOfRows() > 0){
+        let chart = new google.visualization.PieChart(document.getElementById('main-page__expense-chart'));
+        chart.draw(data, options);
+    }
 }
 
 let chooseForm = (value) => {

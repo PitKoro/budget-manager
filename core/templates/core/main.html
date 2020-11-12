@@ -37,6 +37,9 @@
     
     <div class="col col-main-center">
       <div class="content-rec expenses-diag" id="main-page__expense-chart">
+        <h5 class="text-center"><!-- Здесь будут отображаться расходы за месяц в виде диаграммы -->
+        Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
+        </h5>
       </div>
       {% if account_list %}
         <div class="content-rec balance">
@@ -123,5 +126,7 @@
     ]
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(() => drawChart(data));
+      
+      
   </script>
 {% endblock %}
