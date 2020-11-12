@@ -62,8 +62,8 @@ def history(request):
     year_filter = now.year
     income_category = 0
     expense_category = 0
-    income_filter_flag = True
-    expense_filter_flag = True
+    income_category = None
+    expense_category = None
 
     if request.method == 'POST':
 
@@ -86,8 +86,7 @@ def history(request):
             year_filter = month_year_filter[1]
 
             if request.POST.get('income_filter_history') == 'income filter inner':
-                income_filter_flag = False
-                expense_filter_flag = True
+                expense_category = None
                 income_category = request.POST.get('income_filter_history')
                 innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
                 transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
@@ -108,14 +107,11 @@ def history(request):
                                 'income_category': income_category,
                                 'incomeCategoriesDict': incomeCategoriesDict,
                                 'expense_category': expense_category,
-                                'expenseCategoriesDict' : expenseCategoriesDict,
-                                'income_filter_flag': income_filter_flag, 
-                                'expense_filter_flag': expense_filter_flag})# TODO передавать вместо флага expense_category = None
+                                'expenseCategoriesDict' : expenseCategoriesDict})
 
             if request.POST.get('income_filter_history') is not None:
                 if request.POST.get('income_filter_history').isdigit():
-                    income_filter_flag = False
-                    expense_filter_flag = True
+                    expense_category = None
                     income_category = int(request.POST.get('income_filter_history'))
                     if income_category == 0:
                         incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
@@ -137,9 +133,7 @@ def history(request):
                                         'income_category': income_category,
                                         'incomeCategoriesDict': incomeCategoriesDict,
                                         'expense_category': expense_category,
-                                        'expenseCategoriesDict' : expenseCategoriesDict,
-                                        'income_filter_flag': income_filter_flag,
-                                        'expense_filter_flag': expense_filter_flag})
+                                        'expenseCategoriesDict' : expenseCategoriesDict})
 
                     if income_category != 0:
                         incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=income_category)
@@ -161,14 +155,12 @@ def history(request):
                                         'income_category': income_category,
                                         'incomeCategoriesDict': incomeCategoriesDict,
                                         'expense_category': expense_category,
-                                        'expenseCategoriesDict' : expenseCategoriesDict,
-                                        'income_filter_flag': income_filter_flag,
-                                        'expense_filter_flag': expense_filter_flag})
+                                        'expenseCategoriesDict' : expenseCategoriesDict})
                 
             ################################# Фильтр категорий расходов ######################################################
             if request.POST.get('expense_filter_history') == 'expense filter inner':
-                income_filter_flag = True
-                expense_filter_flag = False
+                income_category = None
+                
                 expense_category = request.POST.get('expense_filter_history')
                 innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
                 transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
@@ -195,8 +187,8 @@ def history(request):
 
             if request.POST.get('expense_filter_history') is not None:
                 if request.POST.get('expense_filter_history').isdigit():
-                    income_filter_flag = True
-                    expense_filter_flag = False
+                    income_category = None
+                    
                     expense_category = int(request.POST.get('expense_filter_history'))
                     if expense_category == 0:
                         expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
@@ -217,9 +209,7 @@ def history(request):
                                         'income_category': income_category,
                                         'incomeCategoriesDict': incomeCategoriesDict,
                                         'expense_category': expense_category,
-                                        'expenseCategoriesDict' : expenseCategoriesDict,
-                                        'income_filter_flag': income_filter_flag,
-                                        'expense_filter_flag': expense_filter_flag})
+                                        'expenseCategoriesDict' : expenseCategoriesDict})
                     if expense_category != 0:
                             expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=expense_category)
                             transactions = sorted(expenseT, key=attrgetter('date'), reverse=True)
@@ -238,9 +228,7 @@ def history(request):
                                             'income_category': income_category,
                                             'incomeCategoriesDict': incomeCategoriesDict,
                                             'expense_category': expense_category,
-                                            'expenseCategoriesDict' : expenseCategoriesDict,
-                                            'income_filter_flag': income_filter_flag,
-                                            'expense_filter_flag': expense_filter_flag})
+                                            'expenseCategoriesDict' : expenseCategoriesDict})
         #################################################################################################################
     
         
@@ -268,6 +256,4 @@ def history(request):
                     'income_category': income_category,
                     'incomeCategoriesDict': incomeCategoriesDict,
                     'expense_category': expense_category,
-                    'expenseCategoriesDict' : expenseCategoriesDict,
-                    'income_filter_flag': income_filter_flag,
-                    'expense_filter_flag': expense_filter_flag})
+                    'expenseCategoriesDict' : expenseCategoriesDict})
