@@ -11,28 +11,35 @@
         <div class="col-md-auto">
             <form id="history-page__month-and-categories-filter" method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
-                <select name="month_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if not transactions %}selected{% endif %}>Период</option>
-                    {% for key in monthDict %}
-                        <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
-                    {% endfor %}
-                </select>
-
-                <select name="income_filter_history" id="category-filter__income" onchange="applyActionsAndSubmit([resetExpenseFilter])">
-                    <option value="" disabled {% if income_category == None %}selected{% endif %}>Категории зачислений</option>
-                    {% for key in incomeCategoriesDict %}
-                        <option value="{{key}}" {% if income_category == key %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
-                    {% endfor %}
-                </select>
-
-                <select name="expense_filter_history" id="category-filter__expense" onchange="applyActionsAndSubmit([resetIncomeFilter])();">
-                    <option value="" disabled {% if expense_category == None %}selected{% endif %}>Категории расходов</option>
-                    {% for key in expenseCategoriesDict %}
-                        <option value="{{key}}" {% if expense_category == key %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
-                    {% endfor %}
-                </select>
-                <button onclick="applyActionsAndSubmit([resetIncomeFilter, resetExpenseFilter])">Сбросить фильтры</button>
-
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-6">
+                        <select class="form-control form-control-sm" name="month_filter_history" onchange="this.form.submit()">
+                            <option disabled {% if not transactions %}selected{% endif %}>Период</option>
+                            {% for key in monthDict %}
+                                <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control form-control-sm" name="income_filter_history" id="category-filter__income" onchange="applyActionsAndSubmit([resetExpenseFilter])">
+                            <option value="" disabled {% if income_category == None %}selected{% endif %}>Категории зачислений</option>
+                            {% for key in incomeCategoriesDict %}
+                                <option value="{{key}}" {% if income_category == key %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control form-control-sm" name="expense_filter_history" id="category-filter__expense" onchange="applyActionsAndSubmit([resetIncomeFilter])();">
+                            <option value="" disabled {% if expense_category == None %}selected{% endif %}>Категории расходов</option>
+                            {% for key in expenseCategoriesDict %}
+                                <option value="{{key}}" {% if expense_category == key %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-light mt-1" onclick="applyActionsAndSubmit([resetIncomeFilter, resetExpenseFilter])">Сбросить фильтры</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
