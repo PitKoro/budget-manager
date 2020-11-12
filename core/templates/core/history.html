@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load core_custom_tags %}
+{% load static %}
 
 {% block title %}История{% endblock %}
 
@@ -8,7 +9,7 @@
     <h1 class="text-center my-4">История</h1>
     <div class="row justify-content-center">
         <div class="col-md-auto">
-            <form method="POST" action="{% url 'core:history' %}">
+            <form id="form_filter_history" method="POST" action="{% url 'core:history' %}">
                 {% csrf_token %}
                 <select name="month_filter_history" onchange="this.form.submit()">
                     <option disabled {% if not transactions %}selected{% endif %}>Период</option>
@@ -17,15 +18,15 @@
                     {% endfor %}
                 </select>
 
-                <select name="income_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
+                <select name="income_filter_history" id="income_select" onchange="change_selected_expense_option()">
+                    <option value="" disabled {% if income_filter_flag %}selected{% endif %}>Категории зачислений</option>
                     {% for key in incomeCategoriesDict %}
                         <option value="{{key}}" {% if income_category == key and not income_filter_flag %}selected{% endif %}>{{ incomeCategoriesDict|index_search:key }}</option>
                     {% endfor %}
                 </select>
 
-                <select name="expense_filter_history" onchange="this.form.submit()">
-                    <option disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
+                <select name="expense_filter_history" id="expense_select" onchange="change_selected_income_option();">
+                    <option value="" disabled {% if expense_filter_flag %}selected{% endif %}>Категории расходов</option>
                     {% for key in expenseCategoriesDict %}
                         <option value="{{key}}" {% if expense_category == key and not expense_filter_flag %}selected{% endif %}>{{ expenseCategoriesDict|index_search:key }}</option>
                     {% endfor %}
@@ -194,4 +195,8 @@
     {% else %}
         <p class="text-center text-muted h1 mt-5">Транзакций в текущем месяце нет</p>
     {% endif %}
+{% endblock %}
+
+{% block javascript %}
+  <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
