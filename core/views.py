@@ -85,14 +85,12 @@ def history(request):
             month_filter = month_year_filter[0]
             year_filter = month_year_filter[1]
 
-            if request.POST.get('income_filter_history') == 'income filter all':
+            if request.POST.get('income_filter_history') == 'income filter inner':
                 income_filter_flag = False
                 expense_filter_flag = True
                 income_category = request.POST.get('income_filter_history')
-                incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
                 innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+                transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
 
                 monthDict = get_month()
                 incomeCategoriesDict = get_income_categories()
@@ -168,15 +166,12 @@ def history(request):
                                         'expense_filter_flag': expense_filter_flag})
                 
             ################################# Фильтр категорий расходов ######################################################
-            if request.POST.get('expense_filter_history') == 'expense filter all':
-                print("DONE expense_filter_history")
+            if request.POST.get('expense_filter_history') == 'expense filter inner':
                 income_filter_flag = True
                 expense_filter_flag = False
                 expense_category = request.POST.get('expense_filter_history')
-                incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
                 innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+                transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
 
                 monthDict = get_month()
                 incomeCategoriesDict = get_income_categories()

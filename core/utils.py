@@ -124,8 +124,8 @@ def get_month():
 
 def get_income_categories():
     incomeT = IncomeTransaction.objects.all()
-    incomeCategoriesDict = {    "income filter all": "Все транзакции",
-                                0: "Только зачисления"}
+    incomeCategoriesDict = {    "income filter inner": "Внутренние переводы",
+                                0: "Все зачисления"}
 
     for el in incomeT:
         incomeCategoriesDict.update({el.income_category.id: el.income_category.name})
@@ -134,8 +134,8 @@ def get_income_categories():
 
 def get_expense_categories():
     expenseT = ExpenseTransaction.objects.all()
-    expenseCategoriesDict = {   "expense filter all": "Все транзакции",
-                                0: "Только расходы"}
+    expenseCategoriesDict = {   "expense filter inner": "Внутренние переводы",
+                                0: "Все расходы"}
 
     for el in expenseT:
         expenseCategoriesDict.update({el.expense_category.id: el.expense_category.name})
