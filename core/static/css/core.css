@@ -114,7 +114,7 @@ aside {
   color: #ecebec;
 }
 
-.row{
+.row-main{
   flex-wrap: nowrap;
 }
 
@@ -213,6 +213,7 @@ ul, li{
   height: 20px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .report-header{
   margin-top: 20px;
@@ -233,6 +234,13 @@ ul, li{
   margin-left: 50px;
 }
 =======
+=======
+
+.form-control {
+  min-height: 38px;
+}
+
+>>>>>>> origin/history-design
 .form-control.is-invalid{
   background-position: right calc(.375em + .9rem) center;
 }
