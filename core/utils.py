@@ -2,29 +2,39 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
-from datetime import date, timedelta
 from functools import reduce
 from itertools import chain
 from operator import attrgetter
 
-def get_balance(account):
-    outer_income = account.incometransaction_set.aggregate(
+import datetime
+
+
+def get_balance(account, date_to=datetime.date.today()):
+    outer_income = account.incometransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_income = account.inner_transaction_to_set.aggregate(
+    inner_income = account.inner_transaction_to_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    outer_expense = account.expensetransaction_set.aggregate(
+    outer_expense = account.expensetransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_expense = account.inner_transaction_from_set.aggregate(
+    inner_expense = account.inner_transaction_from_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    return (outer_income + inner_income - outer_expense - inner_expense)
+    return outer_income + inner_income - outer_expense - inner_expense
 
 
 def post_income_transaction(data):
@@ -102,10 +112,7 @@ def get_account_list():
     return account_list
 
 
-def get_current_week_transactions():
-    date_to = date.today()
-    date_from = date_to - timedelta(days=date_to.weekday())
-
+def get_transactions_for_period(date_from, date_to):
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
     )
@@ -151,3 +158,29 @@ def get_current_week_transactions():
         })
 
     return result
+
+
+def get_current_week_transactions():
+    date_to = datetime.date.today()
+    date_from = date_to - datetime.timedelta(days=date_to.weekday())
+
+    return get_transactions_for_period(date_from, date_to)
+
+
+def get_expenses_for_this_month():
+    today = datetime.date.today()
+    transactions = ExpenseTransaction.objects.values(
+        'expense_category__name'
+    ).filter(
+        date__range=[datetime.date(today.year, today.month, 1), today]
+    ).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['expense_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))

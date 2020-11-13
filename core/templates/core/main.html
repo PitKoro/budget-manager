@@ -1,49 +1,73 @@
 {% extends 'core/base.html' %} {% block title %}Главная страница{% endblock %}
+{% load static %}
+
 
 {% block content %}
-  <div class="row">
+  <div class="row main-content">
     
-    <div class="left-forms">
 
-        <div class="features expense-form">
-            <form method="POST" action="{% url 'core:main' %}">
-              {% csrf_token %}
-              <h5 class="text-center">Расход</h5>
-              <input type="text" name="form" hidden value="expf">
-              {% include "core/base_form.html" with form=expence_form %}
-            </form>
-        </div>
+    <div class="col col-main">
+      
 
-        <div class="features income-form">
-          <form method="POST" action="{% url 'core:main' %}">
-            {% csrf_token %}
-            <h5 class="text-center">Приход</h5>
-            <input type="text" name="form" hidden value="incf">
-            {% include "core/base_form.html" with form=income_form%}
-          </form>
+      <div class="content-rec expense-form">
+        <div class="btn-chose-form">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+            <label class="btn btn-secondary active">
+              <input type="radio" autocomplete="off" name="form-choose" {% if visible_form == 'expense' %} checked {% endif %} onclick="chooseForm('expense')" />Расход
+            </label>
+            <label class="btn btn-secondary ">
+              <input type="radio" name="form-choose" {% if visible_form == 'income' %} checked {% endif %} onclick="chooseForm('income')" /> Приход
+            </label>
+          </div>
         </div>
+        <form method="POST"  class="my-form  {% if visible_form != 'expense' %}invisible{% endif %}" id="main-page__expence-form" action="{% url 'core:main' %}"  >
+          {% csrf_token %}
+          <input type="text" name="form" hidden value="expf">
+          {% include "core/base_form.html" with form=expence_form %}
+        </form>
+        <form method="POST" class="my-form {% if visible_form != 'income' %}invisible{% endif %}" id="main-page__income-form" action="{% url 'core:main' %}">
+          {% csrf_token %}
+          <input type="text" name="form" hidden value="incf">
+          {% include "core/base_form.html" with form=income_form%}
+        </form>
+      </div>
     </div>
 
-
     
-    <div class="col">
+    
+    <div class="col col-main-center">
+      <div class="content-rec expenses-diag" id="main-page__expense-chart">
+        <h5 class="text-center">
+        Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
+        </h5>
+      </div>
       {% if account_list %}
-        <ul>
-
-        {% for account in account_list %}
-          <li><h5>{{ account.name }}: <small>{{account.amount}}р.</small></h5></li>
-        {% endfor %}
-
-        </ul>
+        <div class="content-rec balance">
+          <h5 class="text-center">Баланс</h5><br>
+          {% for account in account_list %}
+              <h6>{{ account.name }}: <small>{{account.amount | floatformat:2}}р.</small></h6>
+          {% endfor %}
+        </div>
       {% else %}
         <p>No accounts are available.</p>
       {% endif %}
+      
+      <div class="content-rec expenses">
+        <h5 class="text-center">За этот месяц</h5><br>
+        {% if expenses %}
+          {% for exp in expenses %}
+            <h6>{{exp.name}}: <small>{{exp.amount | floatformat:2}}</small></h6>
+          {% endfor %}
+        {% else %}
+          <h6 class="text-center">Ещё нет расходов</h6>
+        {% endif %}
+      </div>
     </div>
 
     
 
-    <div class="col">
-        <div class="features history-log">
+    <div class="col col-main">
+        <div class="content-rec history-log">
             <h5 class="text-center">Последние транзакции</h5>
             <div class="go-away-scroll-bar">
             <div class="latest-transactions">
@@ -52,26 +76,33 @@
                       <div class="card cd-main">
                         <div class="card-header cd-h-main">
                             <div class="row">
-                                <div class="col-sm-5">{{ el.from }}</div>
-                                <div class="col-sm history-date">{{ el.date }}</div>
+                                {% if el.type == 'inner' %}
+                                  <div class="col-sm">{{el.from}} -> {{el.to}}</div>
+                                {% else %}
+                                  <div class="col-sm">{{ el.from }}</div>
+                                {% endif %}
+                                <div class="col-sm-5 history-date">{{ el.date|date:"j E" }}</div>
                             </div>
                         </div>
                         <div class="card-body cd-b-main">
                             <div class="row justify-content-around">
-                                <div class="col">
+                                <div class="col-sm">
                                     <fieldset class="reset-this redo-fieldset">
                                         <legend class="reset-this redo-legend cd-sm-main"> Сумма </legend>
                                         <h5 class="card-title  text-center cd-med-main">
-                                          {% if el.type == 'income' %}+{% else %}-{% endif %}
+                                          {% if el.type == 'income' %}+{% elif el.type == 'expense' %}-{% endif %}
                                           {{ el.amount | floatformat:2 }} руб.</h5>
                                     </fieldset>    
                                 </div>
-                                <div class="col">
+                                <div class="col-sm">
                                     <fieldset class="reset-this redo-fieldset">
                                         <legend class="reset-this redo-legend cd-sm-main"> Категория </legend>
-                                        <h5 class="card-title  text-center cd-med-main">{{ el.to }}</h5>
-                                    </fieldset>  
-                                    
+                                        {% if el.type == 'inner' %}
+                                          <h5 class="card-title  text-center cd-med-main">Внутренние переводы</h5>
+                                        {% else %}
+                                          <h5 class="card-title  text-center cd-med-main">{{ el.to }}</h5>
+                                        {% endif %}
+                                    </fieldset>
                                 </div>
                             </div>
                         </div>
@@ -84,4 +115,19 @@
     </div>
 
   </div>
+  <div class="row" id='main-page__expense-chart'></div>
+{% endblock %}
+
+{% block javascript%}
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  <script type="text/javascript">
+    let data = [
+      ['Категория', 'Сумма расходов'],
+      {% for tran in expenses %}
+          ['{{tran.name}}', '{{tran.amount}}'],
+      {% endfor %}
+    ]
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(() => drawChart(data));
+  </script>
 {% endblock %}

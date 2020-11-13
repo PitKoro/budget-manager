@@ -14,12 +14,15 @@
       href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"
       rel="stylesheet"
     />
-    <link href="{% static 'css/core.css' %}" rel="stylesheet" />
+    
     <!-- fontawesome CSS -->
     <link
       rel="stylesheet"
       href="{% static 'vendor/fontawesome/css/all.css' %}"
     />
+
+    <!-- Custom CSS -->
+    <link href="{% static 'css/core.css' %}" rel="stylesheet" />
   </head>
 
   <body>
@@ -54,5 +57,13 @@
       type="text/javascript"
       src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
     ></script>
+    <!-- Google charts JS -->
+    <script
+      type="text/javascript"
+      src="{% static 'vendor/google-charts/js/loader.js' %}"
+    ></script>
+
+    {% block javascript %}
+    {% endblock %}
   </body>
 </html>
