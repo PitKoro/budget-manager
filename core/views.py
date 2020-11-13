@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
+from .models import IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
 
 import core.utils as utils
 
-from functools import reduce
 from itertools import chain
 from operator import attrgetter
 
@@ -33,17 +32,14 @@ def main(request):
 
     url_name = request.resolver_match.url_name
 
-    expenses = utils.get_expenses_for_this_month()
-
     return render(request, 'core/main.html', {
         'account_list': utils.get_account_list(),
         'latest_transactions': utils.get_current_week_transactions(),
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        'expense_chart_data': utils.get_expenses_for_this_month(),
         'visible_form': visible_form,
-        'expenses': expenses
+        'expenses': utils.get_expenses_for_this_month()
     })
 
 

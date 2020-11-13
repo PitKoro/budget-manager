@@ -111,6 +111,7 @@ def get_account_list():
 
     return account_list
 
+
 def get_transactions_for_period(date_from, date_to):
     income_transactions = IncomeTransaction.objects.filter(
         date__range=[date_from, date_to]
@@ -164,54 +165,6 @@ def get_current_week_transactions():
     date_from = date_to - datetime.timedelta(days=date_to.weekday())
 
     return get_transactions_for_period(date_from, date_to)
-
-    # income_transactions = IncomeTransaction.objects.filter(
-    #     date__range=[date_from, date_to]
-    # )
-    # expense_transactions = ExpenseTransaction.objects.filter(
-    #     date__range=[date_from, date_to]
-    # )
-    # inner_transactions = InnerTransaction.objects.filter(
-    #     date__range=[date_from, date_to]
-    # )
-
-    # tran_list = sorted(
-    #     (chain(income_transactions, expense_transactions, inner_transactions)),
-    #     key=attrgetter('date'),
-    #     reverse=True
-    # )
-
-    # result = []
-    # for transaction in tran_list:
-    #     type_name = ''
-    #     from_name = ''
-    #     to_name = ''
-
-    #     if isinstance(transaction, IncomeTransaction):
-    #         type_name = 'income'
-    #         from_name = transaction.income_category.name
-    #         to_name = transaction.account.name
-    #     elif isinstance(transaction, ExpenseTransaction):
-    #         type_name = 'expense'
-    #         from_name = transaction.account.name
-    #         to_name = transaction.expense_category.name
-    #     elif isinstance(transaction, InnerTransaction):
-    #         type_name = 'inner'
-    #         from_name = transaction.account_from.name
-    #         to_name = transaction.account_to.name
-
-    #     result.append({
-    #         'type': type_name,
-    #         'date': transaction.date,
-    #         'amount': transaction.amount / 100,
-    #         'from': from_name,
-    #         'to': to_name,
-    #         'commentary': transaction.commentary
-    #     })
-
-    # return result
-
-
 
 
 def get_expenses_for_this_month():

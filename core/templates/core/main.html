@@ -54,12 +54,13 @@
       
       <div class="content-rec expenses">
         <h5 class="text-center">За этот месяц</h5><br>
-        {% if expenses is not defined %}
-          <h6 class="text-center">ещё нет расходов</h6>
+        {% if expenses %}
+          {% for exp in expenses %}
+            <h6>{{exp.name}}: <small>{{exp.amount | floatformat:2}}</small></h6>
+          {% endfor %}
+        {% else %}
+          <h6 class="text-center">Ещё нет расходов</h6>
         {% endif %}
-        {% for exp in expenses %}
-          <h6>{{exp.name}}: <small>{{exp.amount | floatformat:2}}</small></h6>
-        {% endfor %}
       </div>
     </div>
 
@@ -101,8 +102,7 @@
                                         {% else %}
                                           <h5 class="card-title  text-center cd-med-main">{{ el.to }}</h5>
                                         {% endif %}
-                                    </fieldset>  
-                                    
+                                    </fieldset>
                                 </div>
                             </div>
                         </div>
@@ -123,13 +123,11 @@
   <script type="text/javascript">
     let data = [
       ['Категория', 'Сумма расходов'],
-      {% for tran in expense_chart_data %}
+      {% for tran in expenses %}
           ['{{tran.name}}', '{{tran.amount}}'],
       {% endfor %}
     ]
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(() => drawChart(data));
-      
-      
   </script>
 {% endblock %}
