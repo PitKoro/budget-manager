@@ -1,10 +1,8 @@
 from django.shortcuts import render
-from itertools import chain
-from operator import attrgetter
 from .models import Account, IncomeTransaction, ExpenseTransaction, InnerTransaction
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm 
-from .utils import get_balance, post_income_transaction, post_expense_transaction, get_month, find_nums_in_str, get_income_categories, get_expense_categories
+import core.utils as utils
 from functools import reduce
 import datetime
 
@@ -56,44 +54,38 @@ def report(request):
 
 
 def history(request):
-    url_name = request.resolver_match.url_name
+    url_name = request.resolver_match.url_name # Получение имени активной страницы
+
     now = datetime.datetime.now()
-    month_filter = now.month
-    year_filter = now.year
-    income_category = 0
-    expense_category = 0
-    income_category = None
-    expense_category = None
+    month_filter = now.month # Значение месяца по умолчанию для фильра по месяцу и году
+    year_filter = now.year # Значение года по умолчанию для фильра по месяцу и году
+    income_category = None # Значение фильтра по категориям дохода
+    expense_category = None # Значение фильтра по категориям расхода
 
-    if request.method == 'POST':
+    if request.method == 'POST': # Если пользователь воспользовался любым фильтром или удалением транзакции
 
-        if request.POST.get('IncomeTransactionId'):
-            IncomeTransactionId=int(request.POST.get('IncomeTransactionId'))
-            IncomeTransaction.objects.filter(id=IncomeTransactionId).delete()
+        if request.POST.get('IncomeTransactionId'): # Если пользователь воспользовался удалением транзакции дохода
+            utils.delete_transaction(request, request.POST.get('IncomeTransactionId')) # Удаление транзакции дохода
     
-        if request.POST.get('InnerTransactionId'):
-            InnerTransactionId=int(request.POST.get('InnerTransactionId'))
-            InnerTransaction.objects.filter(id=InnerTransactionId).delete()
+        if request.POST.get('InnerTransactionId'): # Если пользователь воспользовался удалением внутренней транзакции 
+            utils.delete_transaction(request, request.POST.get('InnerTransactionId')) # Удаление внутренней транзакции
 
-        if request.POST.get('ExpenseTransactionId'):
-            ExpenseTransactionId=int(request.POST.get('ExpenseTransactionId'))
-            ExpenseTransaction.objects.filter(id=ExpenseTransactionId).delete()
+        if request.POST.get('ExpenseTransactionId'): # Если пользователь воспользовался удалением транзакции расхода
+            utils.delete_transaction(request, request.POST.get('ExpenseTransactionId')) # Удаление транзакции расхода
 
-        if request.POST.get('month_filter_history'): #TODO вместо этого if можно рендерить страницу после удаления транзакции
-            month_year_filter = request.POST.get('month_filter_history')
-            month_year_filter = find_nums_in_str(month_year_filter)
-            month_filter = month_year_filter[0]
-            year_filter = month_year_filter[1]
+        if request.POST.get('month_filter_history'): # Если пользователь применил фильтр по месяцу и году
+            month_year_filter = utils.get_month_year_filter(request.POST.get('month_filter_history')) # Получение значения фильтра по месяцам и годам в виде пары (month, year)
+            month_filter = month_year_filter[0] # Получение значения месяца из пары (month, year)
+            year_filter = month_year_filter[1] # Получение значения года из пары (month, year)
 
-            if request.POST.get('income_filter_history') == 'income filter inner':
+            if request.POST.get('income_filter_history') == 'income filter inner': # Если в фильтре категориях дохода выбрано значение "Внутренние переводы"
                 expense_category = None
-                income_category = request.POST.get('income_filter_history')
-                innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
+                income_category = request.POST.get('income_filter_history') # Получение значения фильтра по категориям дохода
+                transactions = utils.get_inner_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех внутренних транзакций с учетом фильтра по месяцам и годам
 
-                monthDict = get_month()
-                incomeCategoriesDict = get_income_categories()
-                expenseCategoriesDict = get_expense_categories()
+                monthDict = get_month() # Получение всех месяцев и годов существующих транзакций
+                incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                 return render(
                                 request, 'core/history.html',
@@ -107,16 +99,16 @@ def history(request):
                                 'expense_category': expense_category,
                                 'expenseCategoriesDict' : expenseCategoriesDict})
 
-            if request.POST.get('income_filter_history') is not None:
-                if request.POST.get('income_filter_history').isdigit():
+            if request.POST.get('income_filter_history') is not None: # Если пользователь применил фильтр по категориям дохода
+                if request.POST.get('income_filter_history').isdigit(): # Если значение фильтра по категориям дохода число
                     expense_category = None
-                    income_category = int(request.POST.get('income_filter_history'))
+                    income_category = int(request.POST.get('income_filter_history')) # Получение значения фильтра по категориям дохода
                     if income_category == 0:
-                        incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                        transactions = sorted(incomeT, key=attrgetter('date'), reverse=True)
-                        monthDict = get_month()
-                        incomeCategoriesDict = get_income_categories()
-                        expenseCategoriesDict = get_expense_categories()
+                        transactions = utils.get_income_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех транзакций дохода с учетом фильтра по месяцам и годам
+                        
+                        monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+                        incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                        expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                         return render(
                                         request, 'core/history.html',
@@ -130,12 +122,11 @@ def history(request):
                                         'expense_category': expense_category,
                                         'expenseCategoriesDict' : expenseCategoriesDict})
 
-                    if income_category != 0:
-                        incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=income_category)
-                        transactions = sorted(incomeT, key=attrgetter('date'), reverse=True)
-                        monthDict = get_month()
-                        incomeCategoriesDict = get_income_categories()
-                        expenseCategoriesDict = get_expense_categories()
+                    if income_category != 0: # Если значение фильтра по категориям дохода любое число кроме нуля
+                        transactions = utils.get_income_transaction_with_month_and_year_filter_and_category_filter(year_filter, month_filter, income_category) # Получение всех транзакций дохода с учетом фильтра по месяцам и годам и фильтра по категориям
+                        monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+                        incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                        expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                         return render(
                                         request, 'core/history.html',
@@ -148,18 +139,16 @@ def history(request):
                                         'incomeCategoriesDict': incomeCategoriesDict,
                                         'expense_category': expense_category,
                                         'expenseCategoriesDict' : expenseCategoriesDict})
-                
-            ################################# Фильтр категорий расходов ######################################################
-            if request.POST.get('expense_filter_history') == 'expense filter inner':
+
+            if request.POST.get('expense_filter_history') == 'expense filter inner': # Если пользователь применил фильтр по категориям расхода
                 income_category = None
-                
-                expense_category = request.POST.get('expense_filter_history')
-                innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
+                expense_category = request.POST.get('expense_filter_history') # Получение значения фильтра по категориям расхода
 
-                monthDict = get_month()
-                incomeCategoriesDict = get_income_categories()
-                expenseCategoriesDict = get_expense_categories()
+                transactions = utils.get_inner_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех внутренних транзакций с учетом фильтра по месяцам и годам
+
+                monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+                incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                 return render(
                                 request, 'core/history.html',
@@ -176,14 +165,13 @@ def history(request):
             if request.POST.get('expense_filter_history') is not None:
                 if request.POST.get('expense_filter_history').isdigit():
                     income_category = None
-                    
-                    expense_category = int(request.POST.get('expense_filter_history'))
+                    expense_category = int(request.POST.get('expense_filter_history')) # Получение значения фильтра по категориям расхода
+
                     if expense_category == 0:
-                        expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-                        transactions = sorted(expenseT, key=attrgetter('date'), reverse=True)
-                        monthDict = get_month()
-                        incomeCategoriesDict = get_income_categories()
-                        expenseCategoriesDict = get_expense_categories()
+                        transactions = utils.get_expense_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех транзакций расхода с учетом фильтра по месяцам и годам
+                        monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+                        incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                        expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                         return render(
                                         request, 'core/history.html',
@@ -198,11 +186,10 @@ def history(request):
                                         'expenseCategoriesDict' : expenseCategoriesDict})
 
                     if expense_category != 0:
-                            expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=expense_category)
-                            transactions = sorted(expenseT, key=attrgetter('date'), reverse=True)
-                            monthDict = get_month()
-                            incomeCategoriesDict = get_income_categories()
-                            expenseCategoriesDict = get_expense_categories()
+                            transactions = utils.get_expense_transaction_with_month_and_year_filter_and_category_filter(year_filter, month_filter, expense_category) # Получение всех транзакций расхода с учетом фильтра по месяцам и годам и фильтра по категориям
+                            monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+                            incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+                            expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
                             return render(
                                             request, 'core/history.html',
@@ -215,16 +202,11 @@ def history(request):
                                             'incomeCategoriesDict': incomeCategoriesDict,
                                             'expense_category': expense_category,
                                             'expenseCategoriesDict' : expenseCategoriesDict})
-        #################################################################################################################
     
-    incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-    expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-    innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
-    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
-
-    monthDict = get_month()
-    incomeCategoriesDict = get_income_categories()
-    expenseCategoriesDict = get_expense_categories()
+    transactions = utils.get_all_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех существующих транзакций с учетом фильтра по месяцам и годам
+    monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+    incomeCategoriesDict = utils.get_income_categories() # Получение всех категорий дохода в существующих транзакциях
+    expenseCategoriesDict = utils.get_expense_categories() # Получение всех категорий расхода в существующих транзакциях
 
     return render(
                     request, 'core/history.html',

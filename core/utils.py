@@ -2,6 +2,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 from itertools import chain
+from operator import attrgetter
 import re
 
 
@@ -147,3 +148,71 @@ def find_nums_in_str(s):
     nums = re.findall(r'\d+', s)
     nums = [int(i) for i in nums]
     return nums
+
+
+def get_all_transaction_with_month_and_year_filter(year_filter, month_filter):
+    incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    transactions = sorted((chain(incomeT, expenseT, innerT)), key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def get_inner_transaction_with_month_and_year_filter(year_filter, month_filter):
+    innerT = InnerTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    transactions = sorted(innerT, key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def get_income_transaction_with_month_and_year_filter(year_filter, month_filter):
+    incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    transactions = sorted(incomeT, key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def get_income_transaction_with_month_and_year_filter_and_category_filter(year_filter, month_filter, income_category):
+    incomeT = IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=income_category)
+    transactions = sorted(incomeT, key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def get_expense_transaction_with_month_and_year_filter(year_filter, month_filter):
+    expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter)
+    transactions = sorted(expenseT, key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def get_expense_transaction_with_month_and_year_filter_and_category_filter(year_filter, month_filter, expense_category):
+    expenseT = ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=expense_category)
+    transactions = sorted(expenseT, key=attrgetter('date'), reverse=True)
+    return transactions
+
+
+def delete_income_transaction(POST_value):
+    IncomeTransactionId=int(POST_value)
+    IncomeTransaction.objects.filter(id=IncomeTransactionId).delete()
+
+
+def delete_expense_transaction(POST_value):
+    ExpenseTransactionId=int(POST_value)
+    ExpenseTransaction.objects.filter(id=ExpenseTransactionId).delete()
+
+
+def delete_inner_transaction(POST_value):
+    InnerTransactionId=int(POST_value)
+    InnerTransaction.objects.filter(id=InnerTransactionId).delete()
+
+
+def delete_transaction(request, POST_value):
+    if POST_value == request.POST.get('IncomeTransactionId'):
+        delete_income_transaction(POST_value)
+    if POST_value == request.POST.get('ExpenseTransactionId'):
+        delete_expense_transaction(POST_value)
+    if POST_value == request.POST.get('InnerTransactionId'):
+        delete_inner_transaction(POST_value)
+
+
+def get_month_year_filter(POST_value):
+    month_year_filter = POST_value
+    month_year_filter = find_nums_in_str(month_year_filter)
+    return month_year_filter
