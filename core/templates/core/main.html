@@ -37,7 +37,7 @@
     
     <div class="col col-main-center">
       <div class="content-rec expenses-diag" id="main-page__expense-chart">
-        <h5 class="text-center"><!-- Здесь будут отображаться расходы за месяц в виде диаграммы -->
+        <h5 class="text-center">
         Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
         </h5>
       </div>
@@ -54,8 +54,11 @@
       
       <div class="content-rec expenses">
         <h5 class="text-center">За этот месяц</h5><br>
+        {% if expenses is not defined %}
+          <h6 class="text-center">ещё нет расходов</h6>
+        {% endif %}
         {% for exp in expenses %}
-          <h6>{{exp.name}}: <small>{{exp.value | floatformat:2}}</small></h6>
+          <h6>{{exp.name}}: <small>{{exp.amount | floatformat:2}}</small></h6>
         {% endfor %}
       </div>
     </div>

@@ -33,7 +33,7 @@ def main(request):
 
     url_name = request.resolver_match.url_name
 
-    expenses = utils.get_expenses()
+    expenses = utils.get_expenses_for_this_month()
 
     return render(request, 'core/main.html', {
         'account_list': utils.get_account_list(),
@@ -41,7 +41,7 @@ def main(request):
         'url_name': url_name,
         'income_form': formIF,
         'expence_form': formEF,
-        'expense_chart_data': utils.get_data_for_expense_diagram(),
+        'expense_chart_data': utils.get_expenses_for_this_month(),
         'visible_form': visible_form,
         'expenses': expenses
     })

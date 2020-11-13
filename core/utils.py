@@ -212,27 +212,9 @@ def get_current_week_transactions():
     # return result
 
 
-def get_expenses(date_to=datetime.date.today()):
-    expenses_dic = {}
-    month_date = datetime.date(date_to.year, date_to.month, 1)
-    for cat in ExpenseCategory.objects.all():
-        expenses_dic[cat.name] = ExpenseTransaction.objects.filter(
-                expense_category_id=cat.id
-        ).filter(
-                date__range=[month_date, date_to]
-        ).aggregate(
-                amount=Coalesce(Sum('amount'), 0)
-        )['amount']/100
-    expenses_arr = []
-    for name, value in expenses_dic.items():
-        expenses_arr.append({
-            'name': name, 
-            'value': value
-        })
-    return expenses_arr
 
 
-def get_data_for_expense_diagram():
+def get_expenses_for_this_month():
     today = datetime.date.today()
     transactions = ExpenseTransaction.objects.values(
         'expense_category__name'
