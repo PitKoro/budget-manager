@@ -2,25 +2,39 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from .models import Account, IncomeCategory, IncomeTransaction, InnerTransaction, ExpenseCategory, ExpenseTransaction
 
+from functools import reduce
+from itertools import chain
+from operator import attrgetter
 
-def get_balance(account):
-    outer_income = account.incometransaction_set.aggregate(
+import datetime
+
+
+def get_balance(account, date_to=datetime.date.today()):
+    outer_income = account.incometransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_income = account.inner_transaction_to_set.aggregate(
+    inner_income = account.inner_transaction_to_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    outer_expense = account.expensetransaction_set.aggregate(
+    outer_expense = account.expensetransaction_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    inner_expense = account.inner_transaction_from_set.aggregate(
+    inner_expense = account.inner_transaction_from_set.filter(
+        date__lte=date_to
+    ).aggregate(
         amount=Coalesce(Sum('amount'), 0)
     )['amount']
 
-    return (outer_income + inner_income - outer_expense - inner_expense)
+    return outer_income + inner_income - outer_expense - inner_expense
 
 
 def post_income_transaction(data):
@@ -76,3 +90,97 @@ def post_expense_transaction(data):
             account_to=Account.objects.get(id=to_id)
         )
     transaction.save()
+
+
+def get_account_list():
+    account_list = []
+
+    for account in Account.objects.all():
+        account_list.append({
+            'name': account.name,
+            'amount': get_balance(account)/100
+        })
+    account_list.insert(0, {
+        'name': 'Всего',
+        'amount': reduce(
+            lambda acc, value: acc + value['amount'],
+            account_list,
+            0
+        )
+    })
+
+    return account_list
+
+
+def get_transactions_for_period(date_from, date_to):
+    income_transactions = IncomeTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+    expense_transactions = ExpenseTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+    inner_transactions = InnerTransaction.objects.filter(
+        date__range=[date_from, date_to]
+    )
+
+    tran_list = sorted(
+        (chain(income_transactions, expense_transactions, inner_transactions)),
+        key=attrgetter('date'),
+        reverse=True
+    )
+
+    result = []
+    for transaction in tran_list:
+        type_name = ''
+        from_name = ''
+        to_name = ''
+
+        if isinstance(transaction, IncomeTransaction):
+            type_name = 'income'
+            from_name = transaction.income_category.name
+            to_name = transaction.account.name
+        elif isinstance(transaction, ExpenseTransaction):
+            type_name = 'expense'
+            from_name = transaction.account.name
+            to_name = transaction.expense_category.name
+        elif isinstance(transaction, InnerTransaction):
+            type_name = 'inner'
+            from_name = transaction.account_from.name
+            to_name = transaction.account_to.name
+
+        result.append({
+            'type': type_name,
+            'date': transaction.date,
+            'amount': transaction.amount / 100,
+            'from': from_name,
+            'to': to_name,
+            'commentary': transaction.commentary
+        })
+
+    return result
+
+
+def get_current_week_transactions():
+    date_to = datetime.date.today()
+    date_from = date_to - datetime.timedelta(days=date_to.weekday())
+
+    return get_transactions_for_period(date_from, date_to)
+
+
+def get_expenses_for_this_month():
+    today = datetime.date.today()
+    transactions = ExpenseTransaction.objects.values(
+        'expense_category__name'
+    ).filter(
+        date__range=[datetime.date(today.year, today.month, 1), today]
+    ).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['expense_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))
