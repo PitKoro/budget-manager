@@ -5,42 +5,46 @@
 {% block content %}
   <h1 class="text-center report-header">Отчёт</h1>
   <div class="row">
-      <div class="col-8 content-rec">
-            <div class="row justify-content-center">
-                <div class="col-3 total-money enrollment ">
-                    <p class="text-center">Зачисления</p>
-                    <p class="text-center">{{ income_summ|division:100 }} руб</p>
-                </div> 
-    
-                <div class="col-3 total-money costs">
-                    <p class="text-center">Расходы</p>
-                    <p class="text-center">{{ expense_summ|division:100 }} руб</p>
-                </div>
-            </div>
+            <div class="col-4 content-rec">
+                <form method="POST" action="{% url 'core:report' %}">
+                    {% csrf_token %}
+                    <select name="month_filter_report" onchange="this.form.submit()">
+                        <option disabled>Период...</option>
+                        {% for key in monthDict %}
+                            <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
+                        {% endfor %}             
+                    </select>
 
-            <div class="row justify-content-center"> 
-                <div class="col-3 total-money enrollment">
-                    <p class="text-center"> Зарплата: {{ income_category_amount_summ1|division:100 }} руб</p>
-                    <p class="text-center"> Стипендия: {{ income_category_amount_summ2|division:100 }} руб</p>
-                    <p class="text-center"> Другое: {{ income_category_amount_summ3|division:100 }} руб</p>
+                </form>
+        </div>
+        <div class="col-8 content-rec">
+                <div class="row justify-content-center">
+                    <div class="col-3 total-money enrollment ">
+                        <p class="text-center">Зачисления</p>
+                        <p class="text-center">{{income_summ|division:100}} руб</p>
+                    </div> 
+        
+                    <div class="col-3 total-money costs">
+                        <p class="text-center">Расходы</p>
+                        <p class="text-center">{{expense_summ|division:100}} руб</p>
+                    </div>
                 </div>
-                <div class="col-3 total-money costs">
-                    <p class="text-center">Продукты: {{ expense_category_amount_summ1|division:100 }} руб</p>
-                    <p class="text-center">Коммунальные платежи: {{ expense_category_amount_summ2|division:100 }} руб</p>
-                    <p class="text-center">Развлечения: {{ expense_category_amount_summ3|division:100 }} руб</p>
-                    <p class="text-center">Другое: {{ expense_category_amount_summ4|division:100 }} руб</p>
-                </div>
-                
-            </div>
-      </div>
-      <div class="col-4 content-rec">
-        <form method="POST" action="{% url 'core:report' %}">
-            {% csrf_token %}
-            <select name="month_filter_report" onchange="this.form.submit()">
-                <option disabled>Период...</option>                
-            </select>
 
-        </form>
-      </div>
+                <div class="row justify-content-center"> 
+                    <div class="col-3 total-money enrollment">
+                        <p class="text-center"> Зарплата: {{income_category_amount_summ1|division:100}} руб</p>
+                        <p class="text-center"> Стипендия:{{income_category_amount_summ2|division:100}} руб</p>
+                        <p class="text-center"> Другое:   {{income_category_amount_summ3|division:100}} руб</p>
+                    </div>
+                    <div class="col-3 total-money costs">
+                        <p class="text-center">Продукты:            {{expense_category_amount_summ1|division:100}}  руб</p>
+                        <p class="text-center">Коммунальные платежи:{{expense_category_amount_summ2|division:100}}  руб</p>
+                        <p class="text-center">Развлечения:         {{expense_category_amount_summ3|division:100}}  руб</p>
+                        <p class="text-center">Другое:              {{expense_category_amount_summ4|division:100}}  руб</p>
+                    </div>
+                    
+                </div>
+        </div>
+      
   </div>
 {% endblock %}
