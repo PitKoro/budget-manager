@@ -209,6 +209,11 @@ ul, li{
   width: 100%;
   height: 20px;
 }
+
+.form-control {
+  min-height: 38px;
+}
+
 .form-control.is-invalid{
   background-position: right calc(.375em + .9rem) center;
 }
