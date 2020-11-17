@@ -114,14 +114,11 @@ aside {
   color: #ecebec;
 }
 
-.row{
-  flex-wrap: nowrap;
-}
-
 
 .main-content{
   /* margin: auto; */
   justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 
