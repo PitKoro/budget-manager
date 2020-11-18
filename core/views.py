@@ -43,7 +43,7 @@ def main(request):
     })
 
 
-def report(request):#rjvvtynfhbq
+def report(request):
     url_name = request.resolver_match.url_name
 
     now = datetime.datetime.now()
