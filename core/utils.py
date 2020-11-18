@@ -225,7 +225,7 @@ def delete_transaction(request, POST_value):
     if POST_value == request.POST.get('InnerTransactionId'):
         delete_inner_transaction(POST_value)
 
-# Получение значения фильтра по месяцам и годам в виде пары (month, year)
+# Получение значения фильтра по месяцам и годам в виде пары [month, year]
 def get_month_year_filter(POST_value):
     month_year_filter = POST_value
     month_year_filter = find_nums_in_str(month_year_filter)
