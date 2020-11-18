@@ -142,7 +142,7 @@ def get_income_categories():
                                 0: "Все зачисления"}
 
     for el in incomeT:
-        incomeCategoriesDict.update({el.income_category.id: el.income_category.name})
+        incomeCategoriesDict.update({el.income_category.id: el.income_category.name}) 
     
     return incomeCategoriesDict
 
@@ -355,3 +355,57 @@ def get_incomes_for_filter_month(month_filter, year_filter):
         },
         transactions
     ))
+
+
+def get_income_categories_name_and_amount(month_filter, year_filter):
+    
+    incomeC = IncomeCategory.objects.all()
+    categoriesName = []
+    for el in incomeC:
+        categoriesName.append(el.name)
+
+    income_transaction_list = []
+    for income in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter):
+        income_transaction_list.append(income.amount)
+    income_summ = sum(income_transaction_list)
+    IncomeCategoriesSummDict = {"Всего": income_summ}
+
+    categoriesSumm = []
+    for i in range(1, len(IncomeCategory.objects.all())+1):
+        income_category_amount_list = []
+        for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=i):
+            income_category_amount_list.append(el.amount)
+        income_category_amount_summ=sum(income_category_amount_list)
+        categoriesSumm.append(income_category_amount_summ)
+
+    for i in range(0, len(categoriesName)):
+        IncomeCategoriesSummDict.update({categoriesName[i]: categoriesSumm[i]})
+
+    return IncomeCategoriesSummDict
+
+
+def get_expense_categories_name_and_amount(month_filter, year_filter):
+    
+    expenseC = ExpenseCategory.objects.all()
+    categoriesName = []
+    for el in expenseC:
+        categoriesName.append(el.name)
+
+    expense_transaction_list = []
+    for expense in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter):
+        expense_transaction_list.append(expense.amount)
+    expense_summ = sum(expense_transaction_list)
+    ExpenseCategoriesSummDict = {"Всего": expense_summ}
+
+    categoriesSumm = []
+    for i in range(1, len(ExpenseCategory.objects.all())+1):
+        expense_category_amount_list = []
+        for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=i):
+            expense_category_amount_list.append(el.amount)
+        expense_category_amount_summ=sum(expense_category_amount_list)
+        categoriesSumm.append(expense_category_amount_summ)
+
+    for i in range(0, len(categoriesName)):
+        ExpenseCategoriesSummDict.update({categoriesName[i]: categoriesSumm[i]})
+
+    return ExpenseCategoriesSummDict

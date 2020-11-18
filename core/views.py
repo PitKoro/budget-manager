@@ -49,7 +49,7 @@ def report(request):#rjvvtynfhbq
     now = datetime.datetime.now()
     month_filter = now.month # Значение месяца по умолчанию для фильра по месяцу и году
     year_filter = now.year # Значение года по умолчанию для фильра по месяцу и году
-
+    monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
 
     if request.method == 'POST': # Если пользователь воспользовался фильтром
         if request.POST.get('month_filter_report'): # Если пользователь применил фильтр по месяцу и году
@@ -57,125 +57,21 @@ def report(request):#rjvvtynfhbq
             month_filter = month_year_filter[0] # Получение значения месяца из пары (month, year)
             year_filter = month_year_filter[1] # Получение значения года из пары (month, year)
 
-
-            income_transaction_list = []
-            for income in utils.get_income_transaction_with_month_and_year_filter(year_filter, month_filter):
-                income_transaction_list.append(income.amount)
-            income_summ = sum(income_transaction_list)
-
-            income_category_amount_list1 = []
-            for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=1):
-                income_category_amount_list1.append(el.amount)
-            income_category_amount_summ1=sum(income_category_amount_list1)
-
-            income_category_amount_list2 = []
-            for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=2):
-                income_category_amount_list2.append(el.amount)
-            income_category_amount_summ2=sum(income_category_amount_list2)
-
-            income_category_amount_list3 = []
-            for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=3):
-                income_category_amount_list3.append(el.amount)
-            income_category_amount_summ3=sum(income_category_amount_list3)
-
-            expense_transaction_list = []
-            for expense in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter):
-                expense_transaction_list.append(expense.amount)
-            expense_summ = sum(expense_transaction_list)
-
-            expense_category_amount_list1 = []
-            for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=1):
-                expense_category_amount_list1.append(el.amount)
-            expense_category_amount_summ1=sum(expense_category_amount_list1)
-
-            expense_category_amount_list2 = []
-            for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=2):
-                expense_category_amount_list2.append(el.amount)
-            expense_category_amount_summ2=sum(expense_category_amount_list2)
-
-            expense_category_amount_list3 = []
-            for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=3):
-                expense_category_amount_list3.append(el.amount)
-            expense_category_amount_summ3=sum(expense_category_amount_list3)
-
-            expense_category_amount_list4 = []
-            for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=4):
-                expense_category_amount_list4.append(el.amount)
-            expense_category_amount_summ4=sum(expense_category_amount_list4)
-
-            monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+            IncomeCategoriesSummDict = utils.get_income_categories_name_and_amount(month_filter, year_filter)
+            ExpenseCategoriesSummDict = utils.get_expense_categories_name_and_amount(month_filter, year_filter)
 
             return render(request, 'core/report.html', {'url_name': url_name, 'month_filter': month_filter, 'year_filter': year_filter, 'monthDict': monthDict, 
-                                                    'income_summ': income_summ,
-                                                    'expense_summ': expense_summ,
-                                                    'income_category_amount_summ1': income_category_amount_summ1,
-                                                    'income_category_amount_summ2': income_category_amount_summ2,
-                                                    'income_category_amount_summ3': income_category_amount_summ3,
-                                                    'expense_category_amount_summ1': expense_category_amount_summ1,
-                                                    'expense_category_amount_summ2': expense_category_amount_summ2,
-                                                    'expense_category_amount_summ3': expense_category_amount_summ3,
-                                                    'expense_category_amount_summ4': expense_category_amount_summ4,
+                                                    'IncomeCategoriesSummDict': IncomeCategoriesSummDict,
+                                                    'ExpenseCategoriesSummDict': ExpenseCategoriesSummDict,
                                                     'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
                                                     'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})
 
-
-    income_transaction_list = []
-    for income in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter):
-        income_transaction_list.append(income.amount)
-    income_summ = sum(income_transaction_list)
-
-    income_category_amount_list1 = []
-    for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=1):
-        income_category_amount_list1.append(el.amount)
-    income_category_amount_summ1=sum(income_category_amount_list1)
-
-    income_category_amount_list2 = []
-    for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=2):
-        income_category_amount_list2.append(el.amount)
-    income_category_amount_summ2=sum(income_category_amount_list2)
-
-    income_category_amount_list3 = []
-    for el in IncomeTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(income_category_id=3):
-        income_category_amount_list3.append(el.amount)
-    income_category_amount_summ3=sum(income_category_amount_list3)
-
-    expense_transaction_list = []
-    for expense in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter):
-        expense_transaction_list.append(expense.amount)
-    expense_summ = sum(expense_transaction_list)
-
-    expense_category_amount_list1 = []
-    for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=1):
-        expense_category_amount_list1.append(el.amount)
-    expense_category_amount_summ1=sum(expense_category_amount_list1)
-
-    expense_category_amount_list2 = []
-    for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=2):
-        expense_category_amount_list2.append(el.amount)
-    expense_category_amount_summ2=sum(expense_category_amount_list2)
-
-    expense_category_amount_list3 = []
-    for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=3):
-        expense_category_amount_list3.append(el.amount)
-    expense_category_amount_summ3=sum(expense_category_amount_list3)
-
-    expense_category_amount_list4 = []
-    for el in ExpenseTransaction.objects.filter(date__year=year_filter).filter(date__month=month_filter).filter(expense_category_id=4):
-        expense_category_amount_list4.append(el.amount)
-    expense_category_amount_summ4=sum(expense_category_amount_list4)
-
-    monthDict = utils.get_month() # Получение всех месяцев и годов существующих транзакций
+    IncomeCategoriesSummDict = utils.get_income_categories_name_and_amount(month_filter, year_filter)
+    ExpenseCategoriesSummDict = utils.get_expense_categories_name_and_amount(month_filter, year_filter)
 
     return render(request, 'core/report.html', {'url_name': url_name, 'month_filter': month_filter, 'year_filter': year_filter, 'monthDict': monthDict, 
-                                            'income_summ': income_summ,
-                                            'expense_summ': expense_summ,
-                                            'income_category_amount_summ1': income_category_amount_summ1,
-                                            'income_category_amount_summ2': income_category_amount_summ2,
-                                            'income_category_amount_summ3': income_category_amount_summ3,
-                                            'expense_category_amount_summ1': expense_category_amount_summ1,
-                                            'expense_category_amount_summ2': expense_category_amount_summ2,
-                                            'expense_category_amount_summ3': expense_category_amount_summ3,
-                                            'expense_category_amount_summ4': expense_category_amount_summ4,
+                                            'IncomeCategoriesSummDict': IncomeCategoriesSummDict,
+                                            'ExpenseCategoriesSummDict': ExpenseCategoriesSummDict,
                                             'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
                                             'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})    
 
