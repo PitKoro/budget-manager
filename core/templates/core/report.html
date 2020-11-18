@@ -19,46 +19,50 @@
             </form>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="content-rec">
-            <div class="row content-rec">
-                <div class="col">
-                    <h6 class="text-center">Зачисления</h6></br>
-                    <h6>Всего: <small>{{income_summ|division:100}} руб</small></h6>
-                    <h6> Зарплата: <small>{{income_category_amount_summ1|division:100}} руб</small></h6>
-                    <h6> Стипендия: <small>{{income_category_amount_summ2|division:100}} руб</small></h6>
-                    <h6> Другое: <small>{{income_category_amount_summ3|division:100}} руб</small></h6>
-                </div>
-                <div class="col">
-                    <div class="content-rec expenses-diag" id="main-page__income-chart">
-                        <h6 class="text-center">
-                        Добавьте зачисления этого месяца, чтобы увидеть диаграмму доходов
-                        </h6>
+    {% if monthDict %}
+        <div class="row justify-content-center">
+            <div class="content-rec">
+                <div class="row content-rec">
+                    <div class="col">
+                        <h6 class="text-center">Зачисления</h6></br>
+                        <h6>Всего: <small>{{income_summ|division:100}} руб</small></h6>
+                        <h6> Зарплата: <small>{{income_category_amount_summ1|division:100}} руб</small></h6>
+                        <h6> Стипендия: <small>{{income_category_amount_summ2|division:100}} руб</small></h6>
+                        <h6> Другое: <small>{{income_category_amount_summ3|division:100}} руб</small></h6>
+                    </div>
+                    <div class="col">
+                        <div class="content-rec expenses-diag" id="main-page__income-chart">
+                            <h6 class="text-center">
+                            Добавьте зачисления этого месяца, чтобы увидеть диаграмму доходов
+                            </h6>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="content-rec">
-            <div class="row content-rec">
-                <div class="col">
-                    <h6 class="text-center">Расходы</h6></br>
-                    <h6>Всего: <small>{{expense_summ|division:100}} руб</small></h6>
-                    <h6>Продукты: <small>{{expense_category_amount_summ1|division:100}}  руб</small></h6>
-                    <h6>Коммунальные платежи: <small>{{expense_category_amount_summ2|division:100}}  руб</small></h6>
-                    <h6>Развлечения: <small>{{expense_category_amount_summ3|division:100}}  руб</small></h6>
-                    <h6>Другое: <small>{{expense_category_amount_summ4|division:100}}  руб</small></h6>
+            <div class="content-rec">
+                <div class="row content-rec">
+                    <div class="col">
+                        <h6 class="text-center">Расходы</h6></br>
+                        <h6>Всего: <small>{{expense_summ|division:100}} руб</small></h6>
+                        <h6>Продукты: <small>{{expense_category_amount_summ1|division:100}}  руб</small></h6>
+                        <h6>Коммунальные платежи: <small>{{expense_category_amount_summ2|division:100}}  руб</small></h6>
+                        <h6>Развлечения: <small>{{expense_category_amount_summ3|division:100}}  руб</small></h6>
+                        <h6>Другое: <small>{{expense_category_amount_summ4|division:100}}  руб</small></h6>
+                    </div>
+                    <div class="col">
+                        <div class="content-rec expenses-diag" id="main-page__expense-chart">
+                            <h6 class="text-center">
+                            Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
+                            </h6>
+                        </div>
+                    </div> 
                 </div>
-                <div class="col">
-                    <div class="content-rec expenses-diag" id="main-page__expense-chart">
-                        <h6 class="text-center">
-                        Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
-                        </h6>
-                      </div>
-                </div> 
             </div>
         </div>
-    </div>
-
+    {% else %}
+        <p class="text-center text-muted h1 mt-5">Транзакций в текущем месяце нет</p>
+    {% endif %}
+        
 {% endblock %}
 
 {% block javascript%}
