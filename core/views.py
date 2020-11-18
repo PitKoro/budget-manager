@@ -50,7 +50,7 @@ def main(request):
     })
 
 
-def report(request):
+def report(request):#rjvvtynfhbq
     url_name = request.resolver_match.url_name
     income_transaction_list = []
     for income in IncomeTransaction.objects.all():
