@@ -114,7 +114,9 @@ def report(request):#rjvvtynfhbq
                                                     'expense_category_amount_summ1': expense_category_amount_summ1,
                                                     'expense_category_amount_summ2': expense_category_amount_summ2,
                                                     'expense_category_amount_summ3': expense_category_amount_summ3,
-                                                    'expense_category_amount_summ4': expense_category_amount_summ4})
+                                                    'expense_category_amount_summ4': expense_category_amount_summ4,
+                                                    'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
+                                                    'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})
 
 
     income_transaction_list = []
@@ -173,7 +175,9 @@ def report(request):#rjvvtynfhbq
                                             'expense_category_amount_summ1': expense_category_amount_summ1,
                                             'expense_category_amount_summ2': expense_category_amount_summ2,
                                             'expense_category_amount_summ3': expense_category_amount_summ3,
-                                            'expense_category_amount_summ4': expense_category_amount_summ4})    
+                                            'expense_category_amount_summ4': expense_category_amount_summ4,
+                                            'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
+                                            'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})    
 
 
 def history(request):

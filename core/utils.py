@@ -323,3 +323,35 @@ def get_expenses_for_this_month():
         },
         transactions
     ))
+
+
+def get_expenses_for_filter_month(month_filter, year_filter):
+    transactions = ExpenseTransaction.objects.values(
+        'expense_category__name'
+    ).filter(date__year=year_filter).filter(date__month=month_filter).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['expense_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))
+
+
+def get_incomes_for_filter_month(month_filter, year_filter):
+    transactions = IncomeTransaction.objects.values(
+        'income_category__name'
+    ).filter(date__year=year_filter).filter(date__month=month_filter).annotate(
+        Sum('amount')
+    )
+
+    return list(map(
+        lambda item: {
+            'name': item['income_category__name'],
+            'amount': item['amount__sum'] / 100
+        },
+        transactions
+    ))
