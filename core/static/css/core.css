@@ -246,3 +246,13 @@ ul, li{
   width: 50%;
   margin: auto;
 }
+
+.content-report{
+  border-radius: 5px;
+  background-color: #474747;
+}
+
+.diag-report {
+  order: -3;
+  height: 220px;
+}

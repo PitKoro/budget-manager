@@ -1,7 +1,90 @@
 {% extends 'core/base.html' %}
-
+{% load core_custom_tags %}
+{% load static %}
 {% block title %}Отчёт{% endblock %}
 
 {% block content %}
-  <p class="text-center">Это страница отчёта</p>
+  <h1 class="text-center report-header my-4">Отчёт</h1>
+    <div class="row justify-content-center">
+        <div class="col-auto content-rec">
+            <h6 class="text-center">Фильтр</h6>
+            <form method="POST" action="{% url 'core:report' %}">
+                {% csrf_token %}
+                <select class="form-control form-control-sm" name="month_filter_report" onchange="this.form.submit()">
+                    <option disabled>Период...</option>
+                    {% for key in monthDict %}
+                        <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
+                    {% endfor %}             
+                </select>
+            </form>
+        </div>
+    </div>
+    {% if monthDict %}
+        <div class="row justify-content-center">
+
+                    <div class="col-lg-3 col-md-5 content-rec">
+                        <h6 class="text-center">Зачисления</h6></br>
+                        {% for key in IncomeCategoriesSummDict %}
+                        <h6>{{ key }}: <small>{{IncomeCategoriesSummDict|index_search:key|division:100}} руб</small></h6>
+                        {% endfor %}
+                    </div>
+
+
+
+
+                    <div class="col-lg-3 col-md-5 content-rec">
+                        <h6 class="text-center">Расходы</h6></br>
+                        {% for key in ExpenseCategoriesSummDict %}
+                            <h6>{{ key }}: <small>{{ExpenseCategoriesSummDict|index_search:key|division:100}} руб</small></h6>
+                        {% endfor %}
+                    </div>
+
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-10 content-rec">
+                <div class="diag-report" id="main-page__income-chart">
+                    <h6 class="text-center">
+                    Добавьте зачисления этого месяца, чтобы увидеть диаграмму доходов
+                    </h6>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-10 content-rec">
+                <div class="diag-report" id="main-page__expense-chart">
+                    <h6 class="text-center">
+                    Добавьте траты этого месяца, чтобы увидеть диаграмму расходов
+                    </h6>
+                </div>
+            </div> 
+        </div>
+    {% else %}
+        <p class="text-center text-muted h1 mt-5">Транзакций в текущем месяце нет</p>
+    {% endif %}
+        
+{% endblock %}
+
+{% block javascript%}
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+  <script type="text/javascript">
+    let expense_data = [
+      ['Категория', 'Сумма расходов'],
+      {% for tran in expenses %}
+          ['{{tran.name}}', '{{tran.amount}}'],
+      {% endfor %}
+    ]
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(() => drawChart(expense_data));
+  </script>
+
+  <script type="text/javascript">
+    let income_data = [
+      ['Категория', 'Сумма доходов'],
+      {% for tran in incomes %}
+          ['{{tran.name}}', '{{tran.amount}}'],
+      {% endfor %}
+    ]
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(() => drawChartIncome(income_data));
+  </script>
 {% endblock %}
