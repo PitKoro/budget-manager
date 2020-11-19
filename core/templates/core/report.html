@@ -11,7 +11,7 @@
             <form method="POST" action="{% url 'core:report' %}">
                 {% csrf_token %}
                 <select class="form-control form-control-sm" name="month_filter_report" onchange="this.form.submit()">
-                    <option disabled>Период...</option>
+                    <option disabled {% if not transactions %}selected{% endif %}>Период...</option>
                     {% for key in monthDict %}
                         <option value="{{key}}" {% if month_filter == key|index_search:0 %}selected{% endif %}>{{ monthDict|index_search:key }}</option>
                     {% endfor %}             
@@ -19,7 +19,8 @@
             </form>
         </div>
     </div>
-    {% if monthDict %}
+
+    {% if transactions %}
         <div class="row justify-content-center">
 
                     <div class="col-lg-3 col-md-5 content-rec">

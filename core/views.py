@@ -59,21 +59,24 @@ def report(request):
 
             IncomeCategoriesSummDict = utils.get_income_categories_name_and_amount(month_filter, year_filter)
             ExpenseCategoriesSummDict = utils.get_expense_categories_name_and_amount(month_filter, year_filter)
-
+            transactions = utils.get_all_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех существующих транзакций с учетом фильтра по месяцам и годам
             return render(request, 'core/report.html', {'url_name': url_name, 'month_filter': month_filter, 'year_filter': year_filter, 'monthDict': monthDict, 
                                                     'IncomeCategoriesSummDict': IncomeCategoriesSummDict,
                                                     'ExpenseCategoriesSummDict': ExpenseCategoriesSummDict,
                                                     'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
-                                                    'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})
+                                                    'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter),
+                                                    'transactions': transactions})
 
     IncomeCategoriesSummDict = utils.get_income_categories_name_and_amount(month_filter, year_filter)
     ExpenseCategoriesSummDict = utils.get_expense_categories_name_and_amount(month_filter, year_filter)
+    transactions = utils.get_all_transaction_with_month_and_year_filter(year_filter, month_filter) # Получение всех существующих транзакций с учетом фильтра по месяцам и годам
 
     return render(request, 'core/report.html', {'url_name': url_name, 'month_filter': month_filter, 'year_filter': year_filter, 'monthDict': monthDict, 
                                             'IncomeCategoriesSummDict': IncomeCategoriesSummDict,
                                             'ExpenseCategoriesSummDict': ExpenseCategoriesSummDict,
                                             'expenses': utils.get_expenses_for_filter_month(month_filter, year_filter),
-                                            'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter)})    
+                                            'incomes': utils.get_incomes_for_filter_month(month_filter, year_filter),
+                                            'transactions': transactions})    
 
 
 def history(request):
