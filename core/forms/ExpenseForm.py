@@ -1,8 +1,6 @@
 from django import forms
-from core.models import Account
 from .CustomDateInput import CustomDateInput
 from django.utils.translation import gettext as _
-from core.utils import get_balance
 from django.core.exceptions import ValidationError
 from .utils import get_account_choices, get_expense_category_choices
 
@@ -57,7 +55,9 @@ class ExpenseForm(forms.Form):
         decimal_part = str(data*100).split('.')[1]
 
         if len(decimal_part) > 1 or int(decimal_part) != 0:
-            self.fields['amount'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['amount'].widget.attrs.update({
+                'class': 'form-control is-invalid'
+            })
             raise ValidationError(_('Неверный формат суммы'))
 
         return data
@@ -66,7 +66,9 @@ class ExpenseForm(forms.Form):
         data = self.cleaned_data['from_cat']
 
         if data == '-1':
-            self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['from_cat'].widget.attrs.update({
+                'class': 'form-control is-invalid'
+            })
             raise ValidationError(
                 _('Выберите откуда'),
                 code='invalid'
@@ -78,7 +80,9 @@ class ExpenseForm(forms.Form):
         data = self.cleaned_data['to_cat']
 
         if data == '-1':
-            self.fields['to_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['to_cat'].widget.attrs.update({
+                'class': 'form-control is-invalid'
+            })
             raise ValidationError(_('Выберите куда потрачено'), code='invalid')
 
         return data
@@ -91,8 +95,12 @@ class ExpenseForm(forms.Form):
 
         if from_data == to_data:
             # Пытаемся перевести деньги на то же место хранения
-            self.fields['from_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
-            self.fields['to_cat'].widget.attrs.update({'class': 'form-control is-invalid'})
+            self.fields['from_cat'].widget.attrs.update({
+                'class': 'form-control is-invalid'
+            })
+            self.fields['to_cat'].widget.attrs.update({
+                'class': 'form-control is-invalid'
+            })
             raise ValidationError(
                 _('Выберите разные места хранения'),
                 code='invalid'

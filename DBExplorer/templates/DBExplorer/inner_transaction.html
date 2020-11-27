@@ -2,23 +2,23 @@
 
 {% block model_name %}{{model_name}}{% endblock %}
 
-    {% block content %}
-        <tr>
-            <th>id</th>
-            <th>date</th>
-            <th>amount</th>
-            <th>commentary</th>
-            <th>account_from_id</th>
-            <th>account_to_id</th>
-        </tr>
-        {% for transaction in object_list %}
-            <tr>
-                <td>{{transaction.id}}</td>
-                <td>{{transaction.date}}</td>
-                <td>{{transaction.amount}}</td>
-                <td>{{transaction.commentary}}</td>
-                <td>{{transaction.account_from.id}}</td>
-                <td>{{transaction.account_to.id}}</td>
-            </tr>
-        {% endfor %}
+{% block content %}
+  <tr>
+    <th>id</th>
+    <th>date</th>
+    <th>amount</th>
+    <th>commentary</th>
+    <th>account_from_id</th>
+    <th>account_to_id</th>
+  </tr>
+  {% for transaction in object_list %}
+    <tr>
+      <td>{{transaction.id}}</td>
+      <td>{{transaction.date}}</td>
+      <td>{{transaction.amount}}</td>
+      <td>{{transaction.commentary}}</td>
+      <td>{{transaction.account_from.id}}</td>
+      <td>{{transaction.account_to.id}}</td>
+    </tr>
+  {% endfor %}
 {% endblock %}
