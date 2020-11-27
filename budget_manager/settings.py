@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
-    'DBExplorer.apps.DbexplorerConfig',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
 ]
