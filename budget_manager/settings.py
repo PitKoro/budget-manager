@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
-    'DBExplorer.apps.DbexplorerConfig',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
 ]
@@ -97,4 +96,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-mimetypes.add_type("text/javascript", ".js", True)
+mimetypes.add_type('text/javascript', ".js", True)
+mimetypes.add_type('text/css', '.css', True)
