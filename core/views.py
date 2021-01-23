@@ -1,10 +1,19 @@
 from django.shortcuts import render
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
+from django.http import HttpResponseRedirect
 import core.utils as utils
 
 import datetime
 
+def edit(request,id,type):
+    id_transaction=id
+    transaction_type=type
+    #if transaction_type=='IncomeTransaction':
+
+
+    return render(
+        request,'core/edit.html',{'id_transaction':id_transaction, 'transaction_type':transaction_type})
 
 def main(request):
     visible_form = 'expense'
@@ -111,6 +120,13 @@ def history(request):
     expense_category = None  # Значение фильтра по категориям расхода
 
     if request.method == 'POST':  # Если пользователь воспользовался любым фильтром или удалением транзакции
+        if request.POST.get('EditIncomeTransactionId'):
+            return  HttpResponseRedirect("edit")
+        if request.POST.get('EditExpenseTransactionId'):
+            return  HttpResponseRedirect("edit")
+        if request.POST.get('EditInnerTransactionId'):
+            return  HttpResponseRedirect("edit")
+           
 
         if request.POST.get('IncomeTransactionId'):  # Если пользователь воспользовался удалением транзакции дохода
             utils.delete_transaction(

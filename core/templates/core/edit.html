@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% load core_custom_tags %}
+{% load static %}
+{% block title %}Редактирование{% endblock %}
+{% block content %}
+    <h1>Это страница редактирования</h1>
+    <a class="btn btn-danger" href="{% url 'core:history' %}" name="redirect_home" >Вернуться к истории</a>
+   
+{% endblock %}
+
+   
