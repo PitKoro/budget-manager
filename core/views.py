@@ -11,19 +11,19 @@ def edit(request,id,type):
     id_transaction=id
     transaction_type=type
     transaction=None
-    
+    #берём  id транзакции
     if transaction_type == "IncomeTransaction":
         transaction = IncomeTransaction.objects.get(id=id_transaction)
     if transaction_type == "ExpenseTransaction":
         transaction = ExpenseTransaction.objects.get(id=id_transaction)
     if transaction_type == "InnerTransaction":
         transaction = InnerTransaction.objects.get(id=id_transaction)
-        
+    #передаём данные post запросом на сервер со  страницы редактирования   
     if request.method == 'POST':
-        transaction.amount = float(request.POST.get("amount"))*100
+        transaction.amount = float(request.POST.get("amount"))*100#сумма
         transaction.commentary = request.POST.get("commentary")
-        transaction.save()
-        return HttpResponseRedirect("/history")
+        transaction.save()#сохраняю в бд
+        return HttpResponseRedirect("/history")#переход на страницу истории
 
     return render(request,'core/edit.html',{'transaction': transaction, 'id_transaction':id_transaction, 'transaction_type':transaction_type})
     
