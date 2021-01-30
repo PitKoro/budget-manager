@@ -1,19 +1,32 @@
 from django.shortcuts import render
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
-from django.http import HttpResponseRedirect
 import core.utils as utils
+from .models import IncomeTransaction, ExpenseTransaction, InnerTransaction
+from django.http import HttpResponseRedirect
 
 import datetime
 
 def edit(request,id,type):
     id_transaction=id
     transaction_type=type
-    #if transaction_type=='IncomeTransaction':
+    transaction=None
+    
+    if transaction_type == "IncomeTransaction":
+        transaction = IncomeTransaction.objects.get(id=id_transaction)
+    if transaction_type == "ExpenseTransaction":
+        transaction = ExpenseTransaction.objects.get(id=id_transaction)
+    if transaction_type == "InnerTransaction":
+        transaction = InnerTransaction.objects.get(id=id_transaction)
+        
+    if request.method == 'POST':
+        transaction.amount = float(request.POST.get("amount"))*100
+        transaction.commentary = request.POST.get("commentary")
+        transaction.save()
+        return HttpResponseRedirect("/history")
 
-
-    return render(
-        request,'core/edit.html',{'id_transaction':id_transaction, 'transaction_type':transaction_type})
+    return render(request,'core/edit.html',{'transaction': transaction, 'id_transaction':id_transaction, 'transaction_type':transaction_type})
+    
 
 def main(request):
     visible_form = 'expense'
@@ -119,14 +132,7 @@ def history(request):
     income_category = None  # Значение фильтра по категориям дохода
     expense_category = None  # Значение фильтра по категориям расхода
 
-    if request.method == 'POST':  # Если пользователь воспользовался любым фильтром или удалением транзакции
-        if request.POST.get('EditIncomeTransactionId'):
-            return  HttpResponseRedirect("edit")
-        if request.POST.get('EditExpenseTransactionId'):
-            return  HttpResponseRedirect("edit")
-        if request.POST.get('EditInnerTransactionId'):
-            return  HttpResponseRedirect("edit")
-           
+    if request.method == 'POST':  # Если пользователь воспользовался любым фильтром или удалением транзакции           
 
         if request.POST.get('IncomeTransactionId'):  # Если пользователь воспользовался удалением транзакции дохода
             utils.delete_transaction(

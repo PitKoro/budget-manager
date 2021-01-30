@@ -5,7 +5,149 @@
 {% block content %}
     <h1>Это страница редактирования</h1>
     <a class="btn btn-danger" href="{% url 'core:history' %}" name="redirect_home" >Вернуться к истории</a>
-   
+
+    {% if transaction_type == "IncomeTransaction" %}
+
+        <div class="row justify-content-center row-transaction-history">
+                <div class="col-xl-5 col-lg-8 col-md-10">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm">{{ transaction.account.name }}</div>
+                            <div class="col-sm history-date">{{ transaction.date }}</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-around">
+                            <div class="col">
+                            <fieldset class="reset-this redo-fieldset">
+                                <legend class="reset-this redo-legend"> Сумма </legend>
+                                <h5 class="card-title  text-center">+{{ transaction.amount|division:100 }} руб.</h5>
+                            </fieldset>    
+                            </div>
+                            <div class="col">
+                            <fieldset class="reset-this redo-fieldset">
+                                <legend class="reset-this redo-legend"> Категория </legend>
+                                <h5 class="card-title  text-center">{{ transaction.income_category.name }}</h5>
+                            </fieldset>  
+                                                
+                            </div>
+                        </div>
+                        {% if transaction.commentary %}
+                            <div class="row">
+                            <div class="col">
+                                <fieldset class="reset-this redo-fieldset history-commentary">
+                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                <p class="card-text text-center pr-2">{{ transaction.commentary }}</p>
+                                </fieldset>  
+                            </div>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <p>
+                <label>Сумма</label><br>
+                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" name="amount" value="{{ transaction.amount|kopecks_to_rubles }}" />
+            </p>
+            <p>
+                <label>Комментарий</label><br>
+                <input type="text" name="commentary" value="{{transaction.commentary}}" />
+            </p>
+            <input type="submit" value="Сохранить" >
+        </form>
+    {% endif %}
+
+    {% if transaction_type == "ExpenseTransaction" %}
+        <div class="row justify-content-center row-transaction-history">
+                <div class="col-xl-5 col-lg-8 col-md-10">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm">{{ transaction.account.name }}</div>
+                            <div class="col-sm history-date">{{ transaction.date }}</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-around">
+                            <div class="col">
+                            <fieldset class="reset-this redo-fieldset">
+                                <legend class="reset-this redo-legend"> Сумма </legend>
+                                <h5 class="card-title  text-center">-{{ transaction.amount|division:100 }} руб.</h5>
+                            </fieldset>    
+                            </div>
+                            <div class="col">
+                            <fieldset class="reset-this redo-fieldset">
+                                <legend class="reset-this redo-legend"> Категория </legend>
+                                <h5 class="card-title  text-center">{{ transaction.expense_category.name }}</h5>
+                            </fieldset>  
+                                                
+                            </div>
+                        </div>
+                        {% if transaction.commentary %}
+                            <div class="row">
+                            <div class="col">
+                                <fieldset class="reset-this redo-fieldset history-commentary">
+                                <legend class="reset-this redo-legend"> Комментарий </legend>
+                                <p class="card-text text-center pr-2">{{ transaction.commentary }}</p>
+                                </fieldset>  
+                            </div>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                </div>
+        </div>
+        
+    {% endif %}
+
+    {% if transaction_type == "InnerTransaction" %}
+        <div class="row justify-content-center row-transaction-history">          
+            <div class="col-xl-5 col-lg-8 col-md-10">            
+            <div class="card mt-4">
+                <div class="card-header">
+                <div class="row">
+                    <div class="col-sm">{{ transaction.account_from.name }} -> {{ transaction.account_to.name }}</div>
+                    <div class="col-sm history-date">{{ transaction.date }}</div>
+                </div>
+                </div>
+                <div class="card-body">
+                <div class="row justify-content-around">
+                    <div class="col">
+                    <fieldset class="reset-this redo-fieldset inner-amount">
+                        <legend class="reset-this redo-legend"> Сумма </legend>
+                        <h5 class="card-title text-center mt-2">{{ transaction.amount|division:100 }} руб.</h5>
+                    </fieldset>    
+                    </div>
+                    <div class="col">
+                        <fieldset class="reset-this redo-fieldset">
+                        <legend class="reset-this redo-legend"> Категория </legend>
+                        <h5 class="card-title  text-center">Перевод между своими счетами</h5>
+                        </fieldset>                        
+                    </div>
+                    </div>
+                    
+                    {% if transaction.commentary %}
+                    <div class="row">
+                        <div class="col">
+                        <fieldset class="reset-this redo-fieldset history-commentary">
+                            <legend class="reset-this redo-legend"> Комментарий </legend>
+                            <p class="card-text text-center pr-2">{{ transaction.commentary }}</p>
+                        </fieldset>  
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
    
