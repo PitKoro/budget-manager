@@ -3,7 +3,7 @@
 {% load static %}
 {% block title %}Редактирование{% endblock %}
 {% block content %}
-    <h1>Это страница редактирования</h1>
+    <h1>Cтраница редактирования операции</h1>
     <a class="btn btn-danger" href="{% url 'core:history' %}" name="redirect_home" >Вернуться к истории</a>
 
     {% if transaction_type == "IncomeTransaction" %}
@@ -49,18 +49,42 @@
                 </div>
         </div>
 
-        <form method="POST">
-            {% csrf_token %}
-            <p>
-                <label>Сумма</label><br>
-                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" name="amount" value="{{ transaction.amount|kopecks_to_rubles }}" />
-            </p>
-            <p>
-                <label>Комментарий</label><br>
-                <input type="text" name="commentary" value="{{transaction.commentary}}" />
-            </p>
-            <input type="submit" value="Сохранить" >
-        </form>
+
+        <div class="row">
+            <div class="col col-main">
+                <div class="content-rec expense-form">
+                    <h5 class="text-center">Редактирование</h5>
+                    <form method="POST" class="my-form">
+                        {% csrf_token %}
+                        <div class="w-100"></div>
+                        <div class="field-narrow">
+                            <input class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" min="0" step="any" name="amount" placeholder="Сумма" value="{{ transaction.amount|kopecks_to_rubles }}" />
+                        </div>
+                        <div class="field-narrow">
+                            <select name="account" class="form-control">
+                                <option value="1" {% if transaction.account_id == 1 %}selected{% endif %}>Карта</option>
+                                <option value="2" {% if transaction.account_id == 2 %}selected{% endif %}>Наличные</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <select name="category" class="form-control">
+                                <option value="1" {% if transaction.income_category_id == 1 %}selected{% endif %}>Зарплана</option>
+                                <option value="2" {% if transaction.income_category_id == 2 %}selected{% endif %}>Стипендия</option>
+                                <option value="3" {% if transaction.income_category_id == 3 %}selected{% endif %}>Другое</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <input type="date" name="when" value="{{transaction.date.year}}-{{transaction_date_month_for_input}}-{{transaction_date_day_for_input}}" class="form-control" required="" id="id_when">
+                        </div>
+                        <div class="field-wide">
+                            <textarea cols="40" rows="10" placeholder="Комментарий" class="form-control" name="commentary">{{transaction.commentary}}</textarea>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Сохранить" >
+                    </form>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
     {% if transaction_type == "ExpenseTransaction" %}
@@ -104,6 +128,42 @@
                 </div>
                 </div>
         </div>
+
+        <div class="row">
+            <div class="col col-main">
+                <div class="content-rec expense-form">
+                    <h5 class="text-center">Редактирование</h5>
+                    <form method="POST" class="my-form">
+                        {% csrf_token %}
+                        <div class="w-100"></div>
+                        <div class="field-narrow">
+                            <input class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" min="0" step="any" name="amount" placeholder="Сумма" value="{{ transaction.amount|kopecks_to_rubles }}" />
+                        </div>
+                        <div class="field-narrow">
+                            <select name="account" class="form-control">
+                                <option value="1" {% if transaction.account_id == 1 %}selected{% endif %}>Карта</option>
+                                <option value="2" {% if transaction.account_id == 2 %}selected{% endif %}>Наличные</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <select name="category" class="form-control">
+                                <option value="1" {% if transaction.expense_category_id == 1 %}selected{% endif %}>Продукты</option>
+                                <option value="2" {% if transaction.expense_category_id == 2 %}selected{% endif %}>Коммунальные платежи</option>
+                                <option value="3" {% if transaction.expense_category_id == 3 %}selected{% endif %}>Развлечения</option>
+                                <option value="4" {% if transaction.expense_category_id == 4 %}selected{% endif %}>Другое</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <input type="date" name="when" value="{{transaction.date.year}}-{{transaction_date_month_for_input}}-{{transaction_date_day_for_input}}" class="form-control" required="" id="id_when">
+                        </div>
+                        <div class="field-wide">
+                            <textarea cols="40" rows="10" placeholder="Комментарий" class="form-control" name="commentary">{{transaction.commentary}}</textarea>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Сохранить" >
+                    </form>
+                </div>
+            </div>
+        </div>
         
     {% endif %}
 
@@ -144,6 +204,40 @@
                     </div>
                     {% endif %}
                 </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-main">
+                <div class="content-rec expense-form">
+                    <h5 class="text-center">Редактирование</h5>
+                    <form method="POST" class="my-form">
+                        {% csrf_token %}
+                        <div class="w-100"></div>
+                        <div class="field-narrow">
+                            <input class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" min="0" step="any" name="amount" placeholder="Сумма" value="{{ transaction.amount|kopecks_to_rubles }}" />
+                        </div>
+                        <div class="field-narrow">
+                            <select name="account_from_id" class="form-control">
+                                <option value="1" {% if transaction.account_from_id == 1 %}selected{% endif %}>Карта</option>
+                                <option value="2" {% if transaction.account_from_id == 2 %}selected{% endif %}>Наличные</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <select name="account_to_id" class="form-control">
+                                <option value="1" {% if transaction.account_to_id == 1 %}selected{% endif %}>Карта</option>
+                                <option value="2" {% if transaction.account_to_id == 2 %}selected{% endif %}>Наличные</option>
+                            </select>
+                        </div>
+                        <div class="field-narrow">
+                            <input type="date" name="when" value="{{transaction.date.year}}-{{transaction_date_month_for_input}}-{{transaction_date_day_for_input}}" class="form-control" required="" id="id_when">
+                        </div>
+                        <div class="field-wide">
+                            <textarea cols="40" rows="10" placeholder="Комментарий" class="form-control" name="commentary">{{transaction.commentary}}</textarea>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Сохранить" >
+                    </form>
                 </div>
             </div>
         </div>
