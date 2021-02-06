@@ -87,6 +87,7 @@
                     <form method="POST" action="{% url 'core:history' %}">
                       {% csrf_token %}
                       <button class="btn btn-danger" type="submit" name="IncomeTransactionId" value="{{el.id}}">Удалить</button>
+                      <a class="btn btn-danger"  href="edit/{{el.id}}/IncomeTransaction">Редактировать</a>
                     </form>
                   </div>
                 </div>
@@ -136,6 +137,7 @@
                   <form method="POST" action="{% url 'core:history' %}">
                     {% csrf_token %}
                     <button class="btn btn-danger" type="submit" name="ExpenseTransactionId" value="{{el.id}}">Удалить</button>
+                    <a class="btn btn-danger"  href="edit/{{el.id}}/ExpenseTransaction">Редактировать</a>
                   </form>
                 </div>
               </div>
@@ -187,6 +189,7 @@
                     <form method="POST" action="{% url 'core:history' %}">
                       {% csrf_token %}
                       <button class="btn btn-danger" type="submit" name="InnerTransactionId" value="{{el.id}}">Удалить</button>
+                      <a class="btn btn-danger"  href="edit/{{el.id}}/InnerTransaction">Редактировать</a>
                     </form>
                   </div>
                 </div>

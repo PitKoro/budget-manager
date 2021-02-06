@@ -2,9 +2,64 @@ from django.shortcuts import render
 from .forms.IncomeForm import IncomeForm
 from .forms.ExpenseForm import ExpenseForm
 import core.utils as utils
+from .models import IncomeTransaction, ExpenseTransaction, InnerTransaction
+from django.http import HttpResponseRedirect
 
 import datetime
 
+def edit(request,id,type):
+    id_transaction=id
+    transaction_type=type
+    transaction=None
+    
+    if transaction_type == "IncomeTransaction":
+        transaction = IncomeTransaction.objects.get(id=id_transaction)
+    if transaction_type == "ExpenseTransaction":
+        transaction = ExpenseTransaction.objects.get(id=id_transaction)
+    if transaction_type == "InnerTransaction":
+        transaction = InnerTransaction.objects.get(id=id_transaction)
+
+    if len(str(transaction.date.month)) == 1:
+        transaction_date_month_for_input = "0" + str(transaction.date.month)
+    else:
+        transaction_date_month_for_input = transaction.date.month
+
+    if len(str(transaction.date.day)) == 1:
+        transaction_date_day_for_input = "0" + str(transaction.date.day)
+    else:
+        transaction_date_day_for_input = transaction.date.day
+
+
+    if request.method == 'POST':
+        if transaction_type == "IncomeTransaction":#если получили type доход
+            transaction.amount = float(request.POST.get("amount"))*100
+            transaction.commentary = request.POST.get("commentary")
+            transaction.date = request.POST.get("when")
+            transaction.account_id = int(request.POST.get("account"))
+            transaction.income_category_id = int(request.POST.get("category"))
+            transaction.save()
+            return HttpResponseRedirect("/history")
+
+        if transaction_type == "ExpenseTransaction":#если получили type расход
+            transaction.amount = float(request.POST.get("amount"))*100
+            transaction.commentary = request.POST.get("commentary")
+            transaction.date = request.POST.get("when")
+            transaction.account_id = int(request.POST.get("account"))
+            transaction.expense_category_id = int(request.POST.get("category"))
+            transaction.save()
+            return HttpResponseRedirect("/history")
+        
+        if transaction_type == "InnerTransaction":#если получили type внутренние 
+            transaction.amount = float(request.POST.get("amount"))*100
+            transaction.commentary = request.POST.get("commentary")
+            transaction.date = request.POST.get("when")
+            transaction.account_from_id = int(request.POST.get("account_from_id"))
+            transaction.account_to_id = int(request.POST.get("account_to_id"))
+            transaction.save()
+            return HttpResponseRedirect("/history")
+
+    return render(request,'core/edit.html',{'transaction': transaction, 'id_transaction':id_transaction, 'transaction_type':transaction_type, 'transaction_date_month_for_input':transaction_date_month_for_input, 'transaction_date_day_for_input':transaction_date_day_for_input})
+    
 
 def main(request):
     visible_form = 'expense'
@@ -110,7 +165,7 @@ def history(request):
     income_category = None  # Значение фильтра по категориям дохода
     expense_category = None  # Значение фильтра по категориям расхода
 
-    if request.method == 'POST':  # Если пользователь воспользовался любым фильтром или удалением транзакции
+    if request.method == 'POST':  # Если пользователь воспользовался любым фильтром или удалением транзакции           
 
         if request.POST.get('IncomeTransactionId'):  # Если пользователь воспользовался удалением транзакции дохода
             utils.delete_transaction(
