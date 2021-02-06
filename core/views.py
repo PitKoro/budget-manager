@@ -31,7 +31,7 @@ def edit(request,id,type):
 
 
     if request.method == 'POST':
-        if transaction_type == "IncomeTransaction":
+        if transaction_type == "IncomeTransaction":#если получили type доход
             transaction.amount = float(request.POST.get("amount"))*100
             transaction.commentary = request.POST.get("commentary")
             transaction.date = request.POST.get("when")
@@ -40,7 +40,7 @@ def edit(request,id,type):
             transaction.save()
             return HttpResponseRedirect("/history")
 
-        if transaction_type == "ExpenseTransaction":
+        if transaction_type == "ExpenseTransaction":#если получили type расход
             transaction.amount = float(request.POST.get("amount"))*100
             transaction.commentary = request.POST.get("commentary")
             transaction.date = request.POST.get("when")
@@ -49,7 +49,7 @@ def edit(request,id,type):
             transaction.save()
             return HttpResponseRedirect("/history")
         
-        if transaction_type == "InnerTransaction":
+        if transaction_type == "InnerTransaction":#если получили type внутренние 
             transaction.amount = float(request.POST.get("amount"))*100
             transaction.commentary = request.POST.get("commentary")
             transaction.date = request.POST.get("when")
